@@ -1,6 +1,5 @@
 package tournament
 
-
 /*
 func main() {
 	result := calcDurationMinutes(1, 1, 1)
@@ -8,7 +7,7 @@ func main() {
 }*/
 
 type TournamentDetails struct {
-	numberOfGames int
+	numberOfGames  int
 	numberOfFields int
 	minutesPerGame int
 }
@@ -21,15 +20,13 @@ func NewTournamentDetails(numberOfGames int, numberOfFields int, minutesPerGame 
 	return d
 }
 
-type UseTournamentDetails interface{
-	GetTournamentDetails()TournamentDetails
+type UseTournamentDetails interface {
+	GetTournamentDetails() TournamentDetails
 }
-
-
 
 // calcs the duration of a tournament in minutes
 func InMinutes(tournamentDet UseTournamentDetails) int {
-	td := tournamentDet.GetTournamentDetails();
+	td := tournamentDet.GetTournamentDetails()
 	if td.numberOfFields == 0 {
 		return 0
 	}

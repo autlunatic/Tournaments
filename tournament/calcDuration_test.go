@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-type testTournamentDet struct{
-	numberOfGames int
+type testTournamentDet struct {
+	numberOfGames  int
 	numberOfFields int
 	minutesPerGame int
 }
 
 func (tTD testTournamentDet) GetTournamentDetails() (t TournamentDetails) {
-	return TournamentDetails{tTD.numberOfGames,tTD.numberOfFields, tTD.minutesPerGame}
+	return TournamentDetails{tTD.numberOfGames, tTD.numberOfFields, tTD.minutesPerGame}
 }
 
 func TestAllZero(t *testing.T) {
@@ -25,9 +25,8 @@ func TestAllOne(t *testing.T) {
 	TestingUtils.CheckEquals(1, result, t)
 }
 
-
 func TestComplex(t *testing.T) {
-	result := InMinutes(testTournamentDet{239,8,15})
+	result := InMinutes(testTournamentDet{239, 8, 15})
 	TestingUtils.CheckEquals(450, result, t)
 
 	result = InMinutes(testTournamentDet{10, 2, 15})
