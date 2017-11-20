@@ -10,8 +10,7 @@ func TestCalcDurationInterface(t *testing.T) {
 	var result Tournament
 	result = NewTournament(*td)
 
-	lol := InMinutes(result)
-	TestingUtils.CheckEquals(3, lol, t)
+	TestingUtils.CheckEquals(3, InMinutes(result), "",t)
 }
 
 func (t *Tournament) AddContributor(contributor Contributor) {

@@ -21,17 +21,20 @@ func calcPairingsGroup(contributors Contributors) []pairing {
 		tempContributors = append(tempContributors[1:])
 	}
 
-	halfContributorCount := len(tempContributors) / 2
+	// shift one time so it starts with 1v2
+	tempContributors = append(tempContributors[1:],tempContributors[0])
+
 	for i := 0; i < len(tempContributors); i++ {
 		c1 := contributors.items[0]
 
-		for j := 0; j < halfContributorCount+1; j++ {
+		for j := 0; j < (len(tempContributors) / 2)+1; j++ {
 			if j == 0 {
-				addPair(&result, c1, tempContributors[halfContributorCount])
+				addPair(&result, c1, tempContributors[len(tempContributors)-1])
 			} else {
-				addPair(&result, tempContributors[j-1], tempContributors[j+halfContributorCount])
+				addPair(&result, tempContributors[j-1], tempContributors[len(tempContributors)-1-j])
 			}
 		}
+		// shift
 		tempContributors = append(tempContributors[1:],tempContributors[0])
 	}
 
