@@ -1,9 +1,9 @@
 package tournament
 
-type Contributors struct {
-	items []Contributor
+type Competitors struct {
+	items []Competitor
 }
 
-type Contributor struct {
+type Competitor struct {
 	name string
 }

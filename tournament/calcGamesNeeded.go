@@ -1,10 +1,10 @@
 package tournament
 
-func calcGroupGamesNeeded(numberOfContributors int) int {
-	if numberOfContributors < 2 {
+func calcGroupGamesNeeded(numberOfCompetitors int) int {
+	if numberOfCompetitors < 2 {
 		return 0
 	} else {
-		return numberOfContributors
+		return numberOfCompetitors
 	}
 }
 

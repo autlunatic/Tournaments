@@ -1,8 +1,8 @@
 package tournament
 
 type Tournament struct {
-	details      TournamentDetails
-	contributors []Contributor
+	details     TournamentDetails
+	competitors []Competitor
 }
 
 func (t Tournament) GetTournamentDetails() TournamentDetails {
@@ -10,7 +10,7 @@ func (t Tournament) GetTournamentDetails() TournamentDetails {
 }
 
 func NewTournament(details TournamentDetails) Tournament {
-	t := Tournament{details, []Contributor{}}
+	t := Tournament{details, []Competitor{}}
 	return t
 }
 

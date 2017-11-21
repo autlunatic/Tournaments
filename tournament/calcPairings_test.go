@@ -1,50 +1,51 @@
 package tournament
 
 import (
+	"fmt"
 	"github.com/autlunatic/TestingUtils"
 	"testing"
 )
 
 func TestCalcPairings(t *testing.T) {
-	benni := Contributor{"Benni"}
-	dani := Contributor{"Dani"}
-	contributors := Contributors{}
-	contributors.items = append(contributors.items, benni)
-	contributors.items = append(contributors.items, dani)
+	benni := Competitor{"Benni"}
+	dani := Competitor{"Dani"}
+	competitors := Competitors{}
+	competitors.items = append(competitors.items, benni)
+	competitors.items = append(competitors.items, dani)
 
-	pairings := calcPairingsGroup(contributors)
+	pairings := calcPairingsGroup(competitors)
 
 	TestingUtils.CheckEquals(1, len(pairings), "", t)
 	pair := pairings[0]
 
-	if (pair.contributor1.name != "Benni") || (pair.contributor2.name != "Dani") {
-		t.Errorf("first contriburor should be Benni (but was %s) and second should be Dani (but was %s)", pair.contributor1.name, pair.contributor2.name)
+	if (pair.competitor1.name != "Benni") || (pair.competitor2.name != "Dani") {
+		t.Errorf("first competitor should be Benni (but was %s) and second should be Dani (but was %s)", pair.competitor1.name, pair.competitor2.name)
 	}
 }
 
-func TestCalcPairings3Contributors(t *testing.T) {
-	benni := Contributor{"Benni"}
-	zoe := Contributor{"Zoé"}
-	dani := Contributor{"Dani"}
-	contributors := Contributors{}
-	contributors.items = append(contributors.items, benni)
-	contributors.items = append(contributors.items, dani)
-	contributors.items = append(contributors.items, zoe)
+func TestCalcPairings3Competitors(t *testing.T) {
+	benni := Competitor{"Benni"}
+	zoe := Competitor{"Zoé"}
+	dani := Competitor{"Dani"}
+	competitors := Competitors{}
+	competitors.items = append(competitors.items, benni)
+	competitors.items = append(competitors.items, dani)
+	competitors.items = append(competitors.items, zoe)
 
-	pairings := calcPairingsGroup(contributors)
+	pairings := calcPairingsGroup(competitors)
 
 	TestingUtils.CheckEquals(3, len(pairings), "", t)
 	pair := pairings[0]
-	if (pair.contributor1.name != "Benni") || (pair.contributor2.name != "Dani") {
-		t.Errorf("first contriburor should be Benni (but was %s) and second should be Dani (but was %s)", pair.contributor1.name, pair.contributor2.name)
+	if (pair.competitor1.name != "Benni") || (pair.competitor2.name != "Dani") {
+		t.Errorf("first competitor should be Benni (but was %s) and second should be Dani (but was %s)", pair.competitor1.name, pair.competitor2.name)
 	}
 	pair = pairings[1]
-	if (pair.contributor1.name != "Benni") || (pair.contributor2.name != "Zoé") {
-		t.Errorf("first contriburor should be Benni (but was %s) and second should be Zoé (but was %s)", pair.contributor1.name, pair.contributor2.name)
+	if (pair.competitor1.name != "Benni") || (pair.competitor2.name != "Zoé") {
+		t.Errorf("first competitor should be Benni (but was %s) and second should be Zoé (but was %s)", pair.competitor1.name, pair.competitor2.name)
 	}
 	pair = pairings[2]
-	if (pair.contributor1.name != "Dani") || (pair.contributor2.name != "Zoé") {
-		t.Errorf("first contriburor should be Dani (but was %s) and second should be Zoé (but was %s)", pair.contributor1.name, pair.contributor2.name)
+	if (pair.competitor1.name != "Dani") || (pair.competitor2.name != "Zoé") {
+		t.Errorf("first competitor should be Dani (but was %s) and second should be Zoé (but was %s)", pair.competitor1.name, pair.competitor2.name)
 	}
 }
 
@@ -58,67 +59,68 @@ func checkPairingDoubles(pairings []pairing) (msg string) {
 			}
 		}
 		if count > 1 {
-			return pair.contributor1.name + " vs. " + pair.contributor2.name
+			return pair.competitor1.name + " vs. " + pair.competitor2.name
 		}
 
 	}
 	return ""
 }
 func isSamePair(p pairing, p2 pairing) bool {
-	return (p.contributor1.name == p2.contributor1.name) && (p.contributor2.name == p2.contributor2.name) ||
-		(p.contributor1.name == p2.contributor2.name) && (p.contributor2.name == p2.contributor1.name)
+	return (p.competitor1.name == p2.competitor1.name) && (p.competitor2.name == p2.competitor2.name) ||
+		(p.competitor1.name == p2.competitor2.name) && (p.competitor2.name == p2.competitor1.name)
 
 }
 
-func TestCalcPairings5Contributors(t *testing.T) {
-	contributors := Contributors{}
-	contributors.items = append(contributors.items,
-		Contributor{"Benni"},
-		Contributor{"Dani"},
-		Contributor{"Zoé"},
-		Contributor{"Mona"},
-		Contributor{"Andrea"})
+func TestCalcPairings5Competitors(t *testing.T) {
+	competitors := Competitors{}
+	competitors.items = append(competitors.items,
+		Competitor{"Benni"},
+		Competitor{"Dani"},
+		Competitor{"Zoé"},
+		Competitor{"Mona"},
+		Competitor{"Andrea"})
 
-	pairings := calcPairingsGroup(contributors)
+	pairings := calcPairingsGroup(competitors)
+	fmt.Println(pairings)
 
 	TestingUtils.CheckEquals(10, len(pairings), "", t)
 	pair := pairings[0]
-	if (pair.contributor1.name != "Benni") || (pair.contributor2.name != "Dani") {
-		t.Errorf("first contriburor should be Benni (but was %s) and second should be Dani (but was %s)", pair.contributor1.name, pair.contributor2.name)
+	if (pair.competitor1.name != "Benni") || (pair.competitor2.name != "Dani") {
+		t.Errorf("first competitor should be Benni (but was %s) and second should be Dani (but was %s)", pair.competitor1.name, pair.competitor2.name)
 	}
 	pair = pairings[1]
-	if (pair.contributor1.name != "Mona") || (pair.contributor2.name != "Andrea") {
-		t.Errorf("first contriburor should be Mona (but was %s) and second should be Andrea (but was %s)", pair.contributor1.name, pair.contributor2.name)
+	if (pair.competitor1.name != "Mona") || (pair.competitor2.name != "Andrea") {
+		t.Errorf("first competitor should be Mona (but was %s) and second should be Andrea (but was %s)", pair.competitor1.name, pair.competitor2.name)
 	}
 	pair = pairings[2]
-	if (pair.contributor1.name != "Benni") || (pair.contributor2.name != "Zoé") {
-		t.Errorf("first contriburor should be Benni (but was %s) and second should be Zoé (but was %s)", pair.contributor1.name, pair.contributor2.name)
+	if (pair.competitor1.name != "Benni") || (pair.competitor2.name != "Zoé") {
+		t.Errorf("first competitor should be Benni (but was %s) and second should be Zoé (but was %s)", pair.competitor1.name, pair.competitor2.name)
 	}
 	if msg := checkPairingDoubles(pairings); msg != "" {
-		t.Errorf("same Contributors found! " + msg)
+		t.Errorf("same Competitors found! " + msg)
 	}
 }
-func TestCalcPairings12Contributors(t *testing.T) {
-	contributors := Contributors{}
-	contributors.items = append(contributors.items,
-		Contributor{"1"},
-		Contributor{"2"},
-		Contributor{"3"},
-		Contributor{"4"},
-		Contributor{"5"},
-		Contributor{"6"},
-		Contributor{"7"},
-		Contributor{"8"},
-		Contributor{"9"},
-		Contributor{"10"},
-		Contributor{"11"},
-		Contributor{"12"},
+func TestCalcPairings12Competitors(t *testing.T) {
+	competitors := Competitors{}
+	competitors.items = append(competitors.items,
+		Competitor{"1"},
+		Competitor{"2"},
+		Competitor{"3"},
+		Competitor{"4"},
+		Competitor{"5"},
+		Competitor{"6"},
+		Competitor{"7"},
+		Competitor{"8"},
+		Competitor{"9"},
+		Competitor{"10"},
+		Competitor{"11"},
+		Competitor{"12"},
 	)
 
-	pairings := calcPairingsGroup(contributors)
-
+	pairings := calcPairingsGroup(competitors)
+	fmt.Println(pairings)
 	TestingUtils.CheckEquals(66, len(pairings), "", t)
 	if msg := checkPairingDoubles(pairings); msg != "" {
-		t.Errorf("same Contributors found! " + msg)
+		t.Errorf("same Competitors found! " + msg)
 	}
 }
