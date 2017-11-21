@@ -1,19 +1,23 @@
 package tournament
 
 type Tournament struct {
-	details     TournamentDetails
-	competitors []Competitor
+	Details     TournamentDetails
+	Competitors []Competitor
+
+
+	Pairings []pairing
 }
 
 func (t Tournament) GetTournamentDetails() TournamentDetails {
-	return t.details
+	return t.Details
 }
 
 func NewTournament(details TournamentDetails) Tournament {
-	t := Tournament{details, []Competitor{}}
+	t := Tournament{}
+	t.Details = details
 	return t
 }
 
 func (t *Tournament) addTournamentDetails(td TournamentDetails) {
-	t.details = td
+	t.Details = td
 }

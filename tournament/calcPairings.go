@@ -3,6 +3,7 @@ package tournament
 type pairing struct {
 	competitor1 Competitor
 	competitor2 Competitor
+	round int
 }
 
 func calcPairingsGroup(competitors Competitors) []pairing {
@@ -25,9 +26,9 @@ func calcPairingsGroup(competitors Competitors) []pairing {
 
 		for j := 0; j < (len(tempCompetitors)/2)+1; j++ {
 			if j == 0 {
-				addPair(&result, c1, tempCompetitors[len(tempCompetitors)-1])
+				addPair(&result, c1, tempCompetitors[len(tempCompetitors)-1], i+1)
 			} else {
-				addPair(&result, tempCompetitors[j-1], tempCompetitors[len(tempCompetitors)-1-j])
+				addPair(&result, tempCompetitors[j-1], tempCompetitors[len(tempCompetitors)-1-j], i+1)
 			}
 		}
 		// shift
@@ -36,10 +37,10 @@ func calcPairingsGroup(competitors Competitors) []pairing {
 	return result
 }
 
-func addPair(pairings *[]pairing, c1 Competitor, c2 Competitor) {
+func addPair(pairings *[]pairing, c1 Competitor, c2 Competitor, round  int) {
 	if c1.name == "" || c2.name == "" {
 		return
 	}
-	pair := pairing{c1, c2}
+	pair := pairing{c1, c2, round}
 	*pairings = append(*pairings, pair)
 }

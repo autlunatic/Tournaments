@@ -1,9 +1,9 @@
 package tournament
 
 import (
-	"fmt"
 	"github.com/autlunatic/TestingUtils"
 	"testing"
+	"strconv"
 )
 
 func TestCalcPairings(t *testing.T) {
@@ -81,7 +81,6 @@ func TestCalcPairings5Competitors(t *testing.T) {
 		Competitor{"Andrea"})
 
 	pairings := calcPairingsGroup(competitors)
-	fmt.Println(pairings)
 
 	TestingUtils.CheckEquals(10, len(pairings), "", t)
 	pair := pairings[0]
@@ -102,24 +101,13 @@ func TestCalcPairings5Competitors(t *testing.T) {
 }
 func TestCalcPairings12Competitors(t *testing.T) {
 	competitors := Competitors{}
-	competitors.items = append(competitors.items,
-		Competitor{"1"},
-		Competitor{"2"},
-		Competitor{"3"},
-		Competitor{"4"},
-		Competitor{"5"},
-		Competitor{"6"},
-		Competitor{"7"},
-		Competitor{"8"},
-		Competitor{"9"},
-		Competitor{"10"},
-		Competitor{"11"},
-		Competitor{"12"},
-	)
+	for i:=1;i<13;i++{
+		competitors.items = append(competitors.items,Competitor{strconv.Itoa(i)})
+	}
 
 	pairings := calcPairingsGroup(competitors)
-	fmt.Println(pairings)
 	TestingUtils.CheckEquals(66, len(pairings), "", t)
+	TestingUtils.CheckEquals(6, pairings[33].round, "Round", t)
 	if msg := checkPairingDoubles(pairings); msg != "" {
 		t.Errorf("same Competitors found! " + msg)
 	}

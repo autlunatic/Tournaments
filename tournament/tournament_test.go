@@ -7,14 +7,13 @@ import (
 
 func TestCalcDurationInterface(t *testing.T) {
 	td := NewTournamentDetails(1, 2, 3)
-	var result Tournament
-	result = NewTournament(*td)
+	result := NewTournament(*td)
 
 	TestingUtils.CheckEquals(3, InMinutes(result), "",t)
 }
 
 func (t *Tournament) AddCompetitor(c Competitor) {
-	t.competitors = append(t.competitors, c)
+	t.Competitors = append(t.Competitors, c)
 }
 
 func newTestTournament() Tournament {
@@ -24,13 +23,12 @@ func newTestTournament() Tournament {
 }
 
 func TestAddCompetitor(t *testing.T) {
-	var tournament Tournament
-	tournament = newTestTournament()
+	tournament := newTestTournament()
 	tournament.AddCompetitor(Competitor{"Benni"})
-	if len(tournament.competitors) != 1 {
+	if len(tournament.Competitors) != 1 {
 		t.Error("Should be one competitor")
 	}
-	if tournament.competitors[0].name != "Benni" {
+	if tournament.Competitors[0].name != "Benni" {
 		t.Error("first competitors name should be Benni")
 	}
 
