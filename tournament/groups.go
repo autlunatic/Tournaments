@@ -7,3 +7,6 @@ type group struct {
 	Competitors Competitors
 }
 
+func (g *group) setId(value int){
+	g.Id = value
+}

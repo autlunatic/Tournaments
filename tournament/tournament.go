@@ -21,3 +21,6 @@ func NewTournament(details TournamentDetails) Tournament {
 func (t *Tournament) addTournamentDetails(td TournamentDetails) {
 	t.Details = td
 }
+
+func (t Tournament)build(){
+}

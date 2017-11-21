@@ -6,13 +6,18 @@ type pairing struct {
 	round int
 }
 
-func calcPairingsGroup(competitors Competitors) []pairing {
+type getCompetitors interface{
+	getCompetitors() []Competitor
+}
+
+func calcPairings(c getCompetitors) []pairing {
 	var result []pairing
+	competitors := c.getCompetitors()
 	// make a copy of the competitors
-	tempCompetitors := make([]Competitor, len(competitors.items))
-	copy(tempCompetitors, competitors.items)
+	tempCompetitors := make([]Competitor, len(competitors))
+	copy(tempCompetitors, competitors)
 	// if the count is odd add one dummy competitor for the roundRobin
-	if len(competitors.items)%2 > 0 {
+	if len(competitors)%2 > 0 {
 		tempCompetitors = append(tempCompetitors, Competitor{""})
 	}
 	// cut the first fixated competitor see roundrobin
@@ -22,7 +27,7 @@ func calcPairingsGroup(competitors Competitors) []pairing {
 	// shift one time so it starts with 1v2
 	tempCompetitors = append(tempCompetitors[1:], tempCompetitors[0])
 	for i := 0; i < len(tempCompetitors); i++ {
-		c1 := competitors.items[0]
+		c1 := competitors[0]
 
 		for j := 0; j < (len(tempCompetitors)/2)+1; j++ {
 			if j == 0 {

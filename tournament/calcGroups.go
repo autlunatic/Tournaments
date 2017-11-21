@@ -1,25 +1,29 @@
 package tournament
 
 
-func calcGroups(competitors Competitors, groupsCount int) []group {
-	result := make([]group,groupsCount)
-	competitorsPerGroup := len(competitors.items) / groupsCount
+func calcGroups(c getCompetitors, groupsCount int) []group {
+	result := make([]group, groupsCount)
+	competitors := c.getCompetitors()
+	competitorsPerGroup := len(competitors) / groupsCount
+	additionalCompetitors := len(competitors) % groupsCount
 
-	gId := 0;
-	for _,g := range result{
-		g.Id = gId
-		gId++
+	for i := range result {
+		result[i].Id = i+1
 	}
 
-	groupId := -1;
+	groupId := 0
 
-	for i:=0;i<len(competitors.items);i++{
-		if i%competitorsPerGroup == 0 {
+	contributorsCountThisGroup := 0
+	for i := 0; i < len(competitors); i++ {
+		contributorsCountThisGroup++
+		result[groupId].Competitors.items = append(result[groupId].Competitors.items, competitors[i])
+
+		if (additionalCompetitors > 0 && contributorsCountThisGroup >= competitorsPerGroup+1) ||
+			(additionalCompetitors <= 0 && contributorsCountThisGroup >= competitorsPerGroup) {
 			groupId++
+			additionalCompetitors--
+			contributorsCountThisGroup = 0
 		}
-		result[groupId].Competitors.items = append(result[groupId].Competitors.items, competitors.items[i])
 	}
-
-	//result = append(result, group{1,Competitors{ []Competitor{competitors.items[0]}}})
-   return result
+	return result
 }
