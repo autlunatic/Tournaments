@@ -9,7 +9,7 @@ func TestCalcDurationInterface(t *testing.T) {
 	td := NewTournamentDetails(1, 2, 3)
 	result := NewTournament(*td)
 
-	TestingUtils.CheckEquals(3, InMinutes(result), "",t)
+	TestingUtils.CheckEquals(3, InMinutes(result), "", t)
 }
 
 func (t *Tournament) AddCompetitor(c Competitor) {
@@ -24,7 +24,7 @@ func newTestTournament() Tournament {
 
 func TestAddCompetitor(t *testing.T) {
 	tournament := newTestTournament()
-	tournament.AddCompetitor(Competitor{"Benni"})
+	tournament.AddCompetitor(newCompetitor("Benni"))
 	if len(tournament.Competitors) != 1 {
 		t.Error("Should be one competitor")
 	}

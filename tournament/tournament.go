@@ -1,9 +1,8 @@
 package tournament
 
 type Tournament struct {
-	Details     TournamentDetails
-	Competitors []Competitor
-
+	Details     TournamentDetails //
+	Competitors []Competitor      // a complete slice of all competitors
 
 	Pairings []pairing
 }
@@ -22,5 +21,5 @@ func (t *Tournament) addTournamentDetails(td TournamentDetails) {
 	t.Details = td
 }
 
-func (t Tournament)build(){
+func (t Tournament) build() {
 }

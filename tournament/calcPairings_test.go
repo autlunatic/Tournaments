@@ -2,13 +2,13 @@ package tournament
 
 import (
 	"github.com/autlunatic/TestingUtils"
-	"testing"
 	"strconv"
+	"testing"
 )
 
 func TestCalcPairings(t *testing.T) {
-	benni := Competitor{"Benni"}
-	dani := Competitor{"Dani"}
+	benni := newCompetitor("Benni")
+	dani := newCompetitor("Dani")
 	competitors := Competitors{}
 	competitors.items = append(competitors.items, benni)
 	competitors.items = append(competitors.items, dani)
@@ -24,9 +24,9 @@ func TestCalcPairings(t *testing.T) {
 }
 
 func TestCalcPairings3Competitors(t *testing.T) {
-	benni := Competitor{"Benni"}
-	zoe := Competitor{"Zoé"}
-	dani := Competitor{"Dani"}
+	benni := newCompetitor("Benni")
+	zoe := newCompetitor("Zoé")
+	dani := newCompetitor("Dani")
 	competitors := Competitors{}
 	competitors.items = append(competitors.items, benni)
 	competitors.items = append(competitors.items, dani)
@@ -74,11 +74,11 @@ func isSamePair(p pairing, p2 pairing) bool {
 func TestCalcPairings5Competitors(t *testing.T) {
 	competitors := Competitors{}
 	competitors.items = append(competitors.items,
-		Competitor{"Benni"},
-		Competitor{"Dani"},
-		Competitor{"Zoé"},
-		Competitor{"Mona"},
-		Competitor{"Andrea"})
+		newCompetitor("Benni"),
+		newCompetitor("Dani"),
+		newCompetitor("Zoé"),
+		newCompetitor("Mona"),
+		newCompetitor("Andrea"))
 
 	pairings := calcPairings(competitors)
 
@@ -101,8 +101,8 @@ func TestCalcPairings5Competitors(t *testing.T) {
 }
 func TestCalcPairings12Competitors(t *testing.T) {
 	competitors := Competitors{}
-	for i:=1;i<13;i++{
-		competitors.items = append(competitors.items,Competitor{strconv.Itoa(i)})
+	for i := 1; i < 13; i++ {
+		competitors.items = append(competitors.items, newCompetitor(strconv.Itoa(i)))
 	}
 
 	pairings := calcPairings(competitors)

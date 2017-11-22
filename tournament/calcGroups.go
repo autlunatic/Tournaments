@@ -1,14 +1,13 @@
 package tournament
 
-
-func calcGroups(c getCompetitors, groupsCount int) []group {
+func calcGroups(c CompetitorsGetter, groupsCount int) []group {
 	result := make([]group, groupsCount)
 	competitors := c.getCompetitors()
 	competitorsPerGroup := len(competitors) / groupsCount
 	additionalCompetitors := len(competitors) % groupsCount
 
 	for i := range result {
-		result[i].Id = i+1
+		result[i].Id = i + 1
 	}
 
 	groupId := 0
