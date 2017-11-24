@@ -1,6 +1,5 @@
 package tournament
 
-
 type pairing struct {
 	competitor1 Competitor
 	competitor2 Competitor
