@@ -1,14 +1,26 @@
 package tournament
 
+
 type pairing struct {
 	competitor1 Competitor
 	competitor2 Competitor
 	round       int
 }
 
-func calcPairings(c CompetitorsGetter) []pairing {
+func calcRoundsFromPairings(pairing []pairing) int {
+	result := 0
+	for _, p := range pairing {
+		if result < p.round {
+			result = p.round
+		}
+	}
+	return result
+}
+
+// calcPairings calcs the pairings needed when everyone needs to play against each other
+func calcPairings(c []Competitor) []pairing {
 	var result []pairing
-	competitors := c.getCompetitors()
+	competitors := c
 	// make a copy of the competitors
 	tempCompetitors := make([]Competitor, len(competitors))
 	copy(tempCompetitors, competitors)
@@ -24,14 +36,14 @@ func calcPairings(c CompetitorsGetter) []pairing {
 	tempCompetitors = append(tempCompetitors[1:], tempCompetitors[0])
 	c1 := competitors[0]
 	for i := 0; i < len(tempCompetitors); i++ {
-		AddToResult(tempCompetitors, &result, c1, i)
+		addToResult(tempCompetitors, &result, c1, i)
 		// shift
 		tempCompetitors = append(tempCompetitors[1:], tempCompetitors[0])
 	}
 	return result
 }
 
-func AddToResult(tempCompetitors []Competitor, result *[]pairing, c1 Competitor, i int) {
+func addToResult(tempCompetitors []Competitor, result *[]pairing, c1 Competitor, i int) {
 	for j := 0; j < (len(tempCompetitors)/2)+1; j++ {
 		if j == 0 {
 			addPair(result, c1, tempCompetitors[len(tempCompetitors)-1], i+1)

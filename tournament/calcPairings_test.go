@@ -2,7 +2,6 @@ package tournament
 
 import (
 	"github.com/autlunatic/TestingUtils"
-	"strconv"
 	"testing"
 )
 
@@ -13,7 +12,7 @@ func TestCalcPairings(t *testing.T) {
 	competitors.items = append(competitors.items, benni)
 	competitors.items = append(competitors.items, dani)
 
-	pairings := calcPairings(competitors)
+	pairings := calcPairings(competitors.items)
 
 	TestingUtils.CheckEquals(1, len(pairings), "", t)
 	pair := pairings[0]
@@ -32,7 +31,7 @@ func TestCalcPairings3Competitors(t *testing.T) {
 	competitors.items = append(competitors.items, dani)
 	competitors.items = append(competitors.items, zoe)
 
-	pairings := calcPairings(competitors)
+	pairings := calcPairings(competitors.items)
 
 	TestingUtils.CheckEquals(3, len(pairings), "", t)
 	pair := pairings[0]
@@ -80,7 +79,7 @@ func TestCalcPairings5Competitors(t *testing.T) {
 		newCompetitor("Mona"),
 		newCompetitor("Andrea"))
 
-	pairings := calcPairings(competitors)
+	pairings := calcPairings(competitors.items)
 
 	TestingUtils.CheckEquals(10, len(pairings), "", t)
 	pair := pairings[0]
@@ -100,12 +99,9 @@ func TestCalcPairings5Competitors(t *testing.T) {
 	}
 }
 func TestCalcPairings12Competitors(t *testing.T) {
-	competitors := Competitors{}
-	for i := 1; i < 13; i++ {
-		competitors.items = append(competitors.items, newCompetitor(strconv.Itoa(i)))
-	}
+	competitors := newTestCompetitors(12)
 
-	pairings := calcPairings(competitors)
+	pairings := calcPairings(competitors.items)
 	TestingUtils.CheckEquals(66, len(pairings), "", t)
 	TestingUtils.CheckEquals(6, pairings[33].round, "Round", t)
 	if msg := checkPairingDoubles(pairings); msg != "" {

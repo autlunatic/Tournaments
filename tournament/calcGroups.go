@@ -1,5 +1,7 @@
 package tournament
 
+
+// calcGroups adds the competitors to a slice of group each group should contain the same amount of competitors if possible
 func calcGroups(c CompetitorsGetter, groupsCount int) []group {
 	result := make([]group, groupsCount)
 	competitors := c.getCompetitors()
