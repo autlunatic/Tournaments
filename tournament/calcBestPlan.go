@@ -9,7 +9,7 @@ func calcBestPlan(cg CompetitorsGetter, details Details) ([][]pairing,[]group){
 		groups = calcGroups(cg, i)
 		plan = calcPlan(groups, details.numberOfParallelGames)
 		duration := len(plan) * details.minutesPerGame
-		if duration < details.minutesAvailForGroupsPhase{
+		if duration <= details.minutesAvailForGroupsPhase{
 			break
 		}
 	}

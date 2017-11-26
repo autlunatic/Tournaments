@@ -13,16 +13,16 @@ func calcGroups(c CompetitorsGetter, groupsCount int) []group {
 
 	groupId := 0
 
-	contributorsCountThisGroup := 0
+	competitorsCountThisGroup := 0
 	for i := 0; i < len(competitors); i++ {
-		contributorsCountThisGroup++
+		competitorsCountThisGroup++
 		result[groupId].competitors.items = append(result[groupId].competitors.items, competitors[i])
 
-		if (additionalCompetitors > 0 && contributorsCountThisGroup >= competitorsPerGroup+1) ||
-			(additionalCompetitors <= 0 && contributorsCountThisGroup >= competitorsPerGroup) {
+		if (additionalCompetitors > 0 && competitorsCountThisGroup >= competitorsPerGroup+1) ||
+			(additionalCompetitors <= 0 && competitorsCountThisGroup >= competitorsPerGroup) {
 			groupId++
 			additionalCompetitors--
-			contributorsCountThisGroup = 0
+			competitorsCountThisGroup = 0
 		}
 	}
 	return result

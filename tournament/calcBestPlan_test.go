@@ -28,9 +28,8 @@ func TestCalcBestPlanImpossible(t *testing.T) {
 	competitors := newTestCompetitors(10)
 	details := Details{2, 5, 5}
 
-	p, g := calcBestPlan(competitors, details)
-	printPlan(p)
-	if len(g) != 2 {
-		TestingUtils.CheckEquals(5, len(g), "groupCount", t)
+	p, _ := calcBestPlan(competitors, details)
+	if len(p) !=0{
+		t.Error("plan should be empty because it is not possible to do a tournament with given values")
 	}
 }
