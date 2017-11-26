@@ -7,7 +7,6 @@ type Tournament struct {
 	Pairings []pairing
 }
 
-
 func (t Tournament) GetTournamentDetails() TournamentDetails {
 	return t.Details
 }

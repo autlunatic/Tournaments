@@ -8,7 +8,7 @@ func calcGroups(c CompetitorsGetter, groupsCount int) []group {
 	additionalCompetitors := len(competitors) % groupsCount
 
 	for i := range result {
-		result[i].Id = i + 1
+		result[i].id = i + 1
 	}
 
 	groupId := 0
@@ -16,7 +16,7 @@ func calcGroups(c CompetitorsGetter, groupsCount int) []group {
 	contributorsCountThisGroup := 0
 	for i := 0; i < len(competitors); i++ {
 		contributorsCountThisGroup++
-		result[groupId].Competitors.items = append(result[groupId].Competitors.items, competitors[i])
+		result[groupId].competitors.items = append(result[groupId].competitors.items, competitors[i])
 
 		if (additionalCompetitors > 0 && contributorsCountThisGroup >= competitorsPerGroup+1) ||
 			(additionalCompetitors <= 0 && contributorsCountThisGroup >= competitorsPerGroup) {

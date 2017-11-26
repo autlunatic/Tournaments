@@ -1,9 +1,21 @@
 package tournament
 
+import "strconv"
+
 type pairing struct {
 	competitor1 Competitor
 	competitor2 Competitor
 	round       int
+}
+
+func (p pairing) Equals(p2 pairing) bool {
+	return p.competitor1 == p2.competitor1 &&
+		p.competitor2 == p2.competitor2 &&
+		p.round == p2.round
+}
+
+func (p pairing) toString() string {
+	return "round: " + strconv.Itoa(p.round) + "; " + p.competitor1.name + " vs. " + p.competitor2.name
 }
 
 func calcRoundsFromPairings(pairing []pairing) int {

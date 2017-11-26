@@ -1,6 +1,7 @@
 package tournament
 
 import (
+	"fmt"
 	"github.com/autlunatic/TestingUtils"
 	"testing"
 )
@@ -25,6 +26,9 @@ func TestCalcTournamentPlan2Groups(t *testing.T) {
 		t.Error("competitor 0 0 should be named 1 but was " + plan[0][0].competitor1.name)
 	}
 	TestingUtils.CheckEquals(6, len(plan), "roundcount", t)
+	if ok, msg := checkNoCompetitorPlaysTwiceInARound(plan); !ok {
+		t.Error(msg)
+	}
 }
 
 func TestCalcTournamentPlan4Groups11(t *testing.T) {
@@ -40,6 +44,9 @@ func TestCalcTournamentPlan4Groups11(t *testing.T) {
 		t.Error("competitor 0 0 should be named 1 but was " + plan[0][0].competitor1.name)
 	}
 	TestingUtils.CheckEquals(5, len(plan), "roundcount", t)
+	if ok, msg := checkNoCompetitorPlaysTwiceInARound(plan); !ok {
+		t.Error(msg)
+	}
 }
 
 func TestCalcTournamentPlan2Groups6_oneCouldNotPlayToTimesInOneRow(t *testing.T) {
@@ -53,4 +60,53 @@ func TestCalcTournamentPlan2Groups6_oneCouldNotPlayToTimesInOneRow(t *testing.T)
 		t.Error("competitor 0 0 should be named 1 but was " + plan[0][0].competitor1.name)
 	}
 	TestingUtils.CheckEquals(3, len(plan), "roundcount should be 6", t)
+	if ok, msg := checkNoCompetitorPlaysTwiceInARound(plan); !ok {
+		t.Error(msg)
+	}
+}
+
+func TestCalcTournamentLastRoundOfGroupShouldNotBeSplittedOverFieldRounds(t *testing.T) {
+	c := newTestCompetitors(7)
+	groups := []group{
+		{1, Competitors{c.items[0:3]}},
+
+		{2, Competitors{c.items[3:7]}},
+	}
+	plan := calcTournamentPlan(groups, 2)
+	if ok, msg := checkNoCompetitorPlaysTwiceInARound(plan); !ok {
+		t.Error(msg)
+	}
+	printPlan(plan)
+	if len(plan[3]) != 1 {
+		t.Errorf("in Fieldround 3 should only be 1 game but was %d", len(plan[3]))
+	}
+	mp := plan[4][0]
+	if mp.competitor1.name != "4" || mp.competitor2.name != "7" {
+		t.Error("4v7 should be played in fieldround 4")
+	}
+}
+
+func printPlan(plan [][]pairing) {
+	for fieldRound, r := range plan {
+		for field, p := range r {
+			fmt.Println(fmt.Sprintf("fieldround: %d; field: %d; pairing:", fieldRound, field) + p.toString())
+		}
+	}
+}
+
+func checkNoCompetitorPlaysTwiceInARound(p [][]pairing) (bool, string) {
+	for _, round := range p {
+		for i, p1 := range round {
+			for j, p2 := range round {
+				if (i != j) &&
+					(p1.competitor1 == p2.competitor1 ||
+						p1.competitor2 == p2.competitor2 ||
+						p2.competitor2 == p1.competitor1||
+						p2.competitor1 == p1.competitor2) {
+					return false, p1.toString() + "; " + p2.toString()
+				}
+			}
+		}
+	}
+	return true, ""
 }

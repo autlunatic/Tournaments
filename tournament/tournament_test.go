@@ -8,6 +8,7 @@ import (
 func TestCalcDurationInterface(t *testing.T) {
 	td := NewTournamentDetails(1, 2, 3)
 	result := NewTournament(*td)
+	result.setTournamentDetails(*td)
 
 	TestingUtils.CheckEquals(3, InMinutes(result), "", t)
 }
