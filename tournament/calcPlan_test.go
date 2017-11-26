@@ -1,7 +1,6 @@
 package tournament
 
 import (
-	"fmt"
 	"github.com/autlunatic/TestingUtils"
 	"testing"
 )
@@ -9,7 +8,7 @@ import (
 func TestCalcTournamentPlan(t *testing.T) {
 	c := newTestCompetitors(4)
 	gs := []group{{1, Competitors{c.items[0:4]}}}
-	plan := calcTournamentPlan(gs, 1)
+	plan := calcPlan(gs, 1)
 	if plan[0][0].competitor1.name != "1" {
 		t.Error("competitor 0 0 should be named 1 but was " + plan[0][0].competitor1.name)
 	}
@@ -21,7 +20,7 @@ func TestCalcTournamentPlan2Groups(t *testing.T) {
 	groups := []group{
 		{1, Competitors{c.items[0:4]}},
 		{2, Competitors{c.items[4:8]}}}
-	plan := calcTournamentPlan(groups, 2)
+	plan := calcPlan(groups, 2)
 	if plan[0][0].competitor1.name != "1" {
 		t.Error("competitor 0 0 should be named 1 but was " + plan[0][0].competitor1.name)
 	}
@@ -39,7 +38,7 @@ func TestCalcTournamentPlan4Groups11(t *testing.T) {
 		{3, Competitors{c.items[6:9]}},
 		{4, Competitors{c.items[9:11]}},
 	}
-	plan := calcTournamentPlan(groups, 2)
+	plan := calcPlan(groups, 2)
 	if plan[0][0].competitor1.name != "1" {
 		t.Error("competitor 0 0 should be named 1 but was " + plan[0][0].competitor1.name)
 	}
@@ -55,7 +54,7 @@ func TestCalcTournamentPlan2Groups6_oneCouldNotPlayToTimesInOneRow(t *testing.T)
 		{1, Competitors{c.items[0:3]}},
 		{2, Competitors{c.items[3:6]}},
 	}
-	plan := calcTournamentPlan(groups, 10)
+	plan := calcPlan(groups, 10)
 	if plan[0][0].competitor1.name != "1" {
 		t.Error("competitor 0 0 should be named 1 but was " + plan[0][0].competitor1.name)
 	}
@@ -72,25 +71,16 @@ func TestCalcTournamentLastRoundOfGroupShouldNotBeSplittedOverFieldRounds(t *tes
 
 		{2, Competitors{c.items[3:7]}},
 	}
-	plan := calcTournamentPlan(groups, 2)
+	plan := calcPlan(groups, 2)
 	if ok, msg := checkNoCompetitorPlaysTwiceInARound(plan); !ok {
 		t.Error(msg)
 	}
-	printPlan(plan)
 	if len(plan[3]) != 1 {
 		t.Errorf("in Fieldround 3 should only be 1 game but was %d", len(plan[3]))
 	}
 	mp := plan[4][0]
 	if mp.competitor1.name != "4" || mp.competitor2.name != "7" {
 		t.Error("4v7 should be played in fieldround 4")
-	}
-}
-
-func printPlan(plan [][]pairing) {
-	for fieldRound, r := range plan {
-		for field, p := range r {
-			fmt.Println(fmt.Sprintf("fieldround: %d; field: %d; pairing:", fieldRound, field) + p.toString())
-		}
 	}
 }
 

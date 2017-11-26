@@ -1,24 +1,15 @@
 package tournament
 
 import (
-	"github.com/autlunatic/TestingUtils"
 	"testing"
 )
-
-func TestCalcDurationInterface(t *testing.T) {
-	td := NewTournamentDetails(1, 2, 3)
-	result := NewTournament(*td)
-	result.setTournamentDetails(*td)
-
-	TestingUtils.CheckEquals(3, InMinutes(result), "", t)
-}
 
 func (t *Tournament) AddCompetitor(c Competitor) {
 	t.Competitors = append(t.Competitors, c)
 }
 
 func newTestTournament() Tournament {
-	td := NewTournamentDetails(10, 2, 1)
+	td := NewTournamentDetails(2, 1)
 	tournament := NewTournament(*td)
 	return tournament
 }

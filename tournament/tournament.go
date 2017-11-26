@@ -1,23 +1,47 @@
 package tournament
 
+import "fmt"
+
 type Tournament struct {
-	Details     TournamentDetails //
-	Competitors []Competitor      // a complete slice of all competitors
+	Details     Details      //
+	Competitors []Competitor // a complete slice of all competitors
 
 	Pairings []pairing
 }
 
-func (t Tournament) GetTournamentDetails() TournamentDetails {
+type Details struct {
+	numberOfParallelGames      int
+	minutesPerGame             int
+	minutesAvailForGroupsPhase int
+}
+
+func printPlan(plan [][]pairing) {
+	for fieldRound, r := range plan {
+		for field, p := range r {
+			fmt.Println(fmt.Sprintf("fieldround: %d; field: %d; pairing:", fieldRound, field) + p.toString())
+		}
+	}
+}
+
+
+func NewTournamentDetails(numberOfFields int, minutesPerGame int) *Details {
+	d := new(Details)
+	d.numberOfParallelGames = numberOfFields
+	d.minutesPerGame = minutesPerGame
+	return d
+}
+
+func (t Tournament) GetTournamentDetails() Details {
 	return t.Details
 }
 
-func NewTournament(details TournamentDetails) Tournament {
+func NewTournament(details Details) Tournament {
 	t := Tournament{}
 	t.Details = details
 	return t
 }
 
-func (t *Tournament) setTournamentDetails(td TournamentDetails) {
+func (t *Tournament) setTournamentDetails(td Details) {
 	t.Details = td
 }
 

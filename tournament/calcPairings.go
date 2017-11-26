@@ -8,6 +8,16 @@ type pairing struct {
 	round       int
 }
 
+func (p pairing) inPairings( ps []pairing) bool {
+	for _, mp := range ps {
+		if mp.Equals(p) {
+			return true
+		}
+	}
+	return false
+}
+
+
 func (p pairing) Equals(p2 pairing) bool {
 	return p.competitor1 == p2.competitor1 &&
 		p.competitor2 == p2.competitor2 &&
@@ -33,23 +43,23 @@ func calcPairings(c []Competitor) []pairing {
 	var result []pairing
 	competitors := c
 	// make a copy of the competitors
-	tempCompetitors := make([]Competitor, len(competitors))
-	copy(tempCompetitors, competitors)
+	mc := make([]Competitor, len(competitors))
+	copy(mc, competitors)
 	// if the count is odd add one dummy competitor for the roundRobin
 	if len(competitors)%2 > 0 {
-		tempCompetitors = append(tempCompetitors, newCompetitor(""))
+		mc = append(mc, newCompetitor(""))
 	}
 	// cut the first fixated competitor see roundrobin
-	if len(tempCompetitors) > 1 {
-		tempCompetitors = append(tempCompetitors[1:])
+	if len(mc) > 1 {
+		mc = append(mc[1:])
 	}
 	// shift one time so it starts with 1v2
-	tempCompetitors = append(tempCompetitors[1:], tempCompetitors[0])
+	mc = append(mc[1:], mc[0])
 	c1 := competitors[0]
-	for i := 0; i < len(tempCompetitors); i++ {
-		addToResult(tempCompetitors, &result, c1, i)
+	for i := 0; i < len(mc); i++ {
+		addToResult(mc, &result, c1, i)
 		// shift
-		tempCompetitors = append(tempCompetitors[1:], tempCompetitors[0])
+		mc = append(mc[1:], mc[0])
 	}
 	return result
 }
