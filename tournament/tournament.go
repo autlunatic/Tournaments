@@ -46,8 +46,7 @@ func (t *Tournament) setTournamentDetails(td Details) {
 }
 
 func (t Tournament) build() {
-	// calc Groups needed given the time you got, the count of Games can be played parallel and the count of competitors -> the goal is that the competitor has as much games as possible
 
-	// calc the tournament plan for the given groupnumber - take in account that no team should play twice in a round ;) and that the last round should be all of one group at once
+	// calc the tournament plan for the - take in account that no team should play twice in a round ;) and that the last round should be all of one group at once
 
 }
