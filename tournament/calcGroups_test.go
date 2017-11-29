@@ -58,6 +58,10 @@ func TestCalcGroups_10Competitor_6Groups(t *testing.T) {
 	result,err := calcGroups(competitors, 7)
 	if err == nil{
 		t.Error("impossible groupcount error should be returned")
+	}	else {
+		if err.Error() != "too many groups for this count of competitors!"{
+			t.Error("WrongErrorMessage")
+		}
 	}
 	TestingUtils.CheckEquals(0, len(result), "len of result should be 0", t)
 }

@@ -12,7 +12,7 @@ func TestCalcPairings(t *testing.T) {
 	competitors.items = append(competitors.items, benni)
 	competitors.items = append(competitors.items, dani)
 
-	pairings := calcPairings(competitors.items)
+	pairings := calcPairings(competitors.items,1)
 
 	TestingUtils.CheckEquals(1, len(pairings), "", t)
 	pair := pairings[0]
@@ -31,7 +31,7 @@ func TestCalcPairings3Competitors(t *testing.T) {
 	competitors.items = append(competitors.items, dani)
 	competitors.items = append(competitors.items, zoe)
 
-	pairings := calcPairings(competitors.items)
+	pairings := calcPairings(competitors.items, 1)
 
 	TestingUtils.CheckEquals(3, len(pairings), "", t)
 	pair := pairings[0]
@@ -79,7 +79,7 @@ func TestCalcPairings5Competitors(t *testing.T) {
 		newCompetitor("Mona"),
 		newCompetitor("Andrea"))
 
-	pairings := calcPairings(competitors.items)
+	pairings := calcPairings(competitors.items,1)
 
 	TestingUtils.CheckEquals(10, len(pairings), "", t)
 	pair := pairings[0]
@@ -101,7 +101,7 @@ func TestCalcPairings5Competitors(t *testing.T) {
 func TestCalcPairings12Competitors(t *testing.T) {
 	competitors := newTestCompetitors(12)
 
-	pairings := calcPairings(competitors.items)
+	pairings := calcPairings(competitors.items,1 )
 	TestingUtils.CheckEquals(66, len(pairings), "", t)
 	TestingUtils.CheckEquals(6, pairings[33].round, "Round", t)
 	if msg := checkPairingDoubles(pairings); msg != "" {

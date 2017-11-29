@@ -4,12 +4,6 @@ import (
 	"sort"
 )
 
-type sortByRound []pairing
-
-func (a sortByRound) Len() int           { return len(a) }
-func (a sortByRound) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a sortByRound) Less(i, j int) bool { return a[i].round < a[j].round }
-
 type planCalc struct {
 	groups               []group
 	countOfParallelGames int
@@ -23,6 +17,10 @@ func calcPlan(groups []group, countOfParallelGames int) [][]pairing {
 	}
 
 	allPairs := calc.calcPairsFromGroups()
+
+	for i := range allPairs {
+		allPairs[i].id = i
+	}
 
 	var round []pairing
 	var result [][]pairing
@@ -43,9 +41,10 @@ func calcPlan(groups []group, countOfParallelGames int) [][]pairing {
 }
 
 func (c planCalc) needNewGroup(round []pairing, p pairing) bool {
-	return len(round) >= c.countOfParallelGames ||
-		foundSameCompetitorInRound(p, round) ||
-		c.pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(round, p)
+	roundFull := len(round) >= c.countOfParallelGames
+	foundSame := foundSameCompetitorInRound(p, round)
+	lastRoundSimultaneously := c.pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(round, p)
+	return roundFull || foundSame || lastRoundSimultaneously
 }
 
 func (c planCalc) calcPairsFromGroups() sortByRound {
@@ -60,7 +59,7 @@ func (c planCalc) calcPairsFromGroups() sortByRound {
 	return allPairs
 }
 
-func (c planCalc)pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(round []pairing, ap pairing) bool {
+func (c planCalc) pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(round []pairing, ap pairing) bool {
 	// if any pairing of the group is already in the round then this one can be played too
 	for _, g := range c.groups {
 		gPairings := g.getPairings()

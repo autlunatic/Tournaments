@@ -1,5 +1,7 @@
 package tournament
 
+import "strconv"
+
 type Competitors struct {
 	items []Competitor
 }
@@ -15,6 +17,12 @@ func (c Competitors) getCompetitors() []Competitor {
 func newCompetitor(name string) Competitor {
 	c := new(Competitor)
 	c.name = name
+	i, err := strconv.Atoi(name)
+	if err == nil {
+		c.drawNumber = i
+	} else {
+		c.drawNumber = 0
+	}
 	return *c
 }
 

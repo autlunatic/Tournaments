@@ -1,23 +1,18 @@
 package tournament
 
+
 type group struct {
 	id          int
 	competitors Competitors
 }
 
 func (g group) getPairings() []pairing {
-	return calcPairings(g.competitors.items)
+	return calcPairings(g.competitors.items, g.id)
 }
 
 func (g group) isLastRound(ap pairing) bool {
 	pairings := g.getPairings()
-	maxRound := 0
-	for _, p := range pairings {
-		if maxRound < p.round {
-			maxRound = p.round
-		}
-	}
-	return maxRound == ap.round
+	return getMaxRoundOfPairings(pairings) == ap.round
 }
 
 func (g group) getGamesPerRound() int {
