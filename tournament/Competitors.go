@@ -1,7 +1,5 @@
 package tournament
 
-import "strconv"
-
 
 //Competitors hold a slice of Competitor
 type Competitors struct {

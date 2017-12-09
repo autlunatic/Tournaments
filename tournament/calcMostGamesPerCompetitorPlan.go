@@ -1,6 +1,6 @@
 package tournament
 
-func calcMostGamesPerCompetitorPlan(cg CompetitorsGetter, details Details) ([][]pairing, []group) {
+func calcMostGamesPerCompetitorPlan(cg CompetitorsGetter, details details) ([][]pairing, []group) {
 	var plan [][]pairing
 	var groups []group
 	var err error
