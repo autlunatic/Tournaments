@@ -9,6 +9,7 @@ type Tournament struct {
 	Competitors []Competitor // a complete slice of all competitors
 
 	Pairings []pairing
+	PairingResults []pairingResult
 }
 
 type details struct {
