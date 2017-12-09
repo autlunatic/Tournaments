@@ -9,7 +9,7 @@ func (t *Tournament) AddCompetitor(c Competitor) {
 }
 
 func newTestTournament() Tournament {
-	td := NewTournamentDetails(2, 1)
+	td := newTournamentDetails(2, 1)
 	tournament := NewTournament(*td)
 	return tournament
 }

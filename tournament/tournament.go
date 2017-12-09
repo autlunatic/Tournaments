@@ -2,14 +2,16 @@ package tournament
 
 import "fmt"
 
+// Tournament holds all data about the tournament
+// details about durations etc./competitors/pairings
 type Tournament struct {
-	Details     Details      //
+	Details     details      //
 	Competitors []Competitor // a complete slice of all competitors
 
 	Pairings []pairing
 }
 
-type Details struct {
+type details struct {
 	numberOfParallelGames      int
 	minutesPerGame             int
 	minutesAvailForGroupsPhase int
@@ -24,24 +26,25 @@ func printPlan(plan [][]pairing) {
 }
 
 
-func NewTournamentDetails(numberOfFields int, minutesPerGame int) *Details {
-	d := new(Details)
+func newTournamentDetails(numberOfFields int, minutesPerGame int) *details {
+	d := new(details)
 	d.numberOfParallelGames = numberOfFields
 	d.minutesPerGame = minutesPerGame
 	return d
 }
 
-func (t Tournament) GetTournamentDetails() Details {
+func (t Tournament) getTournamentDetails() details {
 	return t.Details
 }
 
-func NewTournament(details Details) Tournament {
+// NewTournament returns a Tournament initialized with the given details
+func NewTournament(details details) Tournament {
 	t := Tournament{}
 	t.Details = details
 	return t
 }
 
-func (t *Tournament) setTournamentDetails(td Details) {
+func (t *Tournament) setTournamentDetails(td details) {
 	t.Details = td
 }
 

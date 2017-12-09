@@ -7,7 +7,7 @@ import (
 
 func TestCalcBestPlan(t *testing.T) {
 	competitors := newTestCompetitors(12)
-	details := Details{10, 5, 30}
+	details := details{10, 5, 30}
 
 	_, g := calcBestPlan(competitors, details)
 	if len(g) != 2 {
@@ -16,7 +16,7 @@ func TestCalcBestPlan(t *testing.T) {
 }
 func TestCalcBestPlanOnly2PerGroupPossible(t *testing.T) {
 	competitors := newTestCompetitors(10)
-	details := Details{10, 5, 5}
+	details := details{10, 5, 5}
 
 	p, g := calcBestPlan(competitors, details)
 	printPlan(p)
@@ -26,7 +26,7 @@ func TestCalcBestPlanOnly2PerGroupPossible(t *testing.T) {
 }
 func TestCalcBestPlanImpossible(t *testing.T) {
 	competitors := newTestCompetitors(10)
-	details := Details{2, 5, 5}
+	details := details{2, 5, 5}
 
 	p, _ := calcBestPlan(competitors, details)
 	if len(p) !=0{

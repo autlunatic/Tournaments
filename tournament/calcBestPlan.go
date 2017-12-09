@@ -2,7 +2,7 @@ package tournament
 
 
 
-func calcBestPlan(cg CompetitorsGetter, details Details) ([][]pairing,[]group){
+func calcBestPlan(cg CompetitorsGetter, details details) ([][]pairing,[]group){
 	var plan [][]pairing
 	var groups []group
 	for i:=1;;i++{
