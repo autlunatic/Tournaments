@@ -3,6 +3,7 @@ package tournament
 import (
 	"github.com/autlunatic/TestingUtils"
 	"testing"
+	"strconv"
 )
 
 func TestCalcTournamentPlan(t *testing.T) {
@@ -23,6 +24,9 @@ func TestCalcTournamentPlan2Groups(t *testing.T) {
 	plan := calcPlan(groups, 2)
 	if plan[0][0].competitor1.name != "1" {
 		t.Error("competitor 0 0 should be named 1 but was " + plan[0][0].competitor1.name)
+	}
+	if plan[1][0].id != 2 {
+		t.Error("id of the first game in second round should be 2" + strconv.Itoa(plan[1][0].id))
 	}
 	TestingUtils.CheckEquals(6, len(plan), "roundcount", t)
 	if ok, msg := checkNoCompetitorPlaysTwiceInARound(plan); !ok {

@@ -9,17 +9,14 @@ func TestCalcBestPlan(t *testing.T) {
 	competitors := newTestCompetitors(12)
 	details := details{10, 5, 30}
 
-	_, g := calcBestPlan(competitors, details)
-	if len(g) != 2 {
-		TestingUtils.CheckEquals(2, len(g), "groupCount", t)
-	}
+	_, g := calcMostGamesPerCompetitorPlan(competitors, details)
+	TestingUtils.CheckEquals(2, len(g), "groupCount", t)
 }
 func TestCalcBestPlanOnly2PerGroupPossible(t *testing.T) {
 	competitors := newTestCompetitors(10)
 	details := details{10, 5, 5}
 
-	p, g := calcBestPlan(competitors, details)
-	printPlan(p)
+	_, g := calcMostGamesPerCompetitorPlan(competitors, details)
 	if len(g) != 2 {
 		TestingUtils.CheckEquals(5, len(g), "groupCount", t)
 	}
@@ -28,7 +25,8 @@ func TestCalcBestPlanImpossible(t *testing.T) {
 	competitors := newTestCompetitors(10)
 	details := details{2, 5, 5}
 
-	p, _ := calcBestPlan(competitors, details)
+	p, _ := calcMostGamesPerCompetitorPlan(competitors, details)
+	printPlan(p)
 	if len(p) !=0{
 		t.Error("plan should be empty because it is not possible to do a tournament with given values")
 	}
