@@ -1,10 +1,10 @@
-package tournament
+package competitors
 
 import "math/rand"
 
-func calcRandomDraw(c CompetitorsGetter) {
-	addedDrawNumbers := make([]int, len(c.getCompetitors()))
-	for i := range c.getCompetitors() {
+func calcRandomDraw(c Getter) {
+	addedDrawNumbers := make([]int, len(c.GetCompetitors()))
+	for i := range c.GetCompetitors() {
 		var d int
 		for {
 			d = rand.Int()
@@ -13,7 +13,7 @@ func calcRandomDraw(c CompetitorsGetter) {
 			}
 		}
 		addedDrawNumbers = append(addedDrawNumbers, d)
-		c.getCompetitors()[i].drawNumber = d
+		c.GetCompetitors()[i].DrawNumber = d
 	}
 
 }

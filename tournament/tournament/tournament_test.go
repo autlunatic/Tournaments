@@ -1,26 +1,27 @@
 package tournament
 
 import (
+	"github.com/autlunatic/tournaments/tournament/competitors"
 	"testing"
 )
 
-func (t *Tournament) AddCompetitor(c Competitor) {
+func (t *Tournament) AddCompetitor(c competitors.Competitor) {
 	t.Competitors = append(t.Competitors, c)
 }
 
 func newTestTournament() Tournament {
-	td := newTournamentDetails(2, 1)
+	td := NewTournamentDetails(2, 1, 0)
 	tournament := NewTournament(*td)
 	return tournament
 }
 
 func TestAddCompetitor(t *testing.T) {
 	tournament := newTestTournament()
-	tournament.AddCompetitor(newCompetitor("Benni"))
+	tournament.AddCompetitor(competitors.NewCompetitor("Benni"))
 	if len(tournament.Competitors) != 1 {
 		t.Error("Should be one competitor")
 	}
-	if tournament.Competitors[0].name != "Benni" {
+	if tournament.Competitors[0].Name != "Benni" {
 		t.Error("first competitors name should be Benni")
 	}
 

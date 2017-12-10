@@ -13,7 +13,7 @@ func TestSimpleTournamentPointCalc_calc(t *testing.T) {
 		gamePoints1 int
 		GamePoints2 int
 	}
-	calc := SimpleTournamentPointCalc{1, 3, 0}
+	calc := NewSimpleTournamentPointCalc(1, 3, 0)
 	tests := []struct {
 		name                  string
 		s                     SimpleTournamentPointCalc
