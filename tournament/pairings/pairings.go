@@ -1,9 +1,10 @@
 package pairings
 
 import (
-	"github.com/autlunatic/Tournaments/tournament/competitors"
-	"strconv"
 	"errors"
+	"strconv"
+
+	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
 
 // Pairing holds information about one game,
@@ -13,6 +14,11 @@ type Pairing struct {
 	Round       int
 	ID          int
 	GroupID     int
+}
+
+func (p *Pairing) addGroupPoints(cp1 int, cp2 int) {
+	p.Competitor1.GroupPoints += cp1
+	p.Competitor2.GroupPoints += cp2
 }
 
 // InPairings checks if the given slice of Pairing contains the Pairing
@@ -63,11 +69,11 @@ func (a SortByRound) Less(i, j int) bool {
 }
 
 // CalcPairings calculates the pairings needed when everyone needs to play against each other
-func CalcPairings(c []competitors.Competitor, groupID int) ([]Pairing,error) {
+func CalcPairings(c []competitors.Competitor, groupID int) ([]Pairing, error) {
 	var result []Pairing
 
-	if len(c)==0{
-		return result,errors.New("no Competitors given, cannot calc pairings!")
+	if len(c) == 0 {
+		return result, errors.New("no Competitors given, cannot calc pairings!")
 	}
 	cs := c
 	// make a copy of the cs
@@ -89,7 +95,7 @@ func CalcPairings(c []competitors.Competitor, groupID int) ([]Pairing,error) {
 		// shift
 		mc = append(mc[1:], mc[0])
 	}
-	return result,nil
+	return result, nil
 }
 
 func addToResult(c []competitors.Competitor, result *[]Pairing, c1 competitors.Competitor, i int, groupID int) {

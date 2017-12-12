@@ -12,7 +12,7 @@ import (
 var testCompetitors competitors.Competitors
 
 func generatePairings3() []Pairing {
-	out,_ := CalcPairings(testCompetitors.Items, 1)
+	out, _ := CalcPairings(testCompetitors.Items, 1)
 	for i := range out {
 		out[i].ID = i
 	}
@@ -30,9 +30,13 @@ func generatePairingResults3() []PairingResult {
 }
 func generateExpected3() []placement {
 	out := make([]placement, 3)
+
+	testCompetitors.Items[0].GroupPoints = 6
 	out[0] = placement{testCompetitors.Items[0], 1}
-	out[1] = placement{testCompetitors.Items[1], 3}
-	out[2] = placement{testCompetitors.Items[2], 2}
+	testCompetitors.Items[2].GroupPoints = 3
+	out[1] = placement{testCompetitors.Items[2], 2}
+	testCompetitors.Items[1].GroupPoints = 0
+	out[2] = placement{testCompetitors.Items[1], 3}
 	return out
 }
 
@@ -49,8 +53,8 @@ func Test_calcGroupPlacements_calcPlacements(t *testing.T) {
 		want    []placement
 		wantErr bool
 	}{
-		{name: "3 Competitors", fields: input{generatePairings3(), generatePairingResults3()}, want: generateExpected3(), wantErr:false},
-	// TODO: Add test cases.
+		{name: "3 Competitors", fields: input{generatePairings3(), generatePairingResults3()}, want: generateExpected3(), wantErr: false},
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
