@@ -14,7 +14,7 @@ func (e *calcGroupError) Error() string { return e.err }
 func CalcGroups(c competitors.Getter, groupsCount int) (groups []Group, err error) {
 	comps := c.GetCompetitors()
 	if groupsCount*2 > len(comps) {
-		return groups, &calcGroupError{"too many groups for this count of comps!"}
+		return groups, &calcGroupError{"too many groups for this count of competitors!"}
 	}
 
 	competitorsPerGroup := len(comps) / groupsCount

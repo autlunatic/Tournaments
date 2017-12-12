@@ -1,12 +1,12 @@
 package groups
 
 import (
+	"fmt"
 	"github.com/autlunatic/TestingUtils"
 	"github.com/autlunatic/tournaments/tournament/competitors"
 	"github.com/autlunatic/tournaments/tournament/pairings"
 	"strconv"
 	"testing"
-	"fmt"
 )
 
 func TestCalcTournamentPlan(t *testing.T) {

@@ -60,7 +60,7 @@ func TestCalcGroups_10Competitor_6Groups(t *testing.T) {
 	if err == nil {
 		t.Error("impossible groupcount error should be returned")
 	} else {
-		if err.Error() != "too many groups for this count of c!" {
+		if err.Error() != "too many groups for this count of competitors!" {
 			t.Error("WrongErrorMessage")
 		}
 	}

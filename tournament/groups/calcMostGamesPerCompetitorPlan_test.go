@@ -9,14 +9,14 @@ import (
 
 func TestCalcBestPlan(t *testing.T) {
 	c := competitors.NewTestCompetitors(12)
-	details := tournament.Details{10, 5, 30}
+	details := tournament.Details{NumberOfParallelGames: 10, MinutesPerGame: 5, MinutesAvailForGroupsPhase: 30}
 
 	_, g := calcMostGamesPerCompetitorPlan(c, details)
 	TestingUtils.CheckEquals(2, len(g), "groupCount", t)
 }
 func TestCalcBestPlanOnly2PerGroupPossible(t *testing.T) {
 	c := competitors.NewTestCompetitors(10)
-	details := tournament.Details{10, 5, 5}
+	details := tournament.Details{NumberOfParallelGames: 10, MinutesPerGame: 5, MinutesAvailForGroupsPhase: 5}
 
 	_, g := calcMostGamesPerCompetitorPlan(c, details)
 	if len(g) != 2 {
@@ -25,7 +25,7 @@ func TestCalcBestPlanOnly2PerGroupPossible(t *testing.T) {
 }
 func TestCalcBestPlanImpossible(t *testing.T) {
 	c := competitors.NewTestCompetitors(10)
-	details := tournament.Details{2, 5, 5}
+	details := tournament.Details{NumberOfParallelGames: 2, MinutesPerGame: 5, MinutesAvailForGroupsPhase: 5}
 
 	p, _ := calcMostGamesPerCompetitorPlan(c, details)
 	if len(p) != 0 {

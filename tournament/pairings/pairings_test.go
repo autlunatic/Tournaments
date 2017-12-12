@@ -13,13 +13,21 @@ func TestCalcPairings(t *testing.T) {
 	c.Items = append(c.Items, benni)
 	c.Items = append(c.Items, dani)
 
-	pairings := CalcPairings(c.Items, 1)
+	pairings,_ := CalcPairings(c.Items, 1)
 
 	TestingUtils.CheckEquals(1, len(pairings), "", t)
 	pair := pairings[0]
 
 	if (pair.Competitor1.Name != "Benni") || (pair.Competitor2.Name != "Dani") {
 		t.Errorf("first competitor should be Benni (but was %s) and second should be Dani (but was %s)", pair.Competitor1.Name, pair.Competitor2.Name)
+	}
+}
+func TestCalcPairingsEmptyCompetitorsShouldNotPanic(t *testing.T) {
+	c := competitors.Competitors{}
+
+	_,err := CalcPairings(c.Items, 1)
+	if err==nil{
+		t.Error("expected Error didnt return!")
 	}
 }
 
@@ -32,7 +40,7 @@ func TestCalcPairings3Competitors(t *testing.T) {
 	c.Items = append(c.Items, dani)
 	c.Items = append(c.Items, zoe)
 
-	pairings := CalcPairings(c.Items, 1)
+	pairings,_ := CalcPairings(c.Items, 1)
 
 	TestingUtils.CheckEquals(3, len(pairings), "", t)
 	pair := pairings[0]
@@ -80,7 +88,7 @@ func TestCalcPairings5Competitors(t *testing.T) {
 		competitors.NewCompetitor("Mona"),
 		competitors.NewCompetitor("Andrea"))
 
-	pairings := CalcPairings(c.Items, 1)
+	pairings,_ := CalcPairings(c.Items, 1)
 
 	TestingUtils.CheckEquals(10, len(pairings), "", t)
 	pair := pairings[0]
@@ -102,7 +110,7 @@ func TestCalcPairings5Competitors(t *testing.T) {
 func TestCalcPairings12Competitors(t *testing.T) {
 	c := competitors.NewTestCompetitors(12)
 
-	pairings := CalcPairings(c.Items, 1)
+	pairings,_ := CalcPairings(c.Items, 1)
 	TestingUtils.CheckEquals(66, len(pairings), "", t)
 	TestingUtils.CheckEquals(6, pairings[33].Round, "Round", t)
 	if msg := checkPairingDoubles(pairings); msg != "" {

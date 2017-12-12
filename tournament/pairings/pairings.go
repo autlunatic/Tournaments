@@ -3,6 +3,7 @@ package pairings
 import (
 	"github.com/autlunatic/tournaments/tournament/competitors"
 	"strconv"
+	"errors"
 )
 
 // Pairing holds information about one game,
@@ -62,8 +63,12 @@ func (a SortByRound) Less(i, j int) bool {
 }
 
 // CalcPairings calculates the pairings needed when everyone needs to play against each other
-func CalcPairings(c []competitors.Competitor, groupID int) []Pairing {
+func CalcPairings(c []competitors.Competitor, groupID int) ([]Pairing,error) {
 	var result []Pairing
+
+	if len(c)==0{
+		return result,errors.New("no Competitors given, cannot calc pairings!")
+	}
 	cs := c
 	// make a copy of the cs
 	mc := make([]competitors.Competitor, len(cs))
@@ -84,7 +89,7 @@ func CalcPairings(c []competitors.Competitor, groupID int) []Pairing {
 		// shift
 		mc = append(mc[1:], mc[0])
 	}
-	return result
+	return result,nil
 }
 
 func addToResult(c []competitors.Competitor, result *[]Pairing, c1 competitors.Competitor, i int, groupID int) {

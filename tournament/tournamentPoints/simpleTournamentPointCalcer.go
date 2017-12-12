@@ -14,7 +14,7 @@ func NewSimpleTournamentPointCalc(drawPoints int, winPoints int, losePoints int)
 	return SimpleTournamentPointCalc{drawPoints, winPoints, losePoints}
 }
 
-func (s SimpleTournamentPointCalc) calc(gamePoints1 int, gamePoints2 int) (tournamentPoints1 int, TournamentPoints2 int) {
+func (s SimpleTournamentPointCalc) Calc(gamePoints1 int, gamePoints2 int) (tournamentPoints1 int, TournamentPoints2 int) {
 	if gamePoints1 > gamePoints2 {
 		return s.winPoints, s.losePoints
 	}
