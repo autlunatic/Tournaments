@@ -1,10 +1,11 @@
 package groups
 
 import (
-	"github.com/autlunatic/TestingUtils"
-	"github.com/autlunatic/tournaments/tournament/competitors"
-	"github.com/autlunatic/tournaments/tournament/tournament"
 	"testing"
+
+	"github.com/autlunatic/TestingUtils"
+	"github.com/autlunatic/Tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/tournament"
 )
 
 func TestCalcBestPlan(t *testing.T) {

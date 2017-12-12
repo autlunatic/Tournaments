@@ -1,9 +1,10 @@
 package groups
 
 import (
-	"github.com/autlunatic/TestingUtils"
-	"github.com/autlunatic/tournaments/tournament/competitors"
 	"testing"
+
+	"github.com/autlunatic/TestingUtils"
+	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
 
 func TestCalcGroups_OneCompetitor_OneGroup(t *testing.T) {
@@ -61,7 +62,7 @@ func TestCalcGroups_10Competitor_6Groups(t *testing.T) {
 		t.Error("impossible groupcount error should be returned")
 	} else {
 		if err.Error() != "too many groups for this count of competitors!" {
-			t.Error("WrongErrorMessage")
+			t.Error("WrongErrorMessage", err.Error())
 		}
 	}
 	TestingUtils.CheckEquals(0, len(result), "len of result should be 0", t)

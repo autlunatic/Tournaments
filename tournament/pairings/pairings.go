@@ -1,7 +1,7 @@
 package pairings
 
 import (
-	"github.com/autlunatic/tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"strconv"
 	"errors"
 )

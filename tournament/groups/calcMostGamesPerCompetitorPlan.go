@@ -1,9 +1,9 @@
 package groups
 
 import (
-	"github.com/autlunatic/tournaments/tournament/competitors"
-	"github.com/autlunatic/tournaments/tournament/pairings"
-	"github.com/autlunatic/tournaments/tournament/tournament"
+	"github.com/autlunatic/Tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/pairings"
+	"github.com/autlunatic/Tournaments/tournament/tournament"
 )
 
 func calcMostGamesPerCompetitorPlan(cg competitors.Getter, details tournament.Details) ([][]pairings.Pairing, []Group) {

@@ -1,8 +1,8 @@
 package tournament
 
 import (
-	"github.com/autlunatic/tournaments/tournament/competitors"
-	"github.com/autlunatic/tournaments/tournament/pairings"
+	"github.com/autlunatic/Tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
 
 // Tournament holds all data about the tournament

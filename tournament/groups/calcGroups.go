@@ -1,7 +1,7 @@
 package groups
 
 import (
-	"github.com/autlunatic/tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
 
 type calcGroupError struct {

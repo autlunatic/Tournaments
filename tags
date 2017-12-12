@@ -1,0 +1,206 @@
+!_TAG_FILE_FORMAT	2
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted/
+!_TAG_PROGRAM_AUTHOR	Joel Stemmer	/stemmertech@gmail.com/
+!_TAG_PROGRAM_NAME	gotags
+!_TAG_PROGRAM_URL	https://github.com/jstemmer/gotags
+!_TAG_PROGRAM_VERSION	1.4.1	/go1.9.2/
+AddCompetitor	tournament/tournament/tournament_test.go	8;"	m	access:public	ctype:Tournament	language:Go	line:8	signature:(c competitors.Competitor)
+Calc	tournament/tournamentPoints/calcTournamentPoints.go	5;"	m	access:public	language:Go	line:5	ntype:TournamentPointCalcer	signature:(gamePoints1 int, gamePoints2 int)	type:int, int
+Calc	tournament/tournamentPoints/simpleTournamentPointCalcer.go	17;"	m	access:public	ctype:SimpleTournamentPointCalc	language:Go	line:17	signature:(gamePoints1 int, gamePoints2 int)	type:int, int
+CalcGroups	tournament/groups/calcGroups.go	14;"	f	access:public	language:Go	line:14	signature:(c competitors.Getter, groupsCount int)	type:[]Group, error
+CalcPairings	tournament/pairings/pairings.go	66;"	f	access:public	language:Go	line:66	signature:(c []competitors.Competitor, groupID int)	type:[]Pairing, error
+CheckIsAnyDrawNumberDouble	tournament/competitors/calcRandomDraw_test.go	20;"	f	access:public	language:Go	line:20	signature:(c Competitors, t *testing.T)
+Competitor	tournament/competitors/Competitors.go	26;"	t	access:public	language:Go	line:26	type:struct
+Competitor1	tournament/pairings/pairings.go	11;"	w	access:public	ctype:Pairing	language:Go	line:11	type:competitors.Competitor
+Competitor2	tournament/pairings/pairings.go	12;"	w	access:public	ctype:Pairing	language:Go	line:12	type:competitors.Competitor
+Competitors	tournament/competitors/Competitors.go	4;"	t	access:public	language:Go	line:4	type:struct
+Competitors	tournament/tournament/tournament.go	12;"	w	access:public	ctype:Tournament	language:Go	line:12	type:[]competitors.Competitor
+Details	tournament/tournament/tournament.go	11;"	w	access:public	ctype:Tournament	language:Go	line:11	type:Details
+Details	tournament/tournament/tournament.go	19;"	t	access:public	language:Go	line:19	type:struct
+DrawNumber	tournament/competitors/Competitors.go	29;"	w	access:public	ctype:Competitor	language:Go	line:29	type:int
+Error	tournament/groups/calcGroups.go	11;"	m	access:public	ctype:calcGroupError	language:Go	line:11	signature:()	type:string
+GetCompetitors	tournament/competitors/Competitors.go	10;"	m	access:public	language:Go	line:10	ntype:Getter	signature:()	type:[]Competitor
+GetCompetitors	tournament/competitors/Competitors.go	14;"	m	access:public	ctype:Competitors	language:Go	line:14	signature:()	type:[]Competitor
+GetMaxRoundOfPairings	tournament/pairings/pairings.go	40;"	f	access:public	language:Go	line:40	signature:(pairing []Pairing)	type:int
+Getter	tournament/competitors/Competitors.go	9;"	n	access:public	language:Go	line:9	type:interface
+Group	tournament/groups/group.go	10;"	t	access:public	language:Go	line:10	type:struct
+GroupID	tournament/pairings/pairings.go	15;"	w	access:public	ctype:Pairing	language:Go	line:15	type:int
+GroupPoints	tournament/competitors/Competitors.go	28;"	w	access:public	ctype:Competitor	language:Go	line:28	type:int
+ID	tournament/pairings/pairings.go	14;"	w	access:public	ctype:Pairing	language:Go	line:14	type:int
+ID	tournament/pairings/results.go	6;"	w	access:public	ctype:PairingResult	language:Go	line:6	type:int
+InPairings	tournament/pairings/pairings.go	19;"	m	access:public	ctype:Pairing	language:Go	line:19	signature:(ps []Pairing)	type:bool
+Items	tournament/competitors/Competitors.go	5;"	w	access:public	ctype:Competitors	language:Go	line:5	type:[]Competitor
+Len	tournament/pairings/pairings.go	53;"	m	access:public	ctype:SortByRound	language:Go	line:53	signature:()	type:int
+Less	tournament/pairings/pairings.go	55;"	m	access:public	ctype:SortByRound	language:Go	line:55	signature:(i, j int)	type:bool
+MinutesAvailForGroupsPhase	tournament/tournament/tournament.go	22;"	w	access:public	ctype:Details	language:Go	line:22	type:int
+MinutesPerGame	tournament/tournament/tournament.go	21;"	w	access:public	ctype:Details	language:Go	line:21	type:int
+Name	tournament/competitors/Competitors.go	27;"	w	access:public	ctype:Competitor	language:Go	line:27	type:string
+NewCompetitor	tournament/competitors/Competitors.go	19;"	f	access:public	ctype:Competitor	language:Go	line:19	signature:(name string)	type:Competitor
+NewPlacement	tournament/pairings/calcPlacements.go	20;"	f	access:public	ctype:placement	language:Go	line:20	signature:(c competitors.Competitor, place int)	type:placement
+NewSimpleTournamentPointCalc	tournament/tournamentPoints/simpleTournamentPointCalcer.go	13;"	f	access:public	ctype:SimpleTournamentPointCalc	language:Go	line:13	signature:(drawPoints int, winPoints int, losePoints int)	type:SimpleTournamentPointCalc
+NewTestCompetitors	tournament/competitors/testDataGenerator.go	6;"	f	access:public	language:Go	line:6	signature:(count int)	type:Competitors
+NewTournament	tournament/tournament/tournament.go	39;"	f	access:public	ctype:Tournament	language:Go	line:39	signature:(details Details)	type:Tournament
+NewTournamentDetails	tournament/tournament/tournament.go	26;"	f	access:public	ctype:Details	language:Go	line:26	signature:(numberOfFields int, minutesPerGame int, minAvail int)	type:*Details
+NumberOfParallelGames	tournament/tournament/tournament.go	20;"	w	access:public	ctype:Details	language:Go	line:20	type:int
+Pairing	tournament/pairings/pairings.go	10;"	t	access:public	language:Go	line:10	type:struct
+PairingResult	tournament/pairings/results.go	5;"	t	access:public	language:Go	line:5	type:struct
+PairingResults	tournament/tournament/tournament.go	15;"	w	access:public	ctype:Tournament	language:Go	line:15	type:[]pairings.PairingResult
+Pairings	tournament/tournament/tournament.go	14;"	w	access:public	ctype:Tournament	language:Go	line:14	type:[]pairings.Pairing
+Round	tournament/pairings/pairings.go	13;"	w	access:public	ctype:Pairing	language:Go	line:13	type:int
+SimpleTournamentPointCalc	tournament/tournamentPoints/simpleTournamentPointCalcer.go	6;"	t	access:public	language:Go	line:6	type:struct
+SortByRound	tournament/pairings/pairings.go	51;"	t	access:public	language:Go	line:51	type:[]Pairing
+Swap	tournament/pairings/pairings.go	54;"	m	access:public	ctype:SortByRound	language:Go	line:54	signature:(i, j int)
+TestAddCompetitor	tournament/tournament/tournament_test.go	18;"	f	access:public	language:Go	line:18	signature:(t *testing.T)
+TestCalcBestPlan	tournament/groups/calcMostGamesPerCompetitorPlan_test.go	11;"	f	access:public	language:Go	line:11	signature:(t *testing.T)
+TestCalcBestPlanImpossible	tournament/groups/calcMostGamesPerCompetitorPlan_test.go	27;"	f	access:public	language:Go	line:27	signature:(t *testing.T)
+TestCalcBestPlanOnly2PerGroupPossible	tournament/groups/calcMostGamesPerCompetitorPlan_test.go	18;"	f	access:public	language:Go	line:18	signature:(t *testing.T)
+TestCalcGroupCount	tournament/groups/calcGroupCount_test.go	10;"	f	access:public	language:Go	line:10	signature:(t *testing.T)
+TestCalcGroupCount2Groups	tournament/groups/calcGroupCount_test.go	27;"	f	access:public	language:Go	line:27	signature:(t *testing.T)
+TestCalcGroupCount3Groups	tournament/groups/calcGroupCount_test.go	32;"	f	access:public	language:Go	line:32	signature:(t *testing.T)
+TestCalcGroupCount9Competitors	tournament/groups/calcGroupCount_test.go	38;"	f	access:public	language:Go	line:38	signature:(t *testing.T)
+TestCalcGroupCountAlInOneGroup	tournament/groups/calcGroupCount_test.go	21;"	f	access:public	language:Go	line:21	signature:(t *testing.T)
+TestCalcGroupCountImpossible	tournament/groups/calcGroupCount_test.go	15;"	f	access:public	language:Go	line:15	signature:(t *testing.T)
+TestCalcGroups_10Competitor_6Groups	tournament/groups/calcGroups_test.go	57;"	f	access:public	language:Go	line:57	signature:(t *testing.T)
+TestCalcGroups_23Competitor_7Groups	tournament/groups/calcGroups_test.go	44;"	f	access:public	language:Go	line:44	signature:(t *testing.T)
+TestCalcGroups_6Competitor_2Groups	tournament/groups/calcGroups_test.go	21;"	f	access:public	language:Go	line:21	signature:(t *testing.T)
+TestCalcGroups_7Competitor_2Groups	tournament/groups/calcGroups_test.go	29;"	f	access:public	language:Go	line:29	signature:(t *testing.T)
+TestCalcGroups_OneCompetitor_OneGroup	tournament/groups/calcGroups_test.go	10;"	f	access:public	language:Go	line:10	signature:(t *testing.T)
+TestCalcPairings	tournament/pairings/pairings_test.go	9;"	f	access:public	language:Go	line:9	signature:(t *testing.T)
+TestCalcPairings12Competitors	tournament/pairings/pairings_test.go	110;"	f	access:public	language:Go	line:110	signature:(t *testing.T)
+TestCalcPairings3Competitors	tournament/pairings/pairings_test.go	34;"	f	access:public	language:Go	line:34	signature:(t *testing.T)
+TestCalcPairings5Competitors	tournament/pairings/pairings_test.go	82;"	f	access:public	language:Go	line:82	signature:(t *testing.T)
+TestCalcPairingsEmptyCompetitorsShouldNotPanic	tournament/pairings/pairings_test.go	25;"	f	access:public	language:Go	line:25	signature:(t *testing.T)
+TestCalcRandomDraw	tournament/competitors/calcRandomDraw_test.go	8;"	f	access:public	language:Go	line:8	signature:(t *testing.T)
+TestCalcTournamentLastRoundOfGroupShouldNotBeSplittedOverFieldRounds	tournament/groups/calcPlan_test.go	75;"	f	access:public	language:Go	line:75	signature:(t *testing.T)
+TestCalcTournamentPlan	tournament/groups/calcPlan_test.go	13;"	f	access:public	language:Go	line:13	signature:(t *testing.T)
+TestCalcTournamentPlan2Groups	tournament/groups/calcPlan_test.go	23;"	f	access:public	language:Go	line:23	signature:(t *testing.T)
+TestCalcTournamentPlan2Groups6_oneCouldNotPlayToTimesInOneRow	tournament/groups/calcPlan_test.go	59;"	f	access:public	language:Go	line:59	signature:(t *testing.T)
+TestCalcTournamentPlan4Groups11	tournament/groups/calcPlan_test.go	41;"	f	access:public	language:Go	line:41	signature:(t *testing.T)
+TestIsUniqueInSliceFalse	tournament/competitors/calcRandomDraw_test.go	40;"	f	access:public	language:Go	line:40	signature:(t *testing.T)
+TestIsUniqueInSliceTrue	tournament/competitors/calcRandomDraw_test.go	33;"	f	access:public	language:Go	line:33	signature:(t *testing.T)
+TestSimpleTournamentPointCalc_calc	tournament/tournamentPoints/simpleTournamentPointCalcer_test.go	11;"	f	access:public	language:Go	line:11	signature:(t *testing.T)
+TestSoccer	tournament/tournamentPoints/simpleTournamentPointCalcer_test.go	7;"	f	access:public	language:Go	line:7	signature:(t *testing.T)
+Test_calcGroupPlacements_calcPlacements	tournament/pairings/calcPlacements_test.go	39;"	f	access:public	language:Go	line:39	signature:(t *testing.T)
+Tournament	tournament/tournament/tournament.go	10;"	t	access:public	language:Go	line:10	type:struct
+TournamentPointCalcer	tournament/tournamentPoints/calcTournamentPoints.go	4;"	n	access:public	language:Go	line:4	type:interface
+addPair	tournament/pairings/pairings.go	105;"	f	access:private	language:Go	line:105	signature:(pairings *[]Pairing, c1 competitors.Competitor, c2 competitors.Competitor, round int, groupID int)
+addToResult	tournament/pairings/pairings.go	95;"	f	access:private	language:Go	line:95	signature:(c []competitors.Competitor, result *[]Pairing, c1 competitors.Competitor, i int, groupID int)
+build	tournament/tournament/tournament.go	49;"	m	access:private	ctype:Tournament	language:Go	line:49	signature:()
+calcGroupCountMaxGames	tournament/groups/calcGroupCount.go	11;"	f	access:private	language:Go	line:11	signature:(c competitors.Getter, totalTimeMinutes int, minutesPerGame int, countOfParallelGames int)	type:int
+calcGroupError	tournament/groups/calcGroups.go	7;"	t	access:private	language:Go	line:7	type:struct
+calcGroupPlacements	tournament/pairings/calcPlacements.go	10;"	t	access:private	language:Go	line:10	type:struct
+calcMostGamesPerCompetitorPlan	tournament/groups/calcMostGamesPerCompetitorPlan.go	9;"	f	access:private	language:Go	line:9	signature:(cg competitors.Getter, details tournament.Details)	type:[][]pairings.Pairing, []Group
+calcPairsFromGroups	tournament/groups/calcPlan.go	52;"	m	access:private	ctype:planCalc	language:Go	line:52	signature:()	type:[]pairings.Pairing
+calcPlacements	tournament/pairings/calcPlacements.go	31;"	m	access:private	ctype:calcGroupPlacements	language:Go	line:31	signature:(tpc tournamentPoints.TournamentPointCalcer)	type:[]placement, error
+calcPlan	tournament/groups/calcPlan.go	14;"	f	access:private	language:Go	line:14	signature:(Groups []Group, countOfParallelGames int)	type:[][]pairings.Pairing
+calcRandomDraw	tournament/competitors/calcRandomDraw.go	5;"	f	access:private	language:Go	line:5	signature:(c Getter)
+checkNoCompetitorPlaysTwiceInARound	tournament/groups/calcPlan_test.go	95;"	f	access:private	language:Go	line:95	signature:(p [][]pairings.Pairing)	type:bool, string
+checkPairingDoubles	tournament/pairings/pairings_test.go	60;"	f	access:private	language:Go	line:60	signature:(pairings []Pairing)	type:string
+competitor	tournament/pairings/calcPlacements.go	16;"	w	access:private	ctype:placement	language:Go	line:16	type:competitors.Competitor
+competitors	tournament/competitors/Competitors.go	1;"	p	language:Go	line:1
+competitors	tournament/competitors/calcRandomDraw.go	1;"	p	language:Go	line:1
+competitors	tournament/competitors/calcRandomDraw_test.go	1;"	p	language:Go	line:1
+competitors	tournament/competitors/testDataGenerator.go	1;"	p	language:Go	line:1
+competitors	tournament/groups/group.go	12;"	w	access:private	ctype:Group	language:Go	line:12	type:competitors.Competitors
+countOfParallelGames	tournament/groups/calcPlan.go	11;"	w	access:private	ctype:planCalc	language:Go	line:11	type:int
+drawPoints	tournament/tournamentPoints/simpleTournamentPointCalcer.go	7;"	w	access:private	ctype:SimpleTournamentPointCalc	language:Go	line:7	type:int
+equals	tournament/pairings/pairings.go	28;"	m	access:private	ctype:Pairing	language:Go	line:28	signature:(p2 Pairing)	type:bool
+err	tournament/groups/calcGroups.go	8;"	w	access:private	ctype:calcGroupError	language:Go	line:8	type:string
+errors	tournament/pairings/calcPlacements.go	4;"	i	language:Go	line:4
+errors	tournament/pairings/pairings.go	6;"	i	language:Go	line:6
+fmt	tournament/groups/calcPlan_test.go	4;"	i	language:Go	line:4
+fmt	tournament/pairings/calcPlacements_test.go	4;"	i	language:Go	line:4
+foundSameCompetitorInRound	tournament/groups/calcPlan.go	92;"	f	access:private	language:Go	line:92	signature:(p pairings.Pairing, round []pairings.Pairing)	type:bool
+gamePoints1	tournament/pairings/results.go	9;"	w	access:private	ctype:PairingResult	language:Go	line:9	type:int
+gamePoints2	tournament/pairings/results.go	10;"	w	access:private	ctype:PairingResult	language:Go	line:10	type:int
+generateExpected3	tournament/pairings/calcPlacements_test.go	31;"	f	access:private	language:Go	line:31	signature:()	type:[]placement
+generatePairingResults3	tournament/pairings/calcPlacements_test.go	23;"	f	access:private	language:Go	line:23	signature:()	type:[]PairingResult
+generatePairings3	tournament/pairings/calcPlacements_test.go	14;"	f	access:private	language:Go	line:14	signature:()	type:[]Pairing
+getGamesPerRound	tournament/groups/group.go	24;"	m	access:private	ctype:Group	language:Go	line:24	signature:()	type:int
+getPairings	tournament/groups/group.go	15;"	m	access:private	ctype:Group	language:Go	line:15	signature:()	type:[]pairings.Pairing, error
+getTournamentDetails	tournament/tournament/tournament.go	34;"	m	access:private	ctype:Tournament	language:Go	line:34	signature:()	type:Details
+github.com/autlunatic/TestingUtils	tournament/groups/calcGroupCount_test.go	6;"	i	language:Go	line:6
+github.com/autlunatic/TestingUtils	tournament/groups/calcGroups_test.go	6;"	i	language:Go	line:6
+github.com/autlunatic/TestingUtils	tournament/groups/calcMostGamesPerCompetitorPlan_test.go	6;"	i	language:Go	line:6
+github.com/autlunatic/TestingUtils	tournament/groups/calcPlan_test.go	8;"	i	language:Go	line:8
+github.com/autlunatic/TestingUtils	tournament/pairings/pairings_test.go	4;"	i	language:Go	line:4
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/groups/calcGroupCount.go	4;"	i	language:Go	line:4
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/groups/calcGroupCount_test.go	7;"	i	language:Go	line:7
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/groups/calcGroups.go	4;"	i	language:Go	line:4
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/groups/calcGroups_test.go	7;"	i	language:Go	line:7
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/groups/calcMostGamesPerCompetitorPlan.go	4;"	i	language:Go	line:4
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/groups/calcMostGamesPerCompetitorPlan_test.go	7;"	i	language:Go	line:7
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/groups/calcPlan_test.go	9;"	i	language:Go	line:9
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/groups/group.go	4;"	i	language:Go	line:4
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/pairings/calcPlacements.go	6;"	i	language:Go	line:6
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/pairings/calcPlacements_test.go	8;"	i	language:Go	line:8
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/pairings/pairings.go	4;"	i	language:Go	line:4
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/pairings/pairings_test.go	5;"	i	language:Go	line:5
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/tournament/tournament.go	4;"	i	language:Go	line:4
+github.com/autlunatic/Tournaments/tournament/competitors	tournament/tournament/tournament_test.go	4;"	i	language:Go	line:4
+github.com/autlunatic/Tournaments/tournament/pairings	tournament/groups/calcMostGamesPerCompetitorPlan.go	5;"	i	language:Go	line:5
+github.com/autlunatic/Tournaments/tournament/pairings	tournament/groups/calcPlan.go	6;"	i	language:Go	line:6
+github.com/autlunatic/Tournaments/tournament/pairings	tournament/groups/calcPlan_test.go	10;"	i	language:Go	line:10
+github.com/autlunatic/Tournaments/tournament/pairings	tournament/groups/group.go	5;"	i	language:Go	line:5
+github.com/autlunatic/Tournaments/tournament/pairings	tournament/tournament/tournament.go	5;"	i	language:Go	line:5
+github.com/autlunatic/Tournaments/tournament/tournament	tournament/groups/calcGroupCount.go	5;"	i	language:Go	line:5
+github.com/autlunatic/Tournaments/tournament/tournament	tournament/groups/calcMostGamesPerCompetitorPlan.go	6;"	i	language:Go	line:6
+github.com/autlunatic/Tournaments/tournament/tournament	tournament/groups/calcMostGamesPerCompetitorPlan_test.go	8;"	i	language:Go	line:8
+github.com/autlunatic/Tournaments/tournament/tournamentPoints	tournament/pairings/calcPlacements.go	7;"	i	language:Go	line:7
+github.com/autlunatic/Tournaments/tournament/tournamentPoints	tournament/pairings/calcPlacements_test.go	9;"	i	language:Go	line:9
+groups	tournament/groups/calcGroupCount.go	1;"	p	language:Go	line:1
+groups	tournament/groups/calcGroupCount_test.go	1;"	p	language:Go	line:1
+groups	tournament/groups/calcGroups.go	1;"	p	language:Go	line:1
+groups	tournament/groups/calcGroups_test.go	1;"	p	language:Go	line:1
+groups	tournament/groups/calcMostGamesPerCompetitorPlan.go	1;"	p	language:Go	line:1
+groups	tournament/groups/calcMostGamesPerCompetitorPlan_test.go	1;"	p	language:Go	line:1
+groups	tournament/groups/calcPlan.go	10;"	w	access:private	ctype:planCalc	language:Go	line:10	type:[]Group
+groups	tournament/groups/calcPlan.go	1;"	p	language:Go	line:1
+groups	tournament/groups/calcPlan_test.go	1;"	p	language:Go	line:1
+groups	tournament/groups/group.go	1;"	p	language:Go	line:1
+id	tournament/groups/group.go	11;"	w	access:private	ctype:Group	language:Go	line:11	type:int
+isInSlice	tournament/pairings/calcPlacements.go	27;"	m	access:private	ctype:placement	language:Go	line:27	signature:([]placement)
+isLastRound	tournament/groups/group.go	19;"	m	access:private	ctype:Group	language:Go	line:19	signature:(ap pairings.Pairing)	type:bool
+isSamePair	tournament/pairings/pairings_test.go	76;"	f	access:private	language:Go	line:76	signature:(p Pairing, p2 Pairing)	type:bool
+isUniqueInSlice	tournament/competitors/calcRandomDraw.go	20;"	f	access:private	language:Go	line:20	signature:(addedDrawNumbers []int, d int)	type:bool
+losePoints	tournament/tournamentPoints/simpleTournamentPointCalcer.go	9;"	w	access:private	ctype:SimpleTournamentPointCalc	language:Go	line:9	type:int
+main	tournament/main.go	1;"	p	language:Go	line:1
+main	tournament/main.go	3;"	f	access:private	language:Go	line:3	signature:()
+math/rand	tournament/competitors/calcRandomDraw.go	3;"	i	language:Go	line:3
+needNewGroup	tournament/groups/calcPlan.go	45;"	m	access:private	ctype:planCalc	language:Go	line:45	signature:(round []pairings.Pairing, p pairings.Pairing)	type:bool
+newTestTournament	tournament/tournament/tournament_test.go	12;"	f	access:private	language:Go	line:12	signature:()	type:Tournament
+pairingResult	tournament/pairings/calcPlacements.go	12;"	w	access:private	ctype:calcGroupPlacements	language:Go	line:12	type:[]PairingResult
+pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously	tournament/groups/calcPlan.go	66;"	m	access:private	ctype:planCalc	language:Go	line:66	signature:(round []pairings.Pairing, ap pairings.Pairing)	type:bool
+pairings	tournament/pairings/calcPlacements.go	11;"	w	access:private	ctype:calcGroupPlacements	language:Go	line:11	type:[]Pairing
+pairings	tournament/pairings/calcPlacements.go	1;"	p	language:Go	line:1
+pairings	tournament/pairings/calcPlacements_test.go	1;"	p	language:Go	line:1
+pairings	tournament/pairings/pairings.go	1;"	p	language:Go	line:1
+pairings	tournament/pairings/pairings_test.go	1;"	p	language:Go	line:1
+pairings	tournament/pairings/results.go	1;"	p	language:Go	line:1
+placement	tournament/pairings/calcPlacements.go	15;"	t	access:private	language:Go	line:15	type:struct
+placement	tournament/pairings/calcPlacements.go	17;"	w	access:private	ctype:placement	language:Go	line:17	type:int
+planCalc	tournament/groups/calcPlan.go	9;"	t	access:private	language:Go	line:9	type:struct
+reflect	tournament/pairings/calcPlacements_test.go	5;"	i	language:Go	line:5
+setTournamentDetails	tournament/tournament/tournament.go	45;"	m	access:private	ctype:Tournament	language:Go	line:45	signature:(td Details)
+sort	tournament/groups/calcPlan.go	4;"	i	language:Go	line:4
+strconv	tournament/competitors/calcRandomDraw_test.go	4;"	i	language:Go	line:4
+strconv	tournament/competitors/testDataGenerator.go	3;"	i	language:Go	line:3
+strconv	tournament/groups/calcPlan_test.go	5;"	i	language:Go	line:5
+strconv	tournament/pairings/pairings.go	5;"	i	language:Go	line:5
+testCompetitors	tournament/pairings/calcPlacements_test.go	12;"	v	access:private	language:Go	line:12	type:competitors.Competitors
+testing	tournament/competitors/calcRandomDraw_test.go	5;"	i	language:Go	line:5
+testing	tournament/groups/calcGroupCount_test.go	4;"	i	language:Go	line:4
+testing	tournament/groups/calcGroups_test.go	4;"	i	language:Go	line:4
+testing	tournament/groups/calcMostGamesPerCompetitorPlan_test.go	4;"	i	language:Go	line:4
+testing	tournament/groups/calcPlan_test.go	6;"	i	language:Go	line:6
+testing	tournament/pairings/calcPlacements_test.go	6;"	i	language:Go	line:6
+testing	tournament/pairings/pairings_test.go	6;"	i	language:Go	line:6
+testing	tournament/tournament/tournament_test.go	5;"	i	language:Go	line:5
+testing	tournament/tournamentPoints/simpleTournamentPointCalcer_test.go	4;"	i	language:Go	line:4
+toString	tournament/pairings/pairings.go	35;"	m	access:private	ctype:Pairing	language:Go	line:35	signature:()	type:string
+tournament	tournament/tournament/tournament.go	1;"	p	language:Go	line:1
+tournament	tournament/tournament/tournament_test.go	1;"	p	language:Go	line:1
+tournamentPoints	tournament/tournamentPoints/calcTournamentPoints.go	1;"	p	language:Go	line:1
+tournamentPoints	tournament/tournamentPoints/simpleTournamentPointCalcer.go	1;"	p	language:Go	line:1
+tournamentPoints	tournament/tournamentPoints/simpleTournamentPointCalcer_test.go	1;"	p	language:Go	line:1
+winPoints	tournament/tournamentPoints/simpleTournamentPointCalcer.go	8;"	w	access:private	ctype:SimpleTournamentPointCalc	language:Go	line:8	type:int

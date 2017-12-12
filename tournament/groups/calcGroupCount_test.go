@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/autlunatic/TestingUtils"
-	"github.com/autlunatic/tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
 
 func TestCalcGroupCount(t *testing.T) {

@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/autlunatic/tournaments/tournament/competitors"
-	"github.com/autlunatic/tournaments/tournament/tournamentPoints"
+	"github.com/autlunatic/Tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
 )
 
 var testCompetitors competitors.Competitors

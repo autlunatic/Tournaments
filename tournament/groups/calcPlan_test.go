@@ -2,16 +2,17 @@ package groups
 
 import (
 	"fmt"
-	"github.com/autlunatic/TestingUtils"
-	"github.com/autlunatic/tournaments/tournament/competitors"
-	"github.com/autlunatic/tournaments/tournament/pairings"
 	"strconv"
 	"testing"
+
+	"github.com/autlunatic/TestingUtils"
+	"github.com/autlunatic/Tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
 
 func TestCalcTournamentPlan(t *testing.T) {
 	c := competitors.NewTestCompetitors(4)
-	gs := []Group{{1, competitors.Competitors{c.Items[0:4]}}}
+	gs := []Group{{id: 1, competitors: competitors.Competitors{c.Items[0:4]}}}
 	plan := calcPlan(gs, 1)
 	if plan[0][0].Competitor1.Name != "1" {
 		t.Error("competitor 0 0 should be named 1 but was " + plan[0][0].Competitor1.Name)

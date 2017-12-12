@@ -1,8 +1,9 @@
 package groups
 
 import (
-	"github.com/autlunatic/tournaments/tournament/pairings"
 	"sort"
+
+	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
 
 type planCalc struct {
@@ -51,7 +52,9 @@ func (c planCalc) needNewGroup(round []pairings.Pairing, p pairings.Pairing) boo
 func (c planCalc) calcPairsFromGroups() []pairings.Pairing {
 	var allPairs pairings.SortByRound
 	for _, g := range c.groups {
-		pairs := g.getPairings()
+		pairs, err := g.getPairings()
+		if err != nil {
+		}
 		for _, p := range pairs {
 			allPairs = append(allPairs, p)
 		}
@@ -63,7 +66,7 @@ func (c planCalc) calcPairsFromGroups() []pairings.Pairing {
 func (c planCalc) pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(round []pairings.Pairing, ap pairings.Pairing) bool {
 	// if any pairing of the group is already in the round then this one can be played too
 	for _, g := range c.groups {
-		gPairings := g.getPairings()
+		gPairings, _ := g.getPairings()
 		if ap.InPairings(gPairings) {
 			// Group found
 			if !g.isLastRound(ap) {

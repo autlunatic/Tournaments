@@ -1,8 +1,8 @@
 package groups
 
 import (
-	"github.com/autlunatic/tournaments/tournament/competitors"
-	"github.com/autlunatic/tournaments/tournament/tournament"
+	"github.com/autlunatic/Tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/tournament"
 )
 
 // calcGroupCountMaxGames calculates the possible count of groups given in that time slot.
