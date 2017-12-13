@@ -26,15 +26,15 @@ func generatePairingResults3() []PairingResult {
 
 	return out
 }
-func generateExpected3() []placement {
-	out := make([]placement, 3)
+func generateExpected3() []Placement {
+	out := make([]Placement, 3)
 
 	testCompetitors.Items[0].GroupPoints = 6
-	out[0] = placement{testCompetitors.Items[0], 1}
+	out[0] = Placement{testCompetitors.Items[0], 1}
 	testCompetitors.Items[2].GroupPoints = 3
-	out[1] = placement{testCompetitors.Items[2], 2}
+	out[1] = Placement{testCompetitors.Items[2], 2}
 	testCompetitors.Items[1].GroupPoints = 0
-	out[2] = placement{testCompetitors.Items[1], 3}
+	out[2] = Placement{testCompetitors.Items[1], 3}
 	return out
 }
 
@@ -48,7 +48,7 @@ func Test_calcGroupPlacements_calcPlacements(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  input
-		want    []placement
+		want    []Placement
 		wantErr bool
 	}{
 		{name: "3 Competitors", fields: input{generatePairings3(), generatePairingResults3()}, want: generateExpected3(), wantErr: false},
