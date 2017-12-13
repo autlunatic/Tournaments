@@ -2,7 +2,6 @@ package pairings
 
 import (
 	"errors"
-	"fmt"
 	"sort"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
@@ -57,9 +56,7 @@ func (cgp calcGroupPlacements) calcPlacements(tpc tournamentPoints.TournamentPoi
 		compMap[cgp.pairings[i].Competitor1] += tp1
 		compMap[cgp.pairings[i].Competitor2] += tp2
 	}
-	fmt.Println("compmap:", compMap)
 	for k, v := range compMap {
-		fmt.Println(k)
 		k.GroupPoints = v
 		out = append(out, NewPlacement(k, 0))
 	}

@@ -27,7 +27,7 @@ func TestSimpleTournamentPointCalc_calc(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotTournamentPoints1, gotTournamentPoints2 := tt.s.calc(tt.args.gamePoints1, tt.args.GamePoints2)
+			gotTournamentPoints1, gotTournamentPoints2 := tt.s.Calc(tt.args.gamePoints1, tt.args.GamePoints2)
 			if gotTournamentPoints1 != tt.wantTournamentPoints1 {
 				t.Errorf("SimpleTournamentPointCalc.calc() gotTournamentPoints1 = %v, want %v", gotTournamentPoints1, tt.wantTournamentPoints1)
 			}

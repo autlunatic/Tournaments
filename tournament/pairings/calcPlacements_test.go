@@ -1,7 +1,6 @@
 package pairings
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 
@@ -16,7 +15,6 @@ func generatePairings3() []Pairing {
 	for i := range out {
 		out[i].ID = i
 	}
-	fmt.Println(out)
 
 	return out
 }
