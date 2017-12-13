@@ -73,7 +73,7 @@ func CalcPairings(c []competitors.Competitor, groupID int) ([]Pairing, error) {
 	var result []Pairing
 
 	if len(c) == 0 {
-		return result, errors.New("no Competitors given, cannot calc pairings!")
+		return result, errors.New("no Competitors given, cannot calc pairings")
 	}
 	cs := c
 	// make a copy of the cs
