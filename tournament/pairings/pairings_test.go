@@ -64,7 +64,7 @@ func TestCalcPairings3Competitors(t *testing.T) {
 }
 
 func checkPairingDoubles(pairings []Pairing) (msg string) {
-	count := 0
+	var count int
 	for _, pair := range pairings {
 		count = 0
 		for _, pair2 := range pairings {

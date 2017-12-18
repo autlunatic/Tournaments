@@ -14,6 +14,8 @@ func NewSimpleTournamentPointCalc(drawPoints int, winPoints int, losePoints int)
 	return SimpleTournamentPointCalc{drawPoints, winPoints, losePoints}
 }
 
+// Calc implements the TournamentPointCalcer interface and is used as a simple calculater
+//  where the winner gets fixed points if he has more gamepoints than the opponent
 func (s SimpleTournamentPointCalc) Calc(gamePoints1 int, gamePoints2 int) (tournamentPoints1 int, TournamentPoints2 int) {
 	if gamePoints1 > gamePoints2 {
 		return s.winPoints, s.losePoints

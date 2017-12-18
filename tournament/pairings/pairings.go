@@ -32,8 +32,8 @@ func (p Pairing) equals(p2 Pairing) bool {
 		p.Round == p2.Round
 }
 
-// toString provides a simple string representation of the pairing
-func (p Pairing) toString() string {
+// ToString provides a simple string representation of the pairing
+func (p Pairing) ToString() string {
 	return "round: " + strconv.Itoa(p.Round) + "; " + strconv.Itoa(p.Competitor1ID) + " vs. " + strconv.Itoa(p.Competitor2ID)
 }
 

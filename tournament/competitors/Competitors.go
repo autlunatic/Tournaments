@@ -15,7 +15,12 @@ type Getter interface {
 
 // GetCompetitor gets the Competitor of the Items with the given ID
 func GetCompetitor(ID int) Competitor {
-	return Items.Items[ID]
+	for _, item := range Items.Items {
+		if item.ID() == ID {
+			return item
+		}
+	}
+	return nil
 }
 
 // GetCompetitors implements Getter Interface
@@ -29,7 +34,13 @@ func NewCompetitor(name string, id int) *SimpleCompetitor {
 	c.name = name
 	c.id = id
 	return c
+}
 
+// ClearPoints sets the Points of all Items to zero
+func ClearPoints() {
+	for _, c := range Items.Items {
+		c.AddPoints(-c.GetPoints())
+	}
 }
 
 // Competitor is the interface used by the Tournament package for Operations with the Competitor

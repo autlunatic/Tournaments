@@ -12,7 +12,7 @@ type Tournament struct {
 	Competitors []competitors.Competitor // a complete slice of all competitors
 
 	Pairings       []pairings.Pairing
-	PairingResults []pairings.PairingResult
+	PairingResults []pairings.Result
 }
 
 // Details holds Information about the tournament, these are used for serveral calculations and can be seen as a config to the tournament
