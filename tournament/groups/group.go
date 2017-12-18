@@ -17,12 +17,18 @@ func (g Group) getPairings() ([]pairings.Pairing, error) {
 }
 
 func (g Group) isLastRound(ap pairings.Pairing) bool {
-	p, _ := g.getPairings()
+	p, err := g.getPairings()
+	if err != nil {
+		return true
+	}
 	return pairings.GetMaxRoundOfPairings(p) == ap.Round
 }
 
 func (g Group) getGamesPerRound() int {
-	ps, _ := g.getPairings()
+	ps, err := g.getPairings()
+	if err != nil {
+		return 0
+	}
 	m := make(map[int]int)
 	for _, p := range ps {
 		m[p.Round]++

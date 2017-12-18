@@ -18,7 +18,10 @@ func calcPlan(Groups []Group, countOfParallelGames int) [][]pairings.Pairing {
 		countOfParallelGames: countOfParallelGames,
 	}
 
-	allPairs := calc.calcPairsFromGroups()
+	allPairs, err := calc.calcPairsFromGroups()
+	if err != nil {
+		return nil
+	}
 
 	for i := range allPairs {
 		allPairs[i].ID = i
@@ -49,18 +52,19 @@ func (c planCalc) needNewGroup(round []pairings.Pairing, p pairings.Pairing) boo
 	return roundFull || foundSame || lastRoundSimultaneously
 }
 
-func (c planCalc) calcPairsFromGroups() []pairings.Pairing {
+func (c planCalc) calcPairsFromGroups() ([]pairings.Pairing, error) {
 	var allPairs pairings.SortByRound
 	for _, g := range c.groups {
 		pairs, err := g.getPairings()
 		if err != nil {
+			return nil, err
 		}
 		for _, p := range pairs {
 			allPairs = append(allPairs, p)
 		}
 	}
 	sort.Sort(allPairs)
-	return allPairs
+	return allPairs, nil
 }
 
 func (c planCalc) pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(round []pairings.Pairing, ap pairings.Pairing) bool {
@@ -91,10 +95,10 @@ func (c planCalc) pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(ro
 
 func foundSameCompetitorInRound(p pairings.Pairing, round []pairings.Pairing) bool {
 	for _, r := range round {
-		if (r.Competitor1 == p.Competitor1) ||
-			(r.Competitor1 == p.Competitor2) ||
-			(r.Competitor2 == p.Competitor1) ||
-			(r.Competitor2 == p.Competitor2) {
+		if (r.Competitor1ID == p.Competitor1ID) ||
+			(r.Competitor1ID == p.Competitor2ID) ||
+			(r.Competitor2ID == p.Competitor1ID) ||
+			(r.Competitor2ID == p.Competitor2ID) {
 			return true
 		}
 	}

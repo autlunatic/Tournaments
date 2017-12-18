@@ -1,59 +1,65 @@
 package pairings
 
 import (
+	"testing"
+
 	"github.com/autlunatic/TestingUtils"
 	"github.com/autlunatic/Tournaments/tournament/competitors"
-	"testing"
 )
 
 func TestCalcPairings(t *testing.T) {
-	benni := competitors.NewCompetitor("Benni")
-	dani := competitors.NewCompetitor("Dani")
-	c := competitors.Competitors{}
-	c.Items = append(c.Items, benni)
-	c.Items = append(c.Items, dani)
+	benni := competitors.NewCompetitor("Benni", 0)
+	dani := competitors.NewCompetitor("Dani", 1)
+	competitors.Items = competitors.Competitors{}
+	competitors.Items.Items = append(competitors.Items.Items, benni)
+	competitors.Items.Items = append(competitors.Items.Items, dani)
 
-	pairings,_ := CalcPairings(c.Items, 1)
+	pairings, _ := CalcPairings(competitors.Items.Items, 1)
 
 	TestingUtils.CheckEquals(1, len(pairings), "", t)
 	pair := pairings[0]
 
-	if (pair.Competitor1.Name != "Benni") || (pair.Competitor2.Name != "Dani") {
-		t.Errorf("first competitor should be Benni (but was %s) and second should be Dani (but was %s)", pair.Competitor1.Name, pair.Competitor2.Name)
+	if (competitors.GetCompetitor(pair.Competitor1ID).Name() != "Benni") || (competitors.GetCompetitor(pair.Competitor2ID).Name() != "Dani") {
+		t.Errorf("first competitor should be Benni (but was %s) and second should be Dani (but was %s)",
+			competitors.GetCompetitor(pair.Competitor1ID).Name(), competitors.GetCompetitor(pair.Competitor2ID).Name())
 	}
 }
 func TestCalcPairingsEmptyCompetitorsShouldNotPanic(t *testing.T) {
-	c := competitors.Competitors{}
+	competitors.Items = competitors.Competitors{}
 
-	_,err := CalcPairings(c.Items, 1)
-	if err==nil{
+	_, err := CalcPairings(competitors.Items.Items, 1)
+	if err == nil {
 		t.Error("expected Error didnt return!")
 	}
 }
 
 func TestCalcPairings3Competitors(t *testing.T) {
-	benni := competitors.NewCompetitor("Benni")
-	zoe := competitors.NewCompetitor("Zoé")
-	dani := competitors.NewCompetitor("Dani")
-	c := competitors.Competitors{}
-	c.Items = append(c.Items, benni)
-	c.Items = append(c.Items, dani)
-	c.Items = append(c.Items, zoe)
+	benni := competitors.NewCompetitor("Benni", 0)
+	dani := competitors.NewCompetitor("Dani", 1)
+	zoe := competitors.NewCompetitor("Zoé", 2)
+	competitors.Items = competitors.Competitors{}
+	competitors.Items.Items = append(competitors.Items.Items, benni)
+	competitors.Items.Items = append(competitors.Items.Items, dani)
+	competitors.Items.Items = append(competitors.Items.Items, zoe)
 
-	pairings,_ := CalcPairings(c.Items, 1)
+	pairings, _ := CalcPairings(competitors.Items.Items, 1)
 
 	TestingUtils.CheckEquals(3, len(pairings), "", t)
 	pair := pairings[0]
-	if (pair.Competitor1.Name != "Benni") || (pair.Competitor2.Name != "Dani") {
-		t.Errorf("first competitor should be Benni (but was %s) and second should be Dani (but was %s)", pair.Competitor1.Name, pair.Competitor2.Name)
+	if (competitors.GetCompetitor(pair.Competitor1ID).Name() != "Benni") || (competitors.GetCompetitor(pair.Competitor2ID).Name() != "Dani") {
+		t.Errorf("first competitor should be Benni (but was %s) and second should be Dani (but was %s)",
+			competitors.GetCompetitor(pair.Competitor1ID).Name(), competitors.GetCompetitor(pair.Competitor2ID).Name())
 	}
 	pair = pairings[1]
-	if (pair.Competitor1.Name != "Benni") || (pair.Competitor2.Name != "Zoé") {
-		t.Errorf("first competitor should be Benni (but was %s) and second should be Zoé (but was %s)", pair.Competitor1.Name, pair.Competitor2.Name)
+	if (competitors.GetCompetitor(pair.Competitor1ID).Name() != "Benni") || (competitors.GetCompetitor(pair.Competitor2ID).Name() != "Zoé") {
+		t.Errorf("first competitor should be Benni (but was %s) and second should be Zoé (but was %s)",
+			competitors.GetCompetitor(pair.Competitor1ID).Name(), competitors.GetCompetitor(pair.Competitor2ID).Name())
+
 	}
 	pair = pairings[2]
-	if (pair.Competitor1.Name != "Dani") || (pair.Competitor2.Name != "Zoé") {
-		t.Errorf("first competitor should be Dani (but was %s) and second should be Zoé (but was %s)", pair.Competitor1.Name, pair.Competitor2.Name)
+	if (competitors.GetCompetitor(pair.Competitor1ID).Name() != "Dani") || (competitors.GetCompetitor(pair.Competitor2ID).Name() != "Zoé") {
+		t.Errorf("first competitor should be Dani (but was %s) and second should be Zoé (but was %s)",
+			competitors.GetCompetitor(pair.Competitor1ID).Name(), competitors.GetCompetitor(pair.Competitor2ID).Name())
 	}
 }
 
@@ -67,50 +73,53 @@ func checkPairingDoubles(pairings []Pairing) (msg string) {
 			}
 		}
 		if count > 1 {
-			return pair.Competitor1.Name + " vs. " + pair.Competitor2.Name
+			return competitors.GetCompetitor(pair.Competitor1ID).Name() + " vs. " + competitors.GetCompetitor(pair.Competitor2ID).Name()
 		}
 
 	}
 	return ""
 }
 func isSamePair(p Pairing, p2 Pairing) bool {
-	return (p.Competitor1.Name == p2.Competitor1.Name) && (p.Competitor2.Name == p2.Competitor2.Name) ||
-		(p.Competitor1.Name == p2.Competitor2.Name) && (p.Competitor2.Name == p2.Competitor1.Name)
+	return (p.Competitor1ID == p2.Competitor1ID) && (p.Competitor2ID == p2.Competitor2ID) ||
+		(p.Competitor1ID == p2.Competitor2ID) && (p.Competitor2ID == p2.Competitor1ID)
 
 }
 
 func TestCalcPairings5Competitors(t *testing.T) {
-	c := competitors.Competitors{}
-	c.Items = append(c.Items,
-		competitors.NewCompetitor("Benni"),
-		competitors.NewCompetitor("Dani"),
-		competitors.NewCompetitor("Zoé"),
-		competitors.NewCompetitor("Mona"),
-		competitors.NewCompetitor("Andrea"))
+	competitors.Items = competitors.Competitors{}
+	competitors.Items.Items = append(competitors.Items.Items,
+		competitors.NewCompetitor("Benni", 0),
+		competitors.NewCompetitor("Dani", 1),
+		competitors.NewCompetitor("Zoé", 2),
+		competitors.NewCompetitor("Mona", 3),
+		competitors.NewCompetitor("Andrea", 4))
 
-	pairings,_ := CalcPairings(c.Items, 1)
+	pairings, _ := CalcPairings(competitors.Items.Items, 1)
 
 	TestingUtils.CheckEquals(10, len(pairings), "", t)
 	pair := pairings[0]
-	if (pair.Competitor1.Name != "Benni") || (pair.Competitor2.Name != "Dani") {
-		t.Errorf("first competitor should be Benni (but was %s) and second should be Dani (but was %s)", pair.Competitor1.Name, pair.Competitor2.Name)
+	if (competitors.GetCompetitor(pair.Competitor1ID).Name() != "Benni") || (competitors.GetCompetitor(pair.Competitor2ID).Name() != "Dani") {
+		t.Errorf("first competitor should be Benni (but was %s) and second should be Dani (but was %s)",
+			competitors.GetCompetitor(pair.Competitor1ID).Name(), competitors.GetCompetitor(pair.Competitor2ID).Name())
 	}
 	pair = pairings[1]
-	if (pair.Competitor1.Name != "Mona") || (pair.Competitor2.Name != "Andrea") {
-		t.Errorf("first competitor should be Mona (but was %s) and second should be Andrea (but was %s)", pair.Competitor1.Name, pair.Competitor2.Name)
+	if (competitors.GetCompetitor(pair.Competitor1ID).Name() != "Mona") || (competitors.GetCompetitor(pair.Competitor2ID).Name() != "Andrea") {
+		t.Errorf("first competitor should be Mona (but was %s) and second should be Andrea (but was %s)",
+			competitors.GetCompetitor(pair.Competitor1ID).Name(), competitors.GetCompetitor(pair.Competitor2ID).Name())
 	}
 	pair = pairings[2]
-	if (pair.Competitor1.Name != "Benni") || (pair.Competitor2.Name != "Zoé") {
-		t.Errorf("first competitor should be Benni (but was %s) and second should be Zoé (but was %s)", pair.Competitor1.Name, pair.Competitor2.Name)
+	if competitors.GetCompetitor(pair.Competitor1ID).Name() != "Benni" || (competitors.GetCompetitor(pair.Competitor2ID).Name() != "Zoé") {
+		t.Errorf("first competitor should be Benni (but was %s) and second should be Zoé (but was %s)",
+			competitors.GetCompetitor(pair.Competitor1ID).Name(), competitors.GetCompetitor(pair.Competitor2ID).Name())
 	}
 	if msg := checkPairingDoubles(pairings); msg != "" {
 		t.Errorf("same c found! " + msg)
 	}
 }
 func TestCalcPairings12Competitors(t *testing.T) {
-	c := competitors.NewTestCompetitors(12)
+	competitors.Items = competitors.NewTestCompetitors(12)
 
-	pairings,_ := CalcPairings(c.Items, 1)
+	pairings, _ := CalcPairings(competitors.Items.Items, 1)
 	TestingUtils.CheckEquals(66, len(pairings), "", t)
 	TestingUtils.CheckEquals(6, pairings[33].Round, "Round", t)
 	if msg := checkPairingDoubles(pairings); msg != "" {

@@ -13,7 +13,7 @@ func calcRandomDraw(c Getter) {
 			}
 		}
 		addedDrawNumbers = append(addedDrawNumbers, d)
-		c.GetCompetitors()[i].DrawNumber = d
+		c.GetCompetitors()[i].SetDrawNumber(d)
 	}
 
 }
