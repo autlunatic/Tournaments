@@ -1,5 +1,7 @@
 package competitors
 
+import "sort"
+
 // Items contains the Competitors of a tournament
 var Items Competitors
 
@@ -34,6 +36,13 @@ func NewCompetitor(name string, id int) *SimpleCompetitor {
 	c.name = name
 	c.id = id
 	return c
+}
+
+// GetCompetitorsSortedByGroupPoints returns a slice of Competitor which is sorted by GroupPoints ;)
+func GetCompetitorsSortedByGroupPoints() []Competitor {
+	sorter := &sortByGroupPoints{Items.Items}
+	sort.Sort(sorter)
+	return sorter.items
 }
 
 // ClearPoints sets the Points of all Items to zero
