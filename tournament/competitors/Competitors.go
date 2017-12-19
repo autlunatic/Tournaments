@@ -70,6 +70,26 @@ type SimpleCompetitor struct {
 	drawNumber  int
 }
 
+// Add adds a competitor to the slice of competitors
+func Add(c Competitor) error {
+	Items.Items = append(Items.Items, c)
+	return nil
+}
+
+// Delete deletes the Competitor with the given ID
+// it returns a count of Deleted rows, which in a normal use case should always be 0 or one
+func Delete(competitorID int) int {
+
+	var deleteCount int
+	for k, c := range Items.Items {
+		if c.ID() == competitorID {
+			Items.Items = append(Items.Items[:k], Items.Items[k+1:]...)
+			deleteCount++
+		}
+	}
+	return deleteCount
+}
+
 // DrawNumber is for implementing the Competitor interface
 func (c *SimpleCompetitor) DrawNumber() int {
 	return c.drawNumber

@@ -35,3 +35,30 @@ func TestGetCompetitorsSortedByGroupPoints(t *testing.T) {
 		})
 	}
 }
+
+func TestDelete(t *testing.T) {
+	Items = NewTestCompetitors(5)
+	type args struct {
+		competitorID int
+	}
+	tests := []struct {
+		name            string
+		arg             args
+		want            int
+		competitorToAdd Competitor
+	}{
+		{name: "Competitor not in items", arg: args{competitorID: 9}, want: 0, competitorToAdd: nil},
+		{name: "Competitor one in items", arg: args{competitorID: 3}, want: 1, competitorToAdd: nil},
+		{"Competitor two in items", args{competitorID: 1}, 2, NewCompetitor("1", 1)},
+	}
+	for _, tt := range tests {
+		if tt.competitorToAdd != nil {
+			Items.Items = append(Items.Items, tt.competitorToAdd)
+		}
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Delete(tt.arg.competitorID); got != tt.want {
+				t.Errorf("Delete() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
