@@ -37,7 +37,6 @@ func TestGetCompetitorsSortedByGroupPoints(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	Items = NewTestCompetitors(5)
 	type args struct {
 		competitorID int
 	}
@@ -52,12 +51,62 @@ func TestDelete(t *testing.T) {
 		{"Competitor two in items", args{competitorID: 1}, 2, NewCompetitor("1", 1)},
 	}
 	for _, tt := range tests {
+		Items = NewTestCompetitors(5)
 		if tt.competitorToAdd != nil {
 			Items.Items = append(Items.Items, tt.competitorToAdd)
 		}
 		t.Run(tt.name, func(t *testing.T) {
 			if got := Delete(tt.arg.competitorID); got != tt.want {
 				t.Errorf("Delete() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestAdd(t *testing.T) {
+	tests := []struct {
+		name    string
+		arg     Competitor
+		wantErr bool
+	}{
+		{"simple add new one", NewCompetitor("Number 6", 6), false},
+		{"add one with already given ID", NewCompetitor("Number 1", 1), true},
+	}
+	for _, tt := range tests {
+		Items = NewTestCompetitors(5)
+		t.Run(tt.name, func(t *testing.T) {
+			if err := Add(tt.arg); (err != nil) != tt.wantErr {
+				t.Errorf("Add() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestSimpleCompetitor_AddPoints(t *testing.T) {
+	type fields struct {
+		id          int
+		name        string
+		GroupPoints int
+		drawNumber  int64
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		p      int
+	}{
+		{"adding points", fields{1, "Neo", 5, 0}, 3},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &SimpleCompetitor{
+				id:          tt.fields.id,
+				name:        tt.fields.name,
+				GroupPoints: tt.fields.GroupPoints,
+				drawNumber:  tt.fields.drawNumber,
+			}
+			c.AddPoints(tt.p)
+			if c.GetPoints() != 8 {
+				t.Errorf("points were not added or not read after adding: have %v, want %v", c.GetPoints(), 8)
 			}
 		})
 	}

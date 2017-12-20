@@ -1,13 +1,29 @@
 package competitors
 
-import "math/rand"
+import (
+	"bytes"
+	"crypto/rand"
+	"encoding/binary"
+)
 
 func calcRandomDraw(c Getter) {
-	addedDrawNumbers := make([]int, len(c.GetCompetitors()))
+	addedDrawNumbers := make([]int64, len(c.GetCompetitors()))
 	for i := range c.GetCompetitors() {
-		var d int
+		var d int64
 		for {
-			d = rand.Int()
+			b := make([]byte, 3)
+			_, err := rand.Read(b)
+			if err != nil {
+				break
+			}
+			buf := bytes.NewBuffer(b) // b is []byte
+			d, err = binary.ReadVarint(buf)
+			if err != nil {
+				break
+			}
+			if d < 0 {
+				d = -d
+			}
 			if isUniqueInSlice(addedDrawNumbers, d) {
 				break
 			}
@@ -17,7 +33,7 @@ func calcRandomDraw(c Getter) {
 	}
 
 }
-func isUniqueInSlice(addedDrawNumbers []int, d int) bool {
+func isUniqueInSlice(addedDrawNumbers []int64, d int64) bool {
 	for _, a := range addedDrawNumbers {
 		if a == d {
 			return false

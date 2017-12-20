@@ -1,7 +1,6 @@
 package competitors
 
 import (
-	"strconv"
 	"testing"
 )
 
@@ -18,11 +17,11 @@ func TestCalcRandomDraw(t *testing.T) {
 }
 
 func CheckIsAnyDrawNumberDouble(c Competitors, t *testing.T) {
-	foundDraw := make([]int, len(c.Items))
+	foundDraw := make([]int64, len(c.Items))
 	for _, i := range c.Items {
 		for _, d := range foundDraw {
 			if d == i.DrawNumber() {
-				t.Error("Drawnumbers are not unique -> drawnumber found twice: " + strconv.Itoa(d))
+				t.Errorf("Drawnumbers are not unique -> drawnumber found twice: %v", d)
 				return
 			}
 		}
@@ -31,14 +30,14 @@ func CheckIsAnyDrawNumberDouble(c Competitors, t *testing.T) {
 }
 
 func TestIsUniqueInSliceTrue(t *testing.T) {
-	slice := []int{1, 2, 3}
+	slice := []int64{1, 2, 3}
 	if !isUniqueInSlice(slice, 4) {
 		t.Error("4 should be Unique ind slice")
 	}
 }
 
 func TestIsUniqueInSliceFalse(t *testing.T) {
-	slice := []int{1, 2, 3, 4, 5}
+	slice := []int64{1, 2, 3, 4, 5}
 	if isUniqueInSlice(slice, 4) {
 		t.Error("4 should be Unique ind slice")
 	}

@@ -1,6 +1,9 @@
 package competitors
 
-import "sort"
+import (
+	"errors"
+	"sort"
+)
 
 // Items contains the Competitors of a tournament
 var Items Competitors
@@ -58,8 +61,8 @@ type Competitor interface {
 	GetPoints() int
 	ID() int
 	Name() string
-	DrawNumber() int
-	SetDrawNumber(int)
+	DrawNumber() int64
+	SetDrawNumber(int64)
 }
 
 // SimpleCompetitor holds information for an minimalistic Competitor
@@ -67,11 +70,16 @@ type SimpleCompetitor struct {
 	id          int
 	name        string
 	GroupPoints int
-	drawNumber  int
+	drawNumber  int64
 }
 
 // Add adds a competitor to the slice of competitors
 func Add(c Competitor) error {
+	for _, item := range Items.Items {
+		if item.ID() == c.ID() {
+			return errors.New("ID is already taken")
+		}
+	}
 	Items.Items = append(Items.Items, c)
 	return nil
 }
@@ -79,11 +87,10 @@ func Add(c Competitor) error {
 // Delete deletes the Competitor with the given ID
 // it returns a count of Deleted rows, which in a normal use case should always be 0 or one
 func Delete(competitorID int) int {
-
 	var deleteCount int
-	for k, c := range Items.Items {
-		if c.ID() == competitorID {
-			Items.Items = append(Items.Items[:k], Items.Items[k+1:]...)
+	for i := len(Items.Items) - 1; i >= 0; i-- {
+		if Items.Items[i].ID() == competitorID {
+			Items.Items = append(Items.Items[:i], Items.Items[i+1:]...)
 			deleteCount++
 		}
 	}
@@ -91,7 +98,7 @@ func Delete(competitorID int) int {
 }
 
 // DrawNumber is for implementing the Competitor interface
-func (c *SimpleCompetitor) DrawNumber() int {
+func (c *SimpleCompetitor) DrawNumber() int64 {
 	return c.drawNumber
 }
 
@@ -116,6 +123,6 @@ func (c *SimpleCompetitor) ID() int {
 }
 
 // SetDrawNumber is for the Competitor Interface
-func (c *SimpleCompetitor) SetDrawNumber(number int) {
+func (c *SimpleCompetitor) SetDrawNumber(number int64) {
 	c.drawNumber = number
 }
