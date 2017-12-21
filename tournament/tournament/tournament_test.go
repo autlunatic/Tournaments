@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/detail"
 )
 
 func (t *Tournament) AddCompetitor(c competitors.Competitor) {
@@ -11,7 +12,7 @@ func (t *Tournament) AddCompetitor(c competitors.Competitor) {
 }
 
 func newTestTournament() Tournament {
-	td := NewTournamentDetails(2, 1, 0)
+	td := detail.New(2, 1, 0)
 	tournament := NewTournament(*td)
 	return tournament
 }

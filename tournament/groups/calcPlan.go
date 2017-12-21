@@ -60,11 +60,11 @@ func (c planCalc) calcPairsFromGroups() ([]pairings.Pairing, error) {
 			return nil, err
 		}
 		for _, p := range pairs {
-			allPairs = append(allPairs, p)
+			allPairs.Pairs = append(allPairs.Pairs, p)
 		}
 	}
 	sort.Sort(allPairs)
-	return allPairs, nil
+	return allPairs.Pairs, nil
 }
 
 func (c planCalc) pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(round []pairings.Pairing, ap pairings.Pairing) bool {

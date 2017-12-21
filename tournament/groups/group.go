@@ -9,11 +9,11 @@ import (
 // it holds a id which should be unique and the competitors in this group
 type Group struct {
 	id          int
-	competitors competitors.Competitors
+	competitors []competitors.Competitor
 }
 
 func (g Group) getPairings() ([]pairings.Pairing, error) {
-	return pairings.CalcPairings(g.competitors.Items, g.id)
+	return pairings.CalcPairings(g.competitors, g.id)
 }
 
 func (g Group) isLastRound(ap pairings.Pairing) bool {

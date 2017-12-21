@@ -5,32 +5,14 @@ import (
 	"sort"
 )
 
-// Items contains the Competitors of a tournament
-var Items Competitors
-
-//Competitors hold a slice of SimpleCompetitor that implements the Getter
-type Competitors struct {
-	Items []Competitor
-}
-
-// Getter provides a interface to get a slice of Competitors
-type Getter interface {
-	GetCompetitors() []Competitor
-}
-
 // GetCompetitor gets the Competitor of the Items with the given ID
-func GetCompetitor(ID int) Competitor {
-	for _, item := range Items.Items {
+func GetCompetitor(c []Competitor, ID int) Competitor {
+	for _, item := range c {
 		if item.ID() == ID {
 			return item
 		}
 	}
 	return nil
-}
-
-// GetCompetitors implements Getter Interface
-func (c Competitors) GetCompetitors() []Competitor {
-	return c.Items
 }
 
 // NewCompetitor generates a New SimpleCompetitor with the given Name
@@ -42,15 +24,15 @@ func NewCompetitor(name string, id int) *SimpleCompetitor {
 }
 
 // GetCompetitorsSortedByGroupPoints returns a slice of Competitor which is sorted by GroupPoints ;)
-func GetCompetitorsSortedByGroupPoints() []Competitor {
-	sorter := &sortByGroupPoints{Items.Items}
+func GetCompetitorsSortedByGroupPoints(c []Competitor) []Competitor {
+	sorter := &sortByGroupPoints{c}
 	sort.Sort(sorter)
 	return sorter.items
 }
 
 // ClearPoints sets the Points of all Items to zero
-func ClearPoints() {
-	for _, c := range Items.Items {
+func ClearPoints(c []Competitor) {
+	for _, c := range c {
 		c.AddPoints(-c.GetPoints())
 	}
 }
@@ -74,27 +56,32 @@ type SimpleCompetitor struct {
 }
 
 // Add adds a competitor to the slice of competitors
-func Add(c Competitor) error {
-	for _, item := range Items.Items {
+func Add(cs []Competitor, c Competitor) ([]Competitor, error) {
+	for _, item := range cs {
 		if item.ID() == c.ID() {
-			return errors.New("ID is already taken")
+			return cs, errors.New("ID is already taken")
 		}
 	}
-	Items.Items = append(Items.Items, c)
-	return nil
+	cs = append(cs, c)
+	return cs, nil
 }
 
 // Delete deletes the Competitor with the given ID
 // it returns a count of Deleted rows, which in a normal use case should always be 0 or one
-func Delete(competitorID int) int {
+func Delete(cs []Competitor, competitorID int) int {
 	var deleteCount int
-	for i := len(Items.Items) - 1; i >= 0; i-- {
-		if Items.Items[i].ID() == competitorID {
-			Items.Items = append(Items.Items[:i], Items.Items[i+1:]...)
+	for i := len(cs) - 1; i >= 0; i-- {
+		if cs[i].ID() == competitorID {
+			cs = append(cs[:i], cs[i+1:]...)
 			deleteCount++
 		}
 	}
 	return deleteCount
+}
+
+// Clear deletes all records from the comeptitors Items
+func Clear(cs []Competitor) []Competitor {
+	return nil
 }
 
 // DrawNumber is for implementing the Competitor interface

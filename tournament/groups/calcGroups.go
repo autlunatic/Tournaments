@@ -11,14 +11,13 @@ type calcGroupError struct {
 func (e *calcGroupError) Error() string { return e.err }
 
 // CalcGroups adds the competitors to a slice of Group each Group should contain the same amount of competitors if possible
-func CalcGroups(c competitors.Getter, groupsCount int) (groups []Group, err error) {
-	comps := c.GetCompetitors()
-	if groupsCount*2 > len(comps) {
+func CalcGroups(c []competitors.Competitor, groupsCount int) (groups []Group, err error) {
+	if groupsCount*2 > len(c) {
 		return groups, &calcGroupError{"too many groups for this count of competitors!"}
 	}
 
-	competitorsPerGroup := len(comps) / groupsCount
-	additionalCompetitors := len(comps) % groupsCount
+	competitorsPerGroup := len(c) / groupsCount
+	additionalCompetitors := len(c) % groupsCount
 
 	groups = make([]Group, groupsCount)
 	for i := range groups {
@@ -28,9 +27,9 @@ func CalcGroups(c competitors.Getter, groupsCount int) (groups []Group, err erro
 	groupID := 0
 
 	competitorsCountThisGroup := 0
-	for i := 0; i < len(comps); i++ {
+	for i := 0; i < len(c); i++ {
 		competitorsCountThisGroup++
-		groups[groupID].competitors.Items = append(groups[groupID].competitors.Items, comps[i])
+		groups[groupID].competitors = append(groups[groupID].competitors, c[i])
 
 		if (additionalCompetitors > 0 && competitorsCountThisGroup >= competitorsPerGroup+1) ||
 			(additionalCompetitors <= 0 && competitorsCountThisGroup >= competitorsPerGroup) {

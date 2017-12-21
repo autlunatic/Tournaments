@@ -49,18 +49,22 @@ func GetMaxRoundOfPairings(pairing []Pairing) int {
 }
 
 // SortByRound implements the Interface interface for sorting
-type SortByRound []Pairing
+type SortByRound struct {
+	Pairs []Pairing
+	Comps []competitors.Competitor
+}
 
-func (a SortByRound) Len() int      { return len(a) }
-func (a SortByRound) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a SortByRound) Len() int      { return len(a.Pairs) }
+func (a SortByRound) Swap(i, j int) { a.Pairs[i], a.Pairs[j] = a.Pairs[j], a.Pairs[i] }
 func (a SortByRound) Less(i, j int) bool {
-	if a[i].Round != a[j].Round {
-		return a[i].Round < a[j].Round
+	if a.Pairs[i].Round != a.Pairs[j].Round {
+		return a.Pairs[i].Round < a.Pairs[j].Round
 	}
-	if a[i].GroupID != a[j].GroupID {
-		return a[i].GroupID < a[j].GroupID
+	if a.Pairs[i].GroupID != a.Pairs[j].GroupID {
+		return a.Pairs[i].GroupID < a.Pairs[j].GroupID
 	}
-	return competitors.GetCompetitor(a[i].Competitor1ID).DrawNumber() < competitors.GetCompetitor(a[j].Competitor1ID).DrawNumber()
+	return competitors.GetCompetitor(a.Comps, a.Pairs[i].Competitor1ID).DrawNumber() <
+		competitors.GetCompetitor(a.Comps, a.Pairs[j].Competitor1ID).DrawNumber()
 
 }
 

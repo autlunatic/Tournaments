@@ -2,11 +2,11 @@ package groups
 
 import (
 	"github.com/autlunatic/Tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/detail"
 	"github.com/autlunatic/Tournaments/tournament/pairings"
-	"github.com/autlunatic/Tournaments/tournament/tournament"
 )
 
-func calcMostGamesPerCompetitorPlan(cg competitors.Getter, details tournament.Details) ([][]pairings.Pairing, []Group) {
+func calcMostGamesPerCompetitorPlan(cg []competitors.Competitor, details detail.Details) ([][]pairings.Pairing, []Group) {
 	var plan [][]pairings.Pairing
 	var groups []Group
 	var err error

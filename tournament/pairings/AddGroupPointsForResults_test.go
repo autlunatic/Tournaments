@@ -49,7 +49,7 @@ func getArgsForError() args {
 }
 
 func TestAddGroupPointsForResults(t *testing.T) {
-	competitors.Items = competitors.NewTestCompetitors(5)
+	cs := competitors.NewTestCompetitors(5)
 	calc := tournamentPoints.NewSimpleTournamentPointCalc(1, 3, 0)
 	tests := []struct {
 		name         string
@@ -62,16 +62,16 @@ func TestAddGroupPointsForResults(t *testing.T) {
 		{name: "Error wanted because result found of id where is no pairing", args: getArgsForError(), wantErr: true, resultPoints: []int{}},
 	}
 	for _, tt := range tests {
-		competitors.ClearPoints()
+		competitors.ClearPoints(cs)
 		t.Run(tt.name, func(t *testing.T) {
-			if err := AddGroupPointsForResults(tt.args.pairings, tt.args.results, calc); (err != nil) != tt.wantErr {
+			if err := AddGroupPointsForResults(cs, tt.args.pairings, tt.args.results, calc); (err != nil) != tt.wantErr {
 				t.Errorf("AddGroupPointsForResults() error = %v, wantErr %v", err, tt.wantErr)
 
 			}
 			for i, r := range tt.resultPoints {
 
-				if competitors.GetCompetitor(i).GetPoints() != r {
-					t.Errorf("competitorPoints %v, wanted %v", competitors.GetCompetitor(i).GetPoints(), r)
+				if competitors.GetCompetitor(cs, i).GetPoints() != r {
+					t.Errorf("competitorPoints %v, wanted %v", competitors.GetCompetitor(cs, i).GetPoints(), r)
 
 				}
 			}

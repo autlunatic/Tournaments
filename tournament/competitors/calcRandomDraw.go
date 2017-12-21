@@ -6,9 +6,11 @@ import (
 	"encoding/binary"
 )
 
-func calcRandomDraw(c Getter) {
-	addedDrawNumbers := make([]int64, len(c.GetCompetitors()))
-	for i := range c.GetCompetitors() {
+// CalcRandomDraw adds random generated numbers to the DrawNumber of all competitors.
+func CalcRandomDraw(c []Competitor) {
+
+	addedDrawNumbers := make([]int64, len(c))
+	for i := range c {
 		var d int64
 		for {
 			b := make([]byte, 3)
@@ -29,7 +31,7 @@ func calcRandomDraw(c Getter) {
 			}
 		}
 		addedDrawNumbers = append(addedDrawNumbers, d)
-		c.GetCompetitors()[i].SetDrawNumber(d)
+		c[i].SetDrawNumber(d)
 	}
 
 }

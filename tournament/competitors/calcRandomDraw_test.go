@@ -6,19 +6,19 @@ import (
 
 func TestCalcRandomDraw(t *testing.T) {
 
-	c := Competitors{}
-	c.Items = append(c.Items,
+	c := make([]Competitor, 0)
+	c = append(c,
 		NewCompetitor("Benni", 0),
 		NewCompetitor("Dani", 1),
 		NewCompetitor("Zoé", 2),
 		NewCompetitor("Mona", 3))
-	calcRandomDraw(c)
+	CalcRandomDraw(c)
 	CheckIsAnyDrawNumberDouble(c, t)
 }
 
-func CheckIsAnyDrawNumberDouble(c Competitors, t *testing.T) {
-	foundDraw := make([]int64, len(c.Items))
-	for _, i := range c.Items {
+func CheckIsAnyDrawNumberDouble(c []Competitor, t *testing.T) {
+	foundDraw := make([]int64, len(c))
+	for _, i := range c {
 		for _, d := range foundDraw {
 			if d == i.DrawNumber() {
 				t.Errorf("Drawnumbers are not unique -> drawnumber found twice: %v", d)
