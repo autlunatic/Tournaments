@@ -3,19 +3,22 @@ package groups
 import (
 	"sort"
 
+	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
 
 type planCalc struct {
 	groups               []Group
 	countOfParallelGames int
+	allCompetitors       []competitors.Competitor
 }
 
-func calcPlan(Groups []Group, countOfParallelGames int) [][]pairings.Pairing {
+func calcPlan(allCompetitors []competitors.Competitor, Groups []Group, countOfParallelGames int) [][]pairings.Pairing {
 
 	calc := planCalc{
 		groups:               Groups,
 		countOfParallelGames: countOfParallelGames,
+		allCompetitors:       allCompetitors,
 	}
 
 	allPairs, err := calc.calcPairsFromGroups()
@@ -54,6 +57,7 @@ func (c planCalc) needNewGroup(round []pairings.Pairing, p pairings.Pairing) boo
 
 func (c planCalc) calcPairsFromGroups() ([]pairings.Pairing, error) {
 	var allPairs pairings.SortByRound
+	allPairs.Comps = c.allCompetitors
 	for _, g := range c.groups {
 		pairs, err := g.getPairings()
 		if err != nil {
@@ -64,6 +68,7 @@ func (c planCalc) calcPairsFromGroups() ([]pairings.Pairing, error) {
 		}
 	}
 	sort.Sort(allPairs)
+
 	return allPairs.Pairs, nil
 }
 
