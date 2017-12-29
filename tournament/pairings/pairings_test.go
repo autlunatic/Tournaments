@@ -11,8 +11,8 @@ import (
 
 func TestCalcPairings(t *testing.T) {
 
-	benni := competitors.NewCompetitor("Benni", 0)
-	dani := competitors.NewCompetitor("Dani", 1)
+	benni := competitors.New("Benni", 0)
+	dani := competitors.New("Dani", 1)
 	cs := make([]competitors.Competitor, 2)
 	cs[0] = benni
 	cs[1] = dani
@@ -36,9 +36,9 @@ func TestCalcPairingsEmptyCompetitorsShouldNotPanic(t *testing.T) {
 }
 
 func TestCalcPairings3Competitors(t *testing.T) {
-	benni := competitors.NewCompetitor("Benni", 0)
-	dani := competitors.NewCompetitor("Dani", 1)
-	zoe := competitors.NewCompetitor("Zoé", 2)
+	benni := competitors.New("Benni", 0)
+	dani := competitors.New("Dani", 1)
+	zoe := competitors.New("Zoé", 2)
 	cs := make([]competitors.Competitor, 3)
 	cs[0] = benni
 	cs[1] = dani
@@ -90,11 +90,11 @@ func isSamePair(p Pairing, p2 Pairing) bool {
 func TestCalcPairings5Competitors(t *testing.T) {
 	var cs []competitors.Competitor
 	cs = append(cs,
-		competitors.NewCompetitor("Benni", 0),
-		competitors.NewCompetitor("Dani", 1),
-		competitors.NewCompetitor("Zoé", 2),
-		competitors.NewCompetitor("Mona", 3),
-		competitors.NewCompetitor("Andrea", 4))
+		competitors.New("Benni", 0),
+		competitors.New("Dani", 1),
+		competitors.New("Zoé", 2),
+		competitors.New("Mona", 3),
+		competitors.New("Andrea", 4))
 
 	pairings, _ := CalcPairings(cs, 1)
 

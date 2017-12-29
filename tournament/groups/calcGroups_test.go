@@ -10,7 +10,7 @@ import (
 func TestCalcGroups_OneCompetitor_OneGroup(t *testing.T) {
 	c := make([]competitors.Competitor, 0)
 	c = append(c,
-		competitors.NewCompetitor("Benni", 0))
+		competitors.New("Benni", 0))
 
 	result, err := CalcGroups(c, 1)
 	TestingUtils.CheckEquals(0, len(result), "len of result should match groupcount", t)

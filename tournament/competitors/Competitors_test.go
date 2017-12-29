@@ -50,7 +50,7 @@ func TestDelete(t *testing.T) {
 	}{
 		{name: "Competitor not in items", arg: args{competitorID: 9}, want: 0, competitorToAdd: nil},
 		{name: "Competitor one in items", arg: args{competitorID: 3}, want: 1, competitorToAdd: nil},
-		{"Competitor two in items", args{competitorID: 1}, 2, NewCompetitor("1", 1)},
+		{"Competitor two in items", args{competitorID: 1}, 2, New("1", 1)},
 	}
 	for _, tt := range tests {
 		c := NewTestCompetitors(5)
@@ -71,8 +71,8 @@ func TestAdd(t *testing.T) {
 		arg     Competitor
 		wantErr bool
 	}{
-		{"simple add new one", NewCompetitor("Number 6", 6), false},
-		{"add one with already given ID", NewCompetitor("Number 1", 1), true},
+		{"simple add new one", New("Number 6", 6), false},
+		{"add one with already given ID", New("Number 1", 1), true},
 	}
 	for _, tt := range tests {
 		c := NewTestCompetitors(5)

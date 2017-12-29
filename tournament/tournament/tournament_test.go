@@ -19,7 +19,7 @@ func newTestTournament() Tournament {
 
 func TestAddCompetitor(t *testing.T) {
 	tournament := newTestTournament()
-	tournament.AddCompetitor(competitors.NewCompetitor("Benni", 0))
+	tournament.AddCompetitor(competitors.New("Benni", 0))
 	if len(tournament.Competitors) != 1 {
 		t.Error("Should be one competitor")
 	}

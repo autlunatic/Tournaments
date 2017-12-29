@@ -81,7 +81,7 @@ func CalcPairings(c []competitors.Competitor, groupID int) ([]Pairing, error) {
 	copy(mc, cs)
 	// if the count is odd add one dummy competitor for the roundRobin
 	if len(cs)%2 > 0 {
-		mc = append(mc, competitors.NewCompetitor("", -1))
+		mc = append(mc, competitors.New("", -1))
 	}
 	// cut the first fixated competitor see roundrobin
 	if len(mc) > 1 {

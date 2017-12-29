@@ -15,8 +15,8 @@ func GetCompetitor(c []Competitor, ID int) Competitor {
 	return nil
 }
 
-// NewCompetitor generates a New SimpleCompetitor with the given Name
-func NewCompetitor(name string, id int) *SimpleCompetitor {
+// New generates a New SimpleCompetitor with the given Name
+func New(name string, id int) *SimpleCompetitor {
 	c := new(SimpleCompetitor)
 	c.name = name
 	c.id = id

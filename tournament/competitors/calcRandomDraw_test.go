@@ -8,10 +8,10 @@ func TestCalcRandomDraw(t *testing.T) {
 
 	c := make([]Competitor, 0)
 	c = append(c,
-		NewCompetitor("Benni", 0),
-		NewCompetitor("Dani", 1),
-		NewCompetitor("Zoé", 2),
-		NewCompetitor("Mona", 3))
+		New("Benni", 0),
+		New("Dani", 1),
+		New("Zoé", 2),
+		New("Mona", 3))
 	CalcRandomDraw(c)
 	CheckIsAnyDrawNumberDouble(c, t)
 }
