@@ -38,10 +38,19 @@ func getArgsFor2() args {
 	out.results[4] = Result{4, 4}
 	return out
 }
-func getArgsForError() args {
+func getArgsForError1() args {
 	var out args
 	out.pairings = append(out.pairings, Pairing{0, 5, 1, 1, 1})
 	out.pairings = append(out.pairings, Pairing{0, 5, 2, 2, 1})
+	out.results = make(map[int]Result)
+	out.results[1] = Result{1, 5}
+	out.results[5] = Result{4, 4}
+	return out
+}
+func getArgsForError2() args {
+	var out args
+	out.pairings = append(out.pairings, Pairing{5, 0, 1, 1, 1})
+	out.pairings = append(out.pairings, Pairing{5, 0, 2, 2, 1})
 	out.results = make(map[int]Result)
 	out.results[1] = Result{1, 5}
 	out.results[5] = Result{4, 4}
@@ -59,7 +68,8 @@ func TestAddGroupPointsForResults(t *testing.T) {
 	}{
 		{name: "Two competitors 4 games", args: getArgsFor2(), wantErr: false, resultPoints: []int{4, 7}},
 		{name: "Five competitors 4 games", args: getArgsFor5(), wantErr: false, resultPoints: []int{1, 4, 3, 0, 3}},
-		{name: "Error wanted because result found of id where is no pairing", args: getArgsForError(), wantErr: true, resultPoints: []int{}},
+		{name: "Error wanted because Competitor 1 was not found", args: getArgsForError1(), wantErr: true, resultPoints: []int{}},
+		{name: "Error wanted because Competitor 2 was not found", args: getArgsForError2(), wantErr: true, resultPoints: []int{}},
 	}
 	for _, tt := range tests {
 		competitors.ClearPoints(cs)
@@ -72,7 +82,6 @@ func TestAddGroupPointsForResults(t *testing.T) {
 
 				if competitors.GetCompetitor(cs, i).GetPoints() != r {
 					t.Errorf("competitorPoints %v, wanted %v", competitors.GetCompetitor(cs, i).GetPoints(), r)
-
 				}
 			}
 		})

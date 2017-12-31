@@ -9,8 +9,8 @@ import (
 
 type planCalc struct {
 	groups               []Group
-	countOfParallelGames int
 	allCompetitors       []competitors.Competitor
+	countOfParallelGames int
 }
 
 func calcPlan(allCompetitors []competitors.Competitor, Groups []Group, countOfParallelGames int) [][]pairings.Pairing {
@@ -56,7 +56,7 @@ func (c planCalc) needNewGroup(round []pairings.Pairing, p pairings.Pairing) boo
 }
 
 func (c planCalc) calcPairsFromGroups() ([]pairings.Pairing, error) {
-	var allPairs pairings.SortByRound
+	var allPairs pairings.SortByRoundGroupDrawnumber
 	allPairs.Comps = c.allCompetitors
 	for _, g := range c.groups {
 		pairs, err := g.getPairings()

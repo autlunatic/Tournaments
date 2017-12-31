@@ -79,11 +79,6 @@ func Delete(cs []Competitor, competitorID int) int {
 	return deleteCount
 }
 
-// Clear deletes all records from the comeptitors Items
-func Clear(cs []Competitor) []Competitor {
-	return nil
-}
-
 // DrawNumber is for implementing the Competitor interface
 func (c *SimpleCompetitor) DrawNumber() int64 {
 	return c.drawNumber

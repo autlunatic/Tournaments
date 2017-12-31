@@ -1,9 +1,8 @@
 package pairings
 
 import (
-	"testing"
-
 	"fmt"
+	"testing"
 
 	"github.com/autlunatic/TestingUtils"
 	"github.com/autlunatic/Tournaments/tournament/competitors"
@@ -126,5 +125,97 @@ func TestCalcPairings12Competitors(t *testing.T) {
 	TestingUtils.CheckEquals(6, pairings[33].Round, "Round", t)
 	if msg := checkPairingDoubles(pairings); msg != "" {
 		t.Errorf("same competitors found! " + msg)
+	}
+}
+
+func getPairingsForTestMaxRound() []Pairing {
+	p := make([]Pairing, 4)
+	p[0] = Pairing{1, 2, 3, 1, 1}
+	p[1] = Pairing{3, 4, 6, 1, 1}
+	p[2] = Pairing{1, 2, 5, 1, 1}
+	return p
+}
+func TestGetMaxRoundOfPairings(t *testing.T) {
+	tests := []struct {
+		name string
+		args []Pairing
+		want int
+	}{
+		{"Wanted Maxround 6", getPairingsForTestMaxRound(), 6},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := GetMaxRoundOfPairings(tt.args); got != tt.want {
+				t.Errorf("GetMaxRoundOfPairings() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestPairing_ToString(t *testing.T) {
+	type fields struct {
+		Competitor1ID int
+		Competitor2ID int
+		Round         int
+		ID            int
+		GroupID       int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   string
+	}{
+		{"simple ToStringTest", fields{1, 2, 3, 1, 1}, "round: 3; 1 vs. 2"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := Pairing{
+				Competitor1ID: tt.fields.Competitor1ID,
+				Competitor2ID: tt.fields.Competitor2ID,
+				Round:         tt.fields.Round,
+				ID:            tt.fields.ID,
+				GroupID:       tt.fields.GroupID,
+			}
+			if got := p.ToString(); got != tt.want {
+				t.Errorf("Pairing.ToString() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestPairing_InPairings(t *testing.T) {
+
+	type fields struct {
+		Competitor1ID int
+		Competitor2ID int
+		Round         int
+		ID            int
+		GroupID       int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   bool
+	}{
+		{"is in slice", fields{1, 2, 1, 1, 1}, true},
+		{"is not in slice", fields{7, 8, 1, 4, 1}, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := Pairing{
+				Competitor1ID: tt.fields.Competitor1ID,
+				Competitor2ID: tt.fields.Competitor2ID,
+				Round:         tt.fields.Round,
+				ID:            tt.fields.ID,
+				GroupID:       tt.fields.GroupID,
+			}
+			ps := make([]Pairing, 3)
+			ps[0] = Pairing{1, 2, 1, 1, 1}
+			ps[1] = Pairing{3, 4, 1, 2, 1}
+			ps[2] = Pairing{5, 6, 1, 3, 1}
+			if got := p.InPairings(ps); got != tt.want {
+				t.Errorf("Pairing.InPairings() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }

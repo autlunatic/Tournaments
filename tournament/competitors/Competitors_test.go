@@ -113,3 +113,41 @@ func TestSimpleCompetitor_AddPoints(t *testing.T) {
 		})
 	}
 }
+
+func TestGetCompetitor(t *testing.T) {
+	cs := NewTestCompetitors(5)
+	tests := []struct {
+		name string
+		ID   int
+		want Competitor
+	}{
+		{"Get competitor", 1, cs[1]},
+		{"invalid Competitor", 9, nil},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := GetCompetitor(cs, tt.ID); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetCompetitor() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestClearPoints(t *testing.T) {
+	cs := NewTestCompetitors(9)
+	for i := range cs {
+		cs[i].AddPoints(i + 1)
+	}
+	for i := range cs {
+		if cs[i].GetPoints() == 0 {
+			t.Error("no points should be Zero")
+		}
+	}
+	ClearPoints(cs)
+	for i := range cs {
+		if cs[i].GetPoints() != 0 {
+			t.Error("all points should be Zero after clear")
+		}
+	}
+
+}

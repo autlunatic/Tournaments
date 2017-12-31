@@ -2,6 +2,7 @@ package pairings
 
 import (
 	"errors"
+	"sort"
 	"strconv"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
@@ -48,15 +49,15 @@ func GetMaxRoundOfPairings(pairing []Pairing) int {
 	return result
 }
 
-// SortByRound implements the Interface interface for sorting
-type SortByRound struct {
+// SortByRoundGroupDrawnumber implements the Interface interface for sorting
+type SortByRoundGroupDrawnumber struct {
 	Pairs []Pairing
 	Comps []competitors.Competitor
 }
 
-func (a SortByRound) Len() int      { return len(a.Pairs) }
-func (a SortByRound) Swap(i, j int) { a.Pairs[i], a.Pairs[j] = a.Pairs[j], a.Pairs[i] }
-func (a SortByRound) Less(i, j int) bool {
+func (a SortByRoundGroupDrawnumber) Len() int      { return len(a.Pairs) }
+func (a SortByRoundGroupDrawnumber) Swap(i, j int) { a.Pairs[i], a.Pairs[j] = a.Pairs[j], a.Pairs[i] }
+func (a SortByRoundGroupDrawnumber) Less(i, j int) bool {
 	if a.Pairs[i].Round != a.Pairs[j].Round {
 		return a.Pairs[i].Round < a.Pairs[j].Round
 	}
@@ -95,7 +96,11 @@ func CalcPairings(c []competitors.Competitor, groupID int) ([]Pairing, error) {
 		// shift
 		mc = append(mc[1:], mc[0])
 	}
-	return result, nil
+	var s SortByRoundGroupDrawnumber
+	s.Comps = c
+	s.Pairs = result
+	sort.Sort(s)
+	return s.Pairs, nil
 }
 
 func addToResult(c []competitors.Competitor, result *[]Pairing, c1 int, i int, groupID int) {
