@@ -7,7 +7,7 @@ type Details struct {
 	MinutesAvailForGroupsPhase int
 }
 
-// NewTournamentDetails creates and initializes Details
+// New creates and initializes Details
 func New(numberOfFields int, minutesPerGame int, minAvail int) *Details {
 	d := new(Details)
 	d.NumberOfParallelGames = numberOfFields

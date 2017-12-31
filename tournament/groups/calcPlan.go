@@ -63,9 +63,7 @@ func (c planCalc) calcPairsFromGroups() ([]pairings.Pairing, error) {
 		if err != nil {
 			return nil, err
 		}
-		for _, p := range pairs {
-			allPairs.Pairs = append(allPairs.Pairs, p)
-		}
+		allPairs.Pairs = append(allPairs.Pairs, pairs...)
 	}
 	sort.Sort(allPairs)
 

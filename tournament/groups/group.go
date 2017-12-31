@@ -9,11 +9,18 @@ import (
 // it holds a id which should be unique and the competitors in this group
 type Group struct {
 	id          int
-	competitors []competitors.Competitor
+	Competitors []competitors.Competitor
+}
+
+// AddCompetitors adds the given competitors to the Group
+func (g *Group) AddCompetitors(comps []competitors.Competitor) {
+	for i := range comps {
+		g.Competitors = append(g.Competitors, comps[i])
+	}
 }
 
 func (g Group) getPairings() ([]pairings.Pairing, error) {
-	return pairings.CalcPairings(g.competitors, g.id)
+	return pairings.CalcPairings(g.Competitors, g.id)
 }
 
 func (g Group) isLastRound(ap pairings.Pairing) bool {

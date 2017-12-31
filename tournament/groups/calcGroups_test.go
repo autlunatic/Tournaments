@@ -22,7 +22,7 @@ func TestCalcGroups_6Competitor_2Groups(t *testing.T) {
 	c := competitors.NewTestCompetitors(6)
 	result, _ := CalcGroups(c, 2)
 	TestingUtils.CheckEquals(2, len(result), "len of result should match groupcount", t)
-	if result[0].competitors[0].Name() != "1" {
+	if result[0].Competitors[0].Name() != "1" {
 		t.Error("first Group first competitor should be Benni")
 	}
 }
@@ -30,10 +30,10 @@ func TestCalcGroups_7Competitor_2Groups(t *testing.T) {
 	c := competitors.NewTestCompetitors(7)
 	result, err := CalcGroups(c, 2)
 	TestingUtils.CheckEquals(2, len(result), "len of result should match groupcount", t)
-	if result[0].competitors[3].Name() != "4" {
+	if result[0].Competitors[3].Name() != "4" {
 		t.Error("item[3] should be 4")
 	}
-	if result[1].competitors[2].Name() != "7" {
+	if result[1].Competitors[2].Name() != "7" {
 		t.Error("second Group last competitor should be 7")
 	}
 	if err != nil {
@@ -44,10 +44,10 @@ func TestCalcGroups_23Competitor_7Groups(t *testing.T) {
 	c := competitors.NewTestCompetitors(23)
 	result, _ := CalcGroups(c, 7)
 	TestingUtils.CheckEquals(7, len(result), "len of result should match groupcount", t)
-	if result[0].competitors[3].Name() != "4" {
+	if result[0].Competitors[3].Name() != "4" {
 		t.Error("item[3] should be 4")
 	}
-	if result[6].competitors[2].Name() != "23" {
+	if result[6].Competitors[2].Name() != "23" {
 		t.Error("second Group last competitor should be 7")
 	}
 	TestingUtils.CheckEquals(7, result[6].id, "Group id of last Group should be 7", t)

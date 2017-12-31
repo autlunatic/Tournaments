@@ -29,7 +29,7 @@ func CalcGroups(c []competitors.Competitor, groupsCount int) (groups []Group, er
 	competitorsCountThisGroup := 0
 	for i := 0; i < len(c); i++ {
 		competitorsCountThisGroup++
-		groups[groupID].competitors = append(groups[groupID].competitors, c[i])
+		groups[groupID].Competitors = append(groups[groupID].Competitors, c[i])
 
 		if (additionalCompetitors > 0 && competitorsCountThisGroup >= competitorsPerGroup+1) ||
 			(additionalCompetitors <= 0 && competitorsCountThisGroup >= competitorsPerGroup) {
