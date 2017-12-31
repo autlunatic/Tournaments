@@ -16,12 +16,11 @@ type DetermineFinalists struct {
 }
 
 func (d DetermineFinalists) determine() (out []competitors.Competitor) {
-
 	out = make([]competitors.Competitor, d.count)
 	var outIndex int
-	d.addAllBestPlaced(out, &outIndex)
-	d.addAllMostPoints(out, &outIndex)
-	out = competitors.GetCompetitorsSortedByGroupPoints(out)
+	for i := 0; i < len(d.grps); i++ {
+		d.addAllForPlacement(out, &outIndex, i)
+	}
 	return out
 }
 
@@ -33,24 +32,26 @@ func isInSlice(comp competitors.Competitor, comps []competitors.Competitor) bool
 	}
 	return false
 }
-func (d DetermineFinalists) addAllBestPlaced(out []competitors.Competitor, outIndex *int) {
-	for i := range d.grps {
-		sc := competitors.GetCompetitorsSortedByGroupPoints(d.grps[i].Competitors)
-		out[*outIndex] = sc[0]
+
+func (d DetermineFinalists) addAllForPlacement(out []competitors.Competitor, outIndex *int, placementIndex int) {
+	sc := make([]competitors.Competitor, len(d.grps))
+	ssc := d.getSortedCompetitorsForGroup(sc, placementIndex)
+	for i := range ssc {
+		if *outIndex >= d.count {
+			return
+		}
+		out[*outIndex] = sc[i]
 		*outIndex++
 	}
 }
 
-func (d DetermineFinalists) addAllMostPoints(out []competitors.Competitor, outIndex *int) {
-	sc := competitors.GetCompetitorsSortedByGroupPoints(d.comps)
-	for i := range sc {
-		if *outIndex >= d.count {
-			return
-		}
-		if !isInSlice(sc[i], out) {
-			out[*outIndex] = sc[i]
-			*outIndex++
-		}
+func (d DetermineFinalists) getSortedCompetitorsForGroup(sc []competitors.Competitor, placementIndex int) (out []competitors.Competitor) {
+	var scID int
+	for i := range d.grps {
+		gc := competitors.GetCompetitorsSortedByGroupPoints(d.grps[i].Competitors)
+		sc[scID] = gc[placementIndex]
+		scID++
 	}
-
+	ssc := competitors.GetCompetitorsSortedByGroupPoints(sc)
+	return ssc
 }
