@@ -1,8 +1,6 @@
 package results
 
 import (
-	"reflect"
-
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/groups"
 )
@@ -10,48 +8,41 @@ import (
 // DetermineFinalists provides functionality to determine who of the groups reached the finals
 // count: count of competitors which can reach the finals, semifinals = 4
 type DetermineFinalists struct {
-	comps []competitors.Competitor
-	grps  []groups.Group
-	count int
+	comps          []competitors.Competitor
+	grps           []groups.Group
+	count          int
+	outIndex       int
+	placementIndex int
+	out            []competitors.Competitor
 }
 
-func (d DetermineFinalists) determine() (out []competitors.Competitor) {
-	out = make([]competitors.Competitor, d.count)
-	var outIndex int
+func (d *DetermineFinalists) determine() []competitors.Competitor {
+	d.out = make([]competitors.Competitor, d.count)
 	for i := 0; i < len(d.grps); i++ {
-		d.addAllForPlacement(out, &outIndex, i)
+		d.placementIndex = i
+		d.addForPlacement()
 	}
-	return out
+	return d.out
 }
 
-func isInSlice(comp competitors.Competitor, comps []competitors.Competitor) bool {
-	for i := range comps {
-		if reflect.DeepEqual(comp, comps[i]) {
-			return true
-		}
-	}
-	return false
-}
-
-func (d DetermineFinalists) addAllForPlacement(out []competitors.Competitor, outIndex *int, placementIndex int) {
-	sc := make([]competitors.Competitor, len(d.grps))
-	ssc := d.getSortedCompetitorsForGroup(sc, placementIndex)
+func (d *DetermineFinalists) addForPlacement() {
+	ssc := d.getSortedCompetitorsForGroup()
 	for i := range ssc {
-		if *outIndex >= d.count {
+		if d.outIndex >= d.count {
 			return
 		}
-		out[*outIndex] = sc[i]
-		*outIndex++
+		d.out[d.outIndex] = ssc[i]
+		d.outIndex++
 	}
 }
 
-func (d DetermineFinalists) getSortedCompetitorsForGroup(sc []competitors.Competitor, placementIndex int) (out []competitors.Competitor) {
+func (d *DetermineFinalists) getSortedCompetitorsForGroup() (out []competitors.Competitor) {
 	var scID int
+	sc := make([]competitors.Competitor, len(d.grps))
 	for i := range d.grps {
 		gc := competitors.GetCompetitorsSortedByGroupPoints(d.grps[i].Competitors)
-		sc[scID] = gc[placementIndex]
+		sc[scID] = gc[d.placementIndex]
 		scID++
 	}
-	ssc := competitors.GetCompetitorsSortedByGroupPoints(sc)
-	return ssc
+	return competitors.GetCompetitorsSortedByGroupPoints(sc)
 }
