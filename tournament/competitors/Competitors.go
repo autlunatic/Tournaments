@@ -6,7 +6,7 @@ import (
 )
 
 // GetCompetitor gets the Competitor of the Items with the given ID
-func GetCompetitor(c []Competitor, ID int) Competitor {
+func GetCompetitor(c []C, ID int) C {
 	for _, item := range c {
 		if item.ID() == ID {
 			return item
@@ -24,21 +24,21 @@ func New(name string, id int) *SimpleCompetitor {
 }
 
 // GetCompetitorsSortedByGroupPoints returns a slice of Competitor which is sorted by GroupPoints ;)
-func GetCompetitorsSortedByGroupPoints(c []Competitor) []Competitor {
+func GetCompetitorsSortedByGroupPoints(c []C) []C {
 	sorter := &sortByGroupPoints{c}
 	sort.Sort(sorter)
 	return sorter.items
 }
 
 // ClearPoints sets the Points of all Items to zero
-func ClearPoints(c []Competitor) {
+func ClearPoints(c []C) {
 	for _, c := range c {
 		c.AddPoints(-c.GetPoints())
 	}
 }
 
-// Competitor is the interface used by the Tournament package for Operations with the Competitor
-type Competitor interface {
+// C is the interface used by the Tournament package for Operations with the Competitor
+type C interface {
 	AddPoints(p int)
 	GetPoints() int
 	ID() int
@@ -56,7 +56,7 @@ type SimpleCompetitor struct {
 }
 
 // Add adds a competitor to the slice of competitors
-func Add(cs []Competitor, c Competitor) ([]Competitor, error) {
+func Add(cs []C, c C) ([]C, error) {
 	for _, item := range cs {
 		if item.ID() == c.ID() {
 			return cs, errors.New("ID is already taken")
@@ -68,7 +68,7 @@ func Add(cs []Competitor, c Competitor) ([]Competitor, error) {
 
 // Delete deletes the Competitor with the given ID
 // it returns a count of Deleted rows, which in a normal use case should always be 0 or one
-func Delete(cs []Competitor, competitorID int) int {
+func Delete(cs []C, competitorID int) int {
 	var deleteCount int
 	for i := len(cs) - 1; i >= 0; i-- {
 		if cs[i].ID() == competitorID {

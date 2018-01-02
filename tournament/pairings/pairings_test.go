@@ -12,7 +12,7 @@ func TestCalcPairings(t *testing.T) {
 
 	benni := competitors.New("Benni", 0)
 	dani := competitors.New("Dani", 1)
-	cs := make([]competitors.Competitor, 2)
+	cs := make([]competitors.C, 2)
 	cs[0] = benni
 	cs[1] = dani
 
@@ -27,7 +27,7 @@ func TestCalcPairings(t *testing.T) {
 	}
 }
 func TestCalcPairingsEmptyCompetitorsShouldNotPanic(t *testing.T) {
-	var cs []competitors.Competitor
+	var cs []competitors.C
 	_, err := CalcPairings(cs, 1)
 	if err == nil {
 		t.Error("expected Error didnt return!")
@@ -38,7 +38,7 @@ func TestCalcPairings3Competitors(t *testing.T) {
 	benni := competitors.New("Benni", 0)
 	dani := competitors.New("Dani", 1)
 	zoe := competitors.New("Zoé", 2)
-	cs := make([]competitors.Competitor, 3)
+	cs := make([]competitors.C, 3)
 	cs[0] = benni
 	cs[1] = dani
 	cs[2] = zoe
@@ -64,7 +64,7 @@ func TestCalcPairings3Competitors(t *testing.T) {
 	}
 }
 
-func checkPairingDoubles(pairings []Pairing) (msg string) {
+func checkPairingDoubles(pairings []P) (msg string) {
 	var count int
 	for _, pair := range pairings {
 		count = 0
@@ -80,14 +80,14 @@ func checkPairingDoubles(pairings []Pairing) (msg string) {
 	}
 	return ""
 }
-func isSamePair(p Pairing, p2 Pairing) bool {
+func isSamePair(p P, p2 P) bool {
 	return (p.Competitor1ID == p2.Competitor1ID) && (p.Competitor2ID == p2.Competitor2ID) ||
 		(p.Competitor1ID == p2.Competitor2ID) && (p.Competitor2ID == p2.Competitor1ID)
 
 }
 
 func TestCalcPairings5Competitors(t *testing.T) {
-	var cs []competitors.Competitor
+	var cs []competitors.C
 	cs = append(cs,
 		competitors.New("Benni", 0),
 		competitors.New("Dani", 1),
@@ -128,17 +128,17 @@ func TestCalcPairings12Competitors(t *testing.T) {
 	}
 }
 
-func getPairingsForTestMaxRound() []Pairing {
-	p := make([]Pairing, 4)
-	p[0] = Pairing{1, 2, 3, 1, 1}
-	p[1] = Pairing{3, 4, 6, 1, 1}
-	p[2] = Pairing{1, 2, 5, 1, 1}
+func getPairingsForTestMaxRound() []P {
+	p := make([]P, 4)
+	p[0] = P{1, 2, 3, 1, 1}
+	p[1] = P{3, 4, 6, 1, 1}
+	p[2] = P{1, 2, 5, 1, 1}
 	return p
 }
 func TestGetMaxRoundOfPairings(t *testing.T) {
 	tests := []struct {
 		name string
-		args []Pairing
+		args []P
 		want int
 	}{
 		{"Wanted Maxround 6", getPairingsForTestMaxRound(), 6},
@@ -169,7 +169,7 @@ func TestPairing_ToString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			p := Pairing{
+			p := P{
 				Competitor1ID: tt.fields.Competitor1ID,
 				Competitor2ID: tt.fields.Competitor2ID,
 				Round:         tt.fields.Round,
@@ -202,17 +202,17 @@ func TestPairing_InPairings(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			p := Pairing{
+			p := P{
 				Competitor1ID: tt.fields.Competitor1ID,
 				Competitor2ID: tt.fields.Competitor2ID,
 				Round:         tt.fields.Round,
 				ID:            tt.fields.ID,
 				GroupID:       tt.fields.GroupID,
 			}
-			ps := make([]Pairing, 3)
-			ps[0] = Pairing{1, 2, 1, 1, 1}
-			ps[1] = Pairing{3, 4, 1, 2, 1}
-			ps[2] = Pairing{5, 6, 1, 3, 1}
+			ps := make([]P, 3)
+			ps[0] = P{1, 2, 1, 1, 1}
+			ps[1] = P{3, 4, 1, 2, 1}
+			ps[2] = P{5, 6, 1, 3, 1}
 			if got := p.InPairings(ps); got != tt.want {
 				t.Errorf("Pairing.InPairings() = %v, want %v", got, tt.want)
 			}

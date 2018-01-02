@@ -8,12 +8,12 @@ import (
 )
 
 type planCalc struct {
-	groups               []Group
-	allCompetitors       []competitors.Competitor
+	groups               []G
+	allCompetitors       []competitors.C
 	countOfParallelGames int
 }
 
-func calcPlan(allCompetitors []competitors.Competitor, Groups []Group, countOfParallelGames int) [][]pairings.Pairing {
+func calcPlan(allCompetitors []competitors.C, Groups []G, countOfParallelGames int) [][]pairings.P {
 
 	calc := planCalc{
 		groups:               Groups,
@@ -30,15 +30,15 @@ func calcPlan(allCompetitors []competitors.Competitor, Groups []Group, countOfPa
 		allPairs[i].ID = i
 	}
 
-	var round []pairings.Pairing
-	var result [][]pairings.Pairing
+	var round []pairings.P
+	var result [][]pairings.P
 	i := 0
 
 	for _, p := range allPairs {
 		if calc.needNewGroup(round, p) {
 			result = append(result, round)
 			i++
-			round = []pairings.Pairing{}
+			round = []pairings.P{}
 		}
 		round = append(round, p)
 	}
@@ -48,14 +48,14 @@ func calcPlan(allCompetitors []competitors.Competitor, Groups []Group, countOfPa
 	return result
 }
 
-func (c planCalc) needNewGroup(round []pairings.Pairing, p pairings.Pairing) bool {
+func (c planCalc) needNewGroup(round []pairings.P, p pairings.P) bool {
 	roundFull := len(round) >= c.countOfParallelGames
 	foundSame := foundSameCompetitorInRound(p, round)
 	lastRoundSimultaneously := c.pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(round, p)
 	return roundFull || foundSame || lastRoundSimultaneously
 }
 
-func (c planCalc) calcPairsFromGroups() ([]pairings.Pairing, error) {
+func (c planCalc) calcPairsFromGroups() ([]pairings.P, error) {
 	var allPairs pairings.SortByRoundGroupDrawnumber
 	allPairs.Comps = c.allCompetitors
 	for _, g := range c.groups {
@@ -70,7 +70,7 @@ func (c planCalc) calcPairsFromGroups() ([]pairings.Pairing, error) {
 	return allPairs.Pairs, nil
 }
 
-func (c planCalc) pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(round []pairings.Pairing, ap pairings.Pairing) bool {
+func (c planCalc) pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(round []pairings.P, ap pairings.P) bool {
 	// if any pairing of the group is already in the round then this one can be played too
 	for _, g := range c.groups {
 		gPairings, _ := g.getPairings()
@@ -96,7 +96,7 @@ func (c planCalc) pairingShouldBePlayedInNextRoundForAllOfGroupSimultaneously(ro
 	return true
 }
 
-func foundSameCompetitorInRound(p pairings.Pairing, round []pairings.Pairing) bool {
+func foundSameCompetitorInRound(p pairings.P, round []pairings.P) bool {
 	for _, r := range round {
 		if (r.Competitor1ID == p.Competitor1ID) ||
 			(r.Competitor1ID == p.Competitor2ID) ||

@@ -3,7 +3,7 @@ package competitors
 import "reflect"
 
 type sortByGroupPoints struct {
-	items []Competitor
+	items []C
 }
 
 func (s sortByGroupPoints) Len() int {

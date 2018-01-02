@@ -5,25 +5,25 @@ import (
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
 
-// Group represents a Group of a Tournament in group phase
+// G represents a Group of a Tournament in group phase
 // it holds a id which should be unique and the competitors in this group
-type Group struct {
+type G struct {
 	id          int
-	Competitors []competitors.Competitor
+	Competitors []competitors.C
 }
 
 // AddCompetitors adds the given competitors to the Group
-func (g *Group) AddCompetitors(comps []competitors.Competitor) {
+func (g *G) AddCompetitors(comps []competitors.C) {
 	for i := range comps {
 		g.Competitors = append(g.Competitors, comps[i])
 	}
 }
 
-func (g Group) getPairings() ([]pairings.Pairing, error) {
+func (g G) getPairings() ([]pairings.P, error) {
 	return pairings.CalcPairings(g.Competitors, g.id)
 }
 
-func (g Group) isLastRound(ap pairings.Pairing) bool {
+func (g G) isLastRound(ap pairings.P) bool {
 	p, err := g.getPairings()
 	if err != nil {
 		return true
@@ -31,7 +31,7 @@ func (g Group) isLastRound(ap pairings.Pairing) bool {
 	return pairings.GetMaxRoundOfPairings(p) == ap.Round
 }
 
-func (g Group) getGamesPerRound() int {
+func (g G) getGamesPerRound() int {
 	ps, err := g.getPairings()
 	if err != nil {
 		return 0

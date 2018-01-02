@@ -7,7 +7,7 @@ import (
 	"github.com/autlunatic/Tournaments/tournament/detail"
 )
 
-func (t *Tournament) AddCompetitor(c competitors.Competitor) {
+func (t *Tournament) AddCompetitor(c competitors.C) {
 	t.Competitors = append(t.Competitors, c)
 }
 

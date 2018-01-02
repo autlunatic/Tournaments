@@ -8,7 +8,7 @@ import (
 )
 
 // AddGroupPointsForResults adds the Points to the Competitors groupPoints
-func AddGroupPointsForResults(c []competitors.Competitor, pairings []Pairing, results Results, calcer tournamentPoints.TournamentPointCalcer) error {
+func AddGroupPointsForResults(c []competitors.C, pairings []P, results Results, calcer tournamentPoints.TournamentPointCalcer) error {
 	for _, p := range pairings {
 		if r, ok := results[p.ID]; ok {
 			p1, p2 := calcer.Calc(r.gamePoints1, r.gamePoints2)

@@ -7,17 +7,22 @@ import (
 
 // DetermineFinalists provides functionality to determine who of the groups reached the finals
 // count: count of competitors which can reach the finals, semifinals = 4
-type DetermineFinalists struct {
-	comps          []competitors.Competitor
-	grps           []groups.Group
+type determineFinalists struct {
+	grps           []groups.G
 	count          int
 	outIndex       int
 	placementIndex int
-	out            []competitors.Competitor
+	out            []competitors.C
 }
 
-func (d *DetermineFinalists) determine() []competitors.Competitor {
-	d.out = make([]competitors.Competitor, d.count)
+// Determine does the calculation for all groups
+func Determine(grps []groups.G, count int) []competitors.C {
+	d := determineFinalists{
+		grps:  grps,
+		count: count,
+	}
+
+	d.out = make([]competitors.C, d.count)
 	for i := 0; i < len(d.grps); i++ {
 		d.placementIndex = i
 		d.addForPlacement()
@@ -25,7 +30,7 @@ func (d *DetermineFinalists) determine() []competitors.Competitor {
 	return d.out
 }
 
-func (d *DetermineFinalists) addForPlacement() {
+func (d *determineFinalists) addForPlacement() {
 	ssc := d.getSortedCompetitorsForGroup()
 	for i := range ssc {
 		if d.outIndex >= d.count {
@@ -36,9 +41,9 @@ func (d *DetermineFinalists) addForPlacement() {
 	}
 }
 
-func (d *DetermineFinalists) getSortedCompetitorsForGroup() (out []competitors.Competitor) {
+func (d *determineFinalists) getSortedCompetitorsForGroup() (out []competitors.C) {
 	var scID int
-	sc := make([]competitors.Competitor, len(d.grps))
+	sc := make([]competitors.C, len(d.grps))
 	for i := range d.grps {
 		gc := competitors.GetCompetitorsSortedByGroupPoints(d.grps[i].Competitors)
 		sc[scID] = gc[d.placementIndex]

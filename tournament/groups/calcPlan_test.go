@@ -12,7 +12,7 @@ import (
 
 func TestCalcTournamentPlan(t *testing.T) {
 	c := competitors.NewTestCompetitors(4)
-	gs := []Group{{id: 1, Competitors: c}}
+	gs := []G{{id: 1, Competitors: c}}
 	plan := calcPlan(c, gs, 1)
 	if competitors.GetCompetitor(c, plan[0][0].Competitor1ID).Name() != "1" {
 		t.Error("competitor 0 0 should be named 1 but was " + competitors.GetCompetitor(c, plan[0][0].Competitor1ID).Name())
@@ -22,7 +22,7 @@ func TestCalcTournamentPlan(t *testing.T) {
 
 func TestCalcTournamentPlan2Groups(t *testing.T) {
 	c := competitors.NewTestCompetitors(8)
-	groups := []Group{
+	groups := []G{
 		{id: 1, Competitors: c[0:4]},
 		{id: 2, Competitors: c[4:8]}}
 	plan := calcPlan(c, groups, 2)
@@ -40,7 +40,7 @@ func TestCalcTournamentPlan2Groups(t *testing.T) {
 
 func TestCalcTournamentPlan4Groups11(t *testing.T) {
 	c := competitors.NewTestCompetitors(11)
-	groups := []Group{
+	groups := []G{
 		{id: 1, Competitors: c[0:3]},
 		{id: 2, Competitors: c[3:6]},
 		{id: 3, Competitors: c[6:9]},
@@ -58,7 +58,7 @@ func TestCalcTournamentPlan4Groups11(t *testing.T) {
 
 func TestCalcTournamentPlan2Groups6_oneCouldNotPlayToTimesInOneRow(t *testing.T) {
 	c := competitors.NewTestCompetitors(6)
-	groups := []Group{
+	groups := []G{
 		{id: 1, Competitors: c[0:3]},
 		{id: 2, Competitors: c[3:6]},
 	}
@@ -74,7 +74,7 @@ func TestCalcTournamentPlan2Groups6_oneCouldNotPlayToTimesInOneRow(t *testing.T)
 
 func TestCalcTournamentLastRoundOfGroupShouldNotBeSplittedOverFieldRounds(t *testing.T) {
 	c := competitors.NewTestCompetitors(7)
-	groups := []Group{
+	groups := []G{
 		{id: 1, Competitors: c[0:3]},
 		{id: 2, Competitors: c[3:7]},
 	}
@@ -91,7 +91,7 @@ func TestCalcTournamentLastRoundOfGroupShouldNotBeSplittedOverFieldRounds(t *tes
 	}
 }
 
-func checkNoCompetitorPlaysTwiceInARound(p [][]pairings.Pairing) (bool, string) {
+func checkNoCompetitorPlaysTwiceInARound(p [][]pairings.P) (bool, string) {
 	for _, round := range p {
 		for i, p1 := range round {
 			for j, p2 := range round {

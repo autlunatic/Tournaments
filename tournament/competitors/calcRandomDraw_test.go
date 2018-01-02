@@ -6,7 +6,7 @@ import (
 
 func TestCalcRandomDraw(t *testing.T) {
 
-	c := make([]Competitor, 0)
+	c := make([]C, 0)
 	c = append(c,
 		New("Benni", 0),
 		New("Dani", 1),
@@ -16,7 +16,7 @@ func TestCalcRandomDraw(t *testing.T) {
 	CheckIsAnyDrawNumberDouble(c, t)
 }
 
-func CheckIsAnyDrawNumberDouble(c []Competitor, t *testing.T) {
+func CheckIsAnyDrawNumberDouble(c []C, t *testing.T) {
 	foundDraw := make([]int64, len(c))
 	for _, i := range c {
 		for _, d := range foundDraw {

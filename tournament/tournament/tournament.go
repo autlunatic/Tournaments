@@ -10,11 +10,11 @@ import (
 // Tournament holds all data about the tournament
 // details about durations etc./competitors/pairings
 type Tournament struct {
-	Details     detail.Details           //
-	Competitors []competitors.Competitor // a complete slice of all competitors
+	Details     detail.Details  //
+	Competitors []competitors.C // a complete slice of all competitors
 
-	Groups         []groups.Group
-	Pairings       []pairings.Pairing
+	Groups         []groups.G
+	Pairings       []pairings.P
 	PairingResults []pairings.Results
 }
 

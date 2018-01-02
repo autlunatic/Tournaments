@@ -8,7 +8,7 @@ import (
 )
 
 func TestCalcGroups_OneCompetitor_OneGroup(t *testing.T) {
-	c := make([]competitors.Competitor, 0)
+	c := make([]competitors.C, 0)
 	c = append(c,
 		competitors.New("Benni", 0))
 

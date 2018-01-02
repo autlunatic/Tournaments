@@ -8,8 +8,8 @@ import (
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
 
-// Pairing holds information about one game,
-type Pairing struct {
+// P holds information about one game,
+type P struct {
 	Competitor1ID int
 	Competitor2ID int
 	Round         int
@@ -18,7 +18,7 @@ type Pairing struct {
 }
 
 // InPairings checks if the given slice of Pairing contains the Pairing
-func (p Pairing) InPairings(ps []Pairing) bool {
+func (p P) InPairings(ps []P) bool {
 	for _, mp := range ps {
 		if mp.equals(p) {
 			return true
@@ -27,19 +27,19 @@ func (p Pairing) InPairings(ps []Pairing) bool {
 	return false
 }
 
-func (p Pairing) equals(p2 Pairing) bool {
+func (p P) equals(p2 P) bool {
 	return p.Competitor1ID == p2.Competitor1ID &&
 		p.Competitor2ID == p2.Competitor2ID &&
 		p.Round == p2.Round
 }
 
 // ToString provides a simple string representation of the pairing
-func (p Pairing) ToString() string {
+func (p P) ToString() string {
 	return "round: " + strconv.Itoa(p.Round) + "; " + strconv.Itoa(p.Competitor1ID) + " vs. " + strconv.Itoa(p.Competitor2ID)
 }
 
 // GetMaxRoundOfPairings returns the max Round - number in the slice of Pairing
-func GetMaxRoundOfPairings(pairing []Pairing) int {
+func GetMaxRoundOfPairings(pairing []P) int {
 	result := 0
 	for _, p := range pairing {
 		if result < p.Round {
@@ -51,8 +51,8 @@ func GetMaxRoundOfPairings(pairing []Pairing) int {
 
 // SortByRoundGroupDrawnumber implements the Interface interface for sorting
 type SortByRoundGroupDrawnumber struct {
-	Pairs []Pairing
-	Comps []competitors.Competitor
+	Pairs []P
+	Comps []competitors.C
 }
 
 func (a SortByRoundGroupDrawnumber) Len() int      { return len(a.Pairs) }
@@ -70,15 +70,15 @@ func (a SortByRoundGroupDrawnumber) Less(i, j int) bool {
 }
 
 // CalcPairings calculates the pairings needed when everyone needs to play against each other
-func CalcPairings(c []competitors.Competitor, groupID int) ([]Pairing, error) {
-	var result []Pairing
+func CalcPairings(c []competitors.C, groupID int) ([]P, error) {
+	var result []P
 
 	if len(c) == 0 {
 		return result, errors.New("no Competitors given, cannot calc pairings")
 	}
 	cs := c
 	// make a copy of the cs
-	mc := make([]competitors.Competitor, len(cs))
+	mc := make([]competitors.C, len(cs))
 	copy(mc, cs)
 	// if the count is odd add one dummy competitor for the roundRobin
 	if len(cs)%2 > 0 {
@@ -103,7 +103,7 @@ func CalcPairings(c []competitors.Competitor, groupID int) ([]Pairing, error) {
 	return s.Pairs, nil
 }
 
-func addToResult(c []competitors.Competitor, result *[]Pairing, c1 int, i int, groupID int) {
+func addToResult(c []competitors.C, result *[]P, c1 int, i int, groupID int) {
 	for j := 0; j < (len(c)/2)+1; j++ {
 		if j == 0 {
 			addPair(result, c1, c[len(c)-1].ID(), i+1, groupID)
@@ -113,10 +113,10 @@ func addToResult(c []competitors.Competitor, result *[]Pairing, c1 int, i int, g
 	}
 }
 
-func addPair(pairings *[]Pairing, c1 int, c2 int, round int, groupID int) {
+func addPair(pairings *[]P, c1 int, c2 int, round int, groupID int) {
 	if c1 == -1 || c2 == -1 {
 		return
 	}
-	pair := Pairing{c1, c2, round, 0, groupID}
+	pair := P{c1, c2, round, 0, groupID}
 	*pairings = append(*pairings, pair)
 }

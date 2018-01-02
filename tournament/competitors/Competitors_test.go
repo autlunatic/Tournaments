@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-var testCompetitors []Competitor
+var testCompetitors []C
 
-func wantedSlice() []Competitor {
-	c := make([]Competitor, 4)
+func wantedSlice() []C {
+	c := make([]C, 4)
 	c[0] = GetCompetitor(testCompetitors, 1)
 	c[1] = GetCompetitor(testCompetitors, 2)
 	c[2] = GetCompetitor(testCompetitors, 3)
@@ -25,7 +25,7 @@ func TestGetCompetitorsSortedByGroupPoints(t *testing.T) {
 
 	tests := []struct {
 		name string
-		want []Competitor
+		want []C
 	}{
 		{"sort", wantedSlice()},
 	}
@@ -46,7 +46,7 @@ func TestDelete(t *testing.T) {
 		name            string
 		arg             args
 		want            int
-		competitorToAdd Competitor
+		competitorToAdd C
 	}{
 		{name: "Competitor not in items", arg: args{competitorID: 9}, want: 0, competitorToAdd: nil},
 		{name: "Competitor one in items", arg: args{competitorID: 3}, want: 1, competitorToAdd: nil},
@@ -68,7 +68,7 @@ func TestDelete(t *testing.T) {
 func TestAdd(t *testing.T) {
 	tests := []struct {
 		name    string
-		arg     Competitor
+		arg     C
 		wantErr bool
 	}{
 		{"simple add new one", New("Number 6", 6), false},
@@ -119,7 +119,7 @@ func TestGetCompetitor(t *testing.T) {
 	tests := []struct {
 		name string
 		ID   int
-		want Competitor
+		want C
 	}{
 		{"Get competitor", 1, cs[1]},
 		{"invalid Competitor", 9, nil},

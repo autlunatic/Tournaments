@@ -7,7 +7,7 @@ import (
 )
 
 // CalcRandomDraw adds random generated numbers to the DrawNumber of all competitors.
-func CalcRandomDraw(c []Competitor) {
+func CalcRandomDraw(c []C) {
 
 	addedDrawNumbers := make([]int64, len(c))
 	for i := range c {
