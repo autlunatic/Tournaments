@@ -1,14 +1,13 @@
-package results
+package groups
 
 import (
 	"github.com/autlunatic/Tournaments/tournament/competitors"
-	"github.com/autlunatic/Tournaments/tournament/groups"
 )
 
 // DetermineFinalists provides functionality to determine who of the groups reached the finals
 // count: count of competitors which can reach the finals, semifinals = 4
 type determineFinalists struct {
-	grps           []groups.G
+	grps           []G
 	count          int
 	outIndex       int
 	placementIndex int
@@ -16,7 +15,7 @@ type determineFinalists struct {
 }
 
 // Determine does the calculation for all groups
-func Determine(grps []groups.G, count int) []competitors.C {
+func Determine(grps []G, count int) []competitors.C {
 	d := determineFinalists{
 		grps:  grps,
 		count: count,

@@ -24,21 +24,22 @@ func getWantedFor1() []pairings.P {
 	return out
 }
 
-func TestCalcForFinals(t *testing.T) {
+func TestCalcPairingsForFinals(t *testing.T) {
 	type args struct {
-		groups []G
+		groups        []G
+		finalistCount int
 	}
 	tests := []struct {
 		name string
 		args args
 		want []pairings.P
 	}{
-		{name: "2 Groups 8 Competitors semifinals", args: args{getGroupsFor1()}, want: getWantedFor1()},
+		{name: "2 Groups 8 Competitors semifinals", args: args{getGroupsFor1(), 4}, want: getWantedFor1()},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := CalcForFinals(tt.args.groups); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("CalcForFinals() = %v, want %v", got, tt.want)
+			if got := CalcPairingsForFinals(tt.args.groups, tt.args.finalistCount); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("CalcPairingsForFinals() = %v, want %v", got, tt.want)
 			}
 		})
 	}
