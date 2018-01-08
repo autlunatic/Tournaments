@@ -14,8 +14,8 @@ type determineFinalists struct {
 	out            []competitors.C
 }
 
-// Determine does the calculation for all groups
-func Determine(grps []G, count int) []competitors.C {
+// DetermineFinalists does the calculation for all groups
+func DetermineFinalists(grps []G, count int) []competitors.C {
 	d := determineFinalists{
 		grps:  grps,
 		count: count,
@@ -35,6 +35,7 @@ func (d *determineFinalists) addForPlacement() {
 		if d.outIndex >= d.count {
 			return
 		}
+		ssc[i].SetGroupPlacement(d.placementIndex)
 		d.out[d.outIndex] = ssc[i]
 		d.outIndex++
 	}

@@ -2,7 +2,6 @@ package competitors
 
 import (
 	"errors"
-	"sort"
 )
 
 // GetCompetitor gets the Competitor of the Items with the given ID
@@ -23,13 +22,6 @@ func New(name string, id int) *SimpleCompetitor {
 	return c
 }
 
-// GetCompetitorsSortedByGroupPoints returns a slice of Competitor which is sorted by GroupPoints ;)
-func GetCompetitorsSortedByGroupPoints(c []C) []C {
-	sorter := &sortByGroupPoints{c}
-	sort.Sort(sorter)
-	return sorter.items
-}
-
 // ClearPoints sets the Points of all Items to zero
 func ClearPoints(c []C) {
 	for _, c := range c {
@@ -45,14 +37,17 @@ type C interface {
 	Name() string
 	DrawNumber() int64
 	SetDrawNumber(int64)
+	SetGroupPlacement(int)
+	GroupPlacement() int
 }
 
 // SimpleCompetitor holds information for an minimalistic Competitor
 type SimpleCompetitor struct {
-	id          int
-	name        string
-	GroupPoints int
-	drawNumber  int64
+	id             int
+	name           string
+	GroupPoints    int
+	drawNumber     int64
+	groupPlacement int
 }
 
 // Add adds a competitor to the slice of competitors
@@ -107,4 +102,14 @@ func (c *SimpleCompetitor) ID() int {
 // SetDrawNumber is for the Competitor Interface
 func (c *SimpleCompetitor) SetDrawNumber(number int64) {
 	c.drawNumber = number
+}
+
+// SetGroupPlacement is for the Competitor Interface
+func (c *SimpleCompetitor) SetGroupPlacement(in int) {
+	c.groupPlacement = in
+}
+
+// GroupPlacement is for the Competitor Interface
+func (c *SimpleCompetitor) GroupPlacement() int {
+	return c.groupPlacement
 }
