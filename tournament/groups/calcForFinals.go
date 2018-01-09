@@ -20,42 +20,44 @@ func newCalcForFinals(groups []G) *calcPairingsForFinals {
 }
 
 func (c *calcPairingsForFinals) doCalc() {
-	cs := DetermineFinalists(c.groups, c.finalistCount)
-	cs = competitors.GetCompetitorsSortedByGroupPoints(cs)
+	fin := DetermineFinalists(c.groups, c.finalistCount)
+	cs := competitors.GetCompetitorsSortedByPlacementAndGroupPoints(fin)
 	c.out = make([]pairings.P, c.finalistCount/2)
-
-	firstPlacedCount := getFirstPlacedCount(cs)
-	for i := 0; i < firstPlacedCount; i++ {
-
+	finalistsPairingIDs := CalcFinalistsPairingIDs(int(math.Log2(float64(c.finalistCount))))
+	for i := 0; i < c.finalistCount; i++ {
+		c.setPairingForSortedID(finalistsPairingIDs[i], cs[i].ID())
 	}
 }
 
-func getFirstPlacedCount(cs []competitors.C) int {
-	var out int
-	for _, c := range cs {
-		if c.GroupPlacement() == 1 {
-			out++
-		}
+func (c *calcPairingsForFinals) setPairingForSortedID(sID int, compID int) {
+	pairingID := (sID - 1) / 2
+	competID := sID % 2
+	if competID == 1 {
+		c.out[pairingID].Round = -c.finalistCount
+		c.out[pairingID].ID = -pairingID - 1
+		c.out[pairingID].Competitor1ID = compID
+	} else {
+		c.out[pairingID].Competitor2ID = compID
 	}
-	return out
 }
 
 // CalcPairingsForFinals generates the pairings for the finalists, it takes in account that no one should play
 // against an competitor wich he already faced in groupphase
 func CalcPairingsForFinals(groups []G, finalistCount int) ([]pairings.P, error) {
 	calc := newCalcForFinals(groups)
+	calc.finalistCount = finalistCount
 	calc.doCalc()
 	return calc.out, nil
 }
 
-// CalcFinalistsPairingIDs returns an array of int where the Position on the Finaltournament plan should be
+// CalcFinalistsPairingIDs returns an slice of int where the Position on the Finaltournament plan should be
 // this plan is optimized that the best players are not playing against each other as long as possible
 func CalcFinalistsPairingIDs(finalRounds int) []int {
 	out := make([]int, int(math.Pow(2, float64(finalRounds))))
 	out[0] = 1
 	out[1] = 2
 	for fr := 1; fr < finalRounds; fr++ {
-		// Mirror Array
+		// Mirror Slice
 		halfSlice := int(math.Pow(2, float64(fr)))
 		for i := 0; i < halfSlice; i++ {
 			out[i+halfSlice] = out[halfSlice-i-1]

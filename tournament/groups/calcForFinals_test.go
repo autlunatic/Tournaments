@@ -20,8 +20,8 @@ func getGroupsFor1() []groups.G {
 }
 func getWantedFor1() []pairings.P {
 	out := make([]pairings.P, 2)
-	out[0] = pairings.P{Competitor1ID: 8, Competitor2ID: 3, Round: -2, ID: -2, GroupID: 0}
-	out[1] = pairings.P{Competitor1ID: 7, Competitor2ID: 4, Round: -2, ID: -1, GroupID: 0}
+	out[0] = pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -4, ID: -1, GroupID: 0}
+	out[1] = pairings.P{Competitor1ID: 6, Competitor2ID: 3, Round: -4, ID: -2, GroupID: 0}
 	return out
 }
 
@@ -37,7 +37,7 @@ func TestCalcPairingsForFinals(t *testing.T) {
 		wantErr bool
 	}{
 		// TODO: Add test cases.
-		{name: "2 Groups 8 Competitors semifinals", args: args{getGroupsFor1(), 4}, want: getWantedFor1(), wantErr: false},
+		{name: "2 Groups 4 Competitors semifinals", args: args{getGroupsFor1(), 4}, want: getWantedFor1(), wantErr: false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

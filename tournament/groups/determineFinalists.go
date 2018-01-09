@@ -35,7 +35,7 @@ func (d *determineFinalists) addForPlacement() {
 		if d.outIndex >= d.count {
 			return
 		}
-		ssc[i].SetGroupPlacement(d.placementIndex)
+		ssc[i].SetGroupPlacement(d.placementIndex + 1)
 		d.out[d.outIndex] = ssc[i]
 		d.outIndex++
 	}
