@@ -1,6 +1,8 @@
 package groups
 
 import (
+	"math"
+
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
@@ -44,4 +46,27 @@ func CalcPairingsForFinals(groups []G, finalistCount int) ([]pairings.P, error) 
 	calc := newCalcForFinals(groups)
 	calc.doCalc()
 	return calc.out, nil
+}
+
+// CalcFinalistsPairingIDs returns an array of int where the Position on the Finaltournament plan should be
+// this plan is optimized that the best players are not playing against each other as long as possible
+func CalcFinalistsPairingIDs(finalRounds int) []int {
+	out := make([]int, int(math.Pow(2, float64(finalRounds))))
+	out[0] = 1
+	out[1] = 2
+	for fr := 1; fr < finalRounds; fr++ {
+		// Mirror Array
+		halfSlice := int(math.Pow(2, float64(fr)))
+		for i := 0; i < halfSlice; i++ {
+			out[i+halfSlice] = out[halfSlice-i-1]
+		}
+		// L x -> L x*2
+		for i := 0; i < int(math.Pow(2, float64(fr+1))); i++ {
+			out[i] = out[i] * 2
+			if (i+1)%2 == 1 {
+				out[i]--
+			}
+		}
+	}
+	return out
 }
