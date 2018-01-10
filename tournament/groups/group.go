@@ -1,6 +1,8 @@
 package groups
 
 import (
+	"errors"
+
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
@@ -10,6 +12,29 @@ import (
 type G struct {
 	id          int
 	Competitors []competitors.C
+}
+
+// NewTestGroups returns groups for testing.
+func NewTestGroups(count int) []G {
+	out := make([]G, count)
+	for i := 1; i <= count; i++ {
+		out[i-1].id = i
+	}
+	return out
+}
+
+// GetGroupIDOfCompetitor returns the id of the group in which the competitorID was found
+// returns an error if competitor id was not found in the given slice
+func GetGroupIDOfCompetitor(gs []G, competitorID int) (int, error) {
+	for _, g := range gs {
+		for _, c := range g.Competitors {
+			if c.ID() == competitorID {
+				return g.id, nil
+			}
+		}
+	}
+	return -1, errors.New("competitorID not found in Groups")
+
 }
 
 // AddCompetitors adds the given competitors to the Group
