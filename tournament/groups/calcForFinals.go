@@ -83,7 +83,7 @@ func (c *calcPairingsForFinals) setPairingForSortedID(sID int, compID int, check
 		if err2 != nil {
 			return err2
 		}
-		if g1 == g2 {
+		if len(c.groups) > 1 && g1 == g2 {
 			return fmt.Errorf("Same Group not possible C1: %v C2: %v both in group: %v", c.out[pairingID].Competitor1ID, c.out[pairingID].Competitor2ID, g1)
 		}
 	}

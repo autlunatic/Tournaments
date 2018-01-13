@@ -20,9 +20,8 @@ func DetermineFinalists(grps []G, count int) []competitors.C {
 		grps:  grps,
 		count: count,
 	}
-
 	d.out = make([]competitors.C, d.count)
-	for i := 0; i < len(d.grps); i++ {
+	for i := 0; i < len(d.grps[0].Competitors); i++ {
 		d.placementIndex = i
 		d.addForPlacement()
 	}
@@ -43,10 +42,12 @@ func (d *determineFinalists) addForPlacement() {
 
 func (d *determineFinalists) getSortedCompetitorsForGroup() (out []competitors.C) {
 	var scID int
-	sc := make([]competitors.C, len(d.grps))
+	var sc []competitors.C
 	for i := range d.grps {
 		gc := competitors.GetCompetitorsSortedByGroupPoints(d.grps[i].Competitors)
-		sc[scID] = gc[d.placementIndex]
+		if len(gc) > d.placementIndex {
+			sc = append(sc, gc[d.placementIndex])
+		}
 		scID++
 	}
 	return competitors.GetCompetitorsSortedByGroupPoints(sc)
