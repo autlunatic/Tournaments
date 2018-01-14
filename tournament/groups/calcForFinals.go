@@ -1,94 +1,14 @@
 package groups
 
 import (
+	"errors"
 	"fmt"
+	"log"
 	"math"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
-
-type calcPairingsForFinals struct {
-	groups        []G
-	finalistCount int
-	out           []pairings.P
-}
-
-func newCalcForFinals(groups []G) *calcPairingsForFinals {
-	out := new(calcPairingsForFinals)
-	out.groups = groups
-	return out
-}
-
-func isInSlice(slice []int, val int) bool {
-	for _, i := range slice {
-		if i == val {
-			return true
-		}
-	}
-	return false
-}
-
-func (c *calcPairingsForFinals) doCalc() {
-	fin := DetermineFinalists(c.groups, c.finalistCount)
-	cs := competitors.GetCompetitorsSortedByPlacementAndGroupPoints(fin)
-	c.out = make([]pairings.P, c.finalistCount/2)
-	finRankPos := CalcFinalistRankings(int(math.Log2(float64(c.finalistCount))))
-	// first fill the better half, the better half should be fixed,
-	// the lower half should be mixed if there would be a pairing of two competitors of the same group
-	for i := 0; i < c.finalistCount/2; i++ {
-		c.setPairingForSortedID(finRankPos[i], cs[i].ID(), false)
-	}
-	c.setLowerHalf(finRankPos, cs)
-}
-
-func (c *calcPairingsForFinals) setLowerHalf(finRankPos []int, cs []competitors.C) {
-	var usedRanks []int
-	for i := c.finalistCount - 1; i >= c.finalistCount/2; i-- {
-		for r := c.finalistCount - 1; r >= c.finalistCount/2; r-- {
-			if isInSlice(usedRanks, finRankPos[r]) {
-				continue
-			}
-			err := c.setPairingForSortedID(finRankPos[r], cs[i].ID(), true)
-			if err == nil {
-				usedRanks = append(usedRanks, finRankPos[r])
-				break
-			}
-		}
-	}
-}
-
-/*func getFinalistsPairingIDFromPairing(p pairings.P, wantForCompetitor1 bool) int {
-
-	return 0
-}*/
-
-func (c *calcPairingsForFinals) setPairingForSortedID(sID int, compID int, checkForDuplicates bool) error {
-	pairingID := (sID - 1) / 2
-	competID := sID % 2
-	c.out[pairingID].Round = -c.finalistCount
-	c.out[pairingID].ID = -pairingID - 1
-	if competID == 1 {
-		c.out[pairingID].Competitor1ID = compID
-	} else {
-		c.out[pairingID].Competitor2ID = compID
-	}
-	if checkForDuplicates {
-
-		g1, err1 := GetGroupIDOfCompetitor(c.groups, c.out[pairingID].Competitor1ID)
-		if err1 != nil {
-			return err1
-		}
-		g2, err2 := GetGroupIDOfCompetitor(c.groups, c.out[pairingID].Competitor2ID)
-		if err2 != nil {
-			return err2
-		}
-		if len(c.groups) > 1 && g1 == g2 {
-			return fmt.Errorf("Same Group not possible C1: %v C2: %v both in group: %v", c.out[pairingID].Competitor1ID, c.out[pairingID].Competitor2ID, g1)
-		}
-	}
-	return nil
-}
 
 // CalcPairingsForFinals generates the pairings for the finalists, it takes in account that no one should play
 // against an competitor wich he already faced in groupphase
@@ -120,4 +40,118 @@ func CalcFinalistRankings(finalRounds int) []int {
 		}
 	}
 	return out
+}
+
+type calcPairingsForFinals struct {
+	groups        []G
+	finalistCount int
+	out           []pairings.P
+}
+
+func newCalcForFinals(groups []G) *calcPairingsForFinals {
+	out := new(calcPairingsForFinals)
+	out.groups = groups
+	return out
+}
+
+func isInSlice(slice []int, val int) bool {
+	for _, i := range slice {
+		if i == val {
+			return true
+		}
+	}
+	return false
+}
+
+func (c *calcPairingsForFinals) doCalc() {
+	fin := DetermineFinalists(c.groups, c.finalistCount)
+	cs := competitors.GetCompetitorsSortedByPlacementAndGroupPoints(fin)
+	c.out = make([]pairings.P, c.finalistCount/2)
+	finRankPos := CalcFinalistRankings(int(math.Log2(float64(c.finalistCount))))
+	// first fill the better half, the better half should be fixed,
+	// the lower half should be mixed if there would be a pairing of two competitors of the same group
+	for i := 0; i < c.finalistCount/2; i++ {
+		err := c.setPairingForSortedID(finRankPos[i], cs[i].ID(), false)
+		if err != nil {
+			log.Println("Error occurred while filling first half")
+		}
+	}
+	err := c.setLowerHalf(finRankPos, cs, false)
+	if err != nil {
+		err := c.setLowerHalf(finRankPos, cs, true)
+		if err != nil {
+			log.Println("Error occurred while filling lower half reversed")
+		}
+	}
+
+}
+
+func (c *calcPairingsForFinals) calcIndex(reversed bool, index int) int {
+	var out int
+	if reversed {
+		out = c.finalistCount - 1 - index + c.finalistCount/2
+	} else {
+		out = index
+	}
+	return out
+
+}
+func (c *calcPairingsForFinals) setLowerHalf(finRankPos []int, cs []competitors.C, fillReversed bool) error {
+	var usedRanks []int
+	for i := c.finalistCount - 1; i >= c.finalistCount/2; i-- {
+		c.setNextRankingIndexForCompetitor(finRankPos, cs, fillReversed, i, &usedRanks)
+	}
+	if len(usedRanks) != len(finRankPos)/2 {
+		return errors.New("there are competitors playing against others of the same group")
+	}
+	return nil
+}
+
+func (c *calcPairingsForFinals) setNextRankingIndexForCompetitor(finRankPos []int, cs []competitors.C, fillReversed bool, i int, usedRanks *[]int) {
+	for r := c.finalistCount - 1; r >= c.finalistCount/2; r-- {
+		ri := c.calcIndex(fillReversed, r)
+		ii := c.calcIndex(fillReversed, i)
+		if isInSlice(*usedRanks, finRankPos[ri]) {
+			continue
+		}
+		err := c.setPairingForSortedID(finRankPos[ri], cs[ii].ID(), true)
+		if err == nil {
+			*usedRanks = append(*usedRanks, finRankPos[ri])
+			break
+		}
+	}
+}
+
+func (c *calcPairingsForFinals) setPairingForSortedID(sID int, compID int, checkForDuplicates bool) error {
+	pairingID := (sID - 1) / 2
+	competID := sID % 2
+	c.out[pairingID].Round = -c.finalistCount
+	c.out[pairingID].ID = -pairingID - 1
+	if competID == 1 {
+		c.out[pairingID].Competitor1ID = compID
+	} else {
+		c.out[pairingID].Competitor2ID = compID
+	}
+	if checkForDuplicates {
+		err := c.doCheckForDuplicates(pairingID)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c *calcPairingsForFinals) doCheckForDuplicates(pairingID int) error {
+	g1, err1 := GetGroupIDOfCompetitor(c.groups, c.out[pairingID].Competitor1ID)
+	if err1 != nil {
+		return err1
+	}
+	g2, err2 := GetGroupIDOfCompetitor(c.groups, c.out[pairingID].Competitor2ID)
+	if err2 != nil {
+		return err2
+	}
+	if len(c.groups) > 1 && g1 == g2 {
+		return fmt.Errorf("Same Group not possible C1: %v C2: %v both in group: %v", c.out[pairingID].Competitor1ID, c.out[pairingID].Competitor2ID, g1)
+	}
+	return nil
 }

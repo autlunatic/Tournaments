@@ -65,7 +65,6 @@ func getWantedFor3() []pairings.P {
 }
 
 func getGroupsFor4(addPointsTo4 bool) []groups.G {
-
 	g := groups.NewTestGroups(1)
 	testCompetitors = competitors.NewTestCompetitors(12)
 	if addPointsTo4 {
@@ -85,6 +84,32 @@ func getWantedFor4() []pairings.P {
 		pairings.P{Competitor1ID: 6, Competitor2ID: 11, Round: -8, ID: -4, GroupID: 0}}
 	return out
 }
+func getGroupsFor5() []groups.G {
+	g := groups.NewTestGroups(4)
+	testCompetitors = competitors.NewTestCompetitors(8)
+	testCompetitors[0].AddPoints(12)
+	testCompetitors[1].AddPoints(12)
+	testCompetitors[3].AddPoints(12)
+	testCompetitors[4].AddPoints(3)
+	testCompetitors[5].AddPoints(12)
+	testCompetitors[7].AddPoints(12)
+	g[0].AddCompetitors(testCompetitors[0:2])
+	g[1].AddCompetitors(testCompetitors[2:4])
+	g[2].AddCompetitors(testCompetitors[4:6])
+	g[3].AddCompetitors(testCompetitors[6:])
+	return g
+}
+
+func getWantedFor5() []pairings.P {
+	//7, 5, 3, 1, 0, 4, 6, 2
+	//1, 8, 5, 4, 3, 6, 7, 2
+	out := []pairings.P{
+		pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -8, ID: -1, GroupID: 0},
+		pairings.P{Competitor1ID: 4, Competitor2ID: 1, Round: -8, ID: -2, GroupID: 0},
+		pairings.P{Competitor1ID: 3, Competitor2ID: 0, Round: -8, ID: -3, GroupID: 0},
+		pairings.P{Competitor1ID: 6, Competitor2ID: 5, Round: -8, ID: -4, GroupID: 0}}
+	return out
+}
 
 func TestCalcPairingsForFinals(t *testing.T) {
 	type args struct {
@@ -101,6 +126,7 @@ func TestCalcPairingsForFinals(t *testing.T) {
 		{name: "3 Groups 8 Competitors quarterfinals", args: args{getGroupsFor2(false), 8}, want: getWantedFor2(), wantErr: false},
 		{name: "3 Groups 8 Competitors quarterfinals not first round not from group", args: args{getGroupsFor2(true), 8}, want: getWantedFor3(), wantErr: false},
 		{name: "1 Group 8 Competitors, when one group no changes should be made to the calced ranking", args: args{getGroupsFor4(true), 8}, want: getWantedFor4(), wantErr: false},
+		{name: "2 Groups 8 Competitors, half finals should play against other groups in first game", args: args{getGroupsFor5(), 8}, want: getWantedFor5(), wantErr: false},
 		//TODO Need an additional test when only last one fails because of same grp
 	}
 	for _, tt := range tests {
