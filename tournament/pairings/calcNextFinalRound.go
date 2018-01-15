@@ -1,8 +1,6 @@
 package pairings
 
 import (
-	"fmt"
-
 	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
 )
 
@@ -15,8 +13,6 @@ func CalcNextFinalRound(pairs []P, res Results, calcer tournamentPoints.Tourname
 	for _, p := range pairs {
 		if r, ok := res[p.ID]; ok {
 			oid := (-p.ID + maxPairID) / 2
-			fmt.Println(oid, maxPairID, minPairID, p)
-
 			out[oid].ID = minPairID - (oid) - 1
 			out[oid].Round = -len(pairs) / 2
 			r1, r2 := calcer.Calc(r.gamePoints1, r.gamePoints2)
@@ -42,7 +38,6 @@ func calcMinMaxPairID(pairs []P) (min int, max int) {
 
 func calcAndSetCompetitorIds(aOut *P, r1 int, r2 int, p P) {
 	// odd id -> C1 should be set
-	fmt.Println(aOut, r1, r2, p)
 	if p.ID%2 != 0 {
 		if r1 > r2 {
 			aOut.Competitor1ID = p.Competitor1ID

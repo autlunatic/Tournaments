@@ -15,10 +15,8 @@ type calcNextFinalRoundArgs struct {
 func getPairingsForQuarterFinals(aIdsFrom16 bool) calcNextFinalRoundArgs {
 	var offset int
 	if aIdsFrom16 {
-
 		offset = 8
 	}
-
 	outP := []P{
 		{1, 2, -4, -1 - offset, 0},
 		{3, 4, -4, -2 - offset, 0},
@@ -33,6 +31,17 @@ func getPairingsForQuarterFinals(aIdsFrom16 bool) calcNextFinalRoundArgs {
 	}
 	return calcNextFinalRoundArgs{outP, outR}
 }
+func getPairingsForSemiFinals() calcNextFinalRoundArgs {
+	outP := []P{
+		{1, 2, -2, -5, 0},
+		{3, 4, -2, -6, 0},
+	}
+	outR := Results{
+		-5: Result{3, 1},
+		-6: Result{5, 6},
+	}
+	return calcNextFinalRoundArgs{outP, outR}
+}
 
 func TestCalcNextFinalRound(t *testing.T) {
 	tests := []struct {
@@ -42,6 +51,7 @@ func TestCalcNextFinalRound(t *testing.T) {
 	}{
 		{"quarter to semi", getPairingsForQuarterFinals(false), []P{{1, 4, -2, -5, 0}, {5, 8, -2, -6, 0}}},
 		{"quarter to semi, but the ids of quarter are coming from a round of 16", getPairingsForQuarterFinals(true), []P{{1, 4, -2, -13, 0}, {5, 8, -2, -14, 0}}},
+		{"semi to finals", getPairingsForSemiFinals(), []P{{1, 4, -1, -7, 0}}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
