@@ -19,24 +19,24 @@ func getCalcedPlanFor4Competitors() [][]P {
 		{2, 3, 1, 2, 1},
 	})
 	out = append(out, []P{
-		{0, 2, 1, 3, 2},
-		{1, 3, 1, 4, 2},
+		{0, 2, 2, 3, 1},
+		{1, 3, 2, 4, 1},
 	})
 	out = append(out, []P{
-		{0, 3, 1, 5, 3},
-		{1, 2, 1, 6, 3},
+		{0, 3, 3, 5, 1},
+		{1, 2, 3, 6, 1},
 	})
 	return out
 }
 func getGamePlanForFirstTest() GamePlan {
 	var out GamePlan
-	out.pairingInfo = []PairingInfo{
-		{time.Date(2018, 1, 20, 14, 0, 0, 0, time.UTC), "1", P{0, 1, 1, 1, 1}, "1", "2"},
-		{time.Date(2018, 1, 20, 14, 0, 0, 0, time.UTC), "2", P{2, 3, 1, 2, 1}, "3", "4"},
-		{time.Date(2018, 1, 20, 14, 15, 0, 0, time.UTC), "1", P{0, 2, 1, 3, 2}, "1", "3"},
-		{time.Date(2018, 1, 20, 14, 15, 0, 0, time.UTC), "2", P{1, 3, 1, 4, 2}, "2", "4"},
-		{time.Date(2018, 1, 20, 14, 30, 0, 0, time.UTC), "1", P{0, 3, 1, 5, 3}, "1", "4"},
-		{time.Date(2018, 1, 20, 14, 30, 0, 0, time.UTC), "2", P{1, 2, 1, 6, 3}, "2", "3"},
+	out.PairingInfo = []PairingInfo{
+		{time.Date(2018, 1, 20, 14, 0, 0, 0, time.UTC), "14:00", "1", P{0, 1, 1, 1, 1}, "1", "2"},
+		{time.Date(2018, 1, 20, 14, 0, 0, 0, time.UTC), "14:00", "2", P{2, 3, 1, 2, 1}, "3", "4"},
+		{time.Date(2018, 1, 20, 14, 15, 0, 0, time.UTC), "14:15", "1", P{0, 2, 2, 3, 1}, "1", "3"},
+		{time.Date(2018, 1, 20, 14, 15, 0, 0, time.UTC), "14:15", "2", P{1, 3, 2, 4, 1}, "2", "4"},
+		{time.Date(2018, 1, 20, 14, 30, 0, 0, time.UTC), "14:30", "1", P{0, 3, 3, 5, 1}, "1", "4"},
+		{time.Date(2018, 1, 20, 14, 30, 0, 0, time.UTC), "14:30", "2", P{1, 2, 3, 6, 1}, "2", "3"},
 	}
 	return out
 }

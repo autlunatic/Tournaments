@@ -2,6 +2,7 @@ package pairings
 
 import (
 	"bytes"
+	"fmt"
 	"strconv"
 	"text/template"
 	"time"
@@ -11,16 +12,17 @@ import (
 
 // PairingInfo is used as Struct for the Template that populates one item of the gameplan
 type PairingInfo struct {
-	startTime time.Time
-	court     string
-	pairing   P
-	Comp1Name string
-	Comp2Name string
+	StartTime     time.Time
+	FormattedTime string
+	Court         string
+	Pairing       P
+	Comp1Name     string
+	Comp2Name     string
 }
 
 // GamePlan is used as struct for the Gameplan List.
 type GamePlan struct {
-	pairingInfo []PairingInfo
+	PairingInfo []PairingInfo
 }
 
 func calcedPlanToGamePlan(startTime time.Time, minutesPerGame int, c []competitors.C, cp [][]P) GamePlan {
@@ -28,8 +30,9 @@ func calcedPlanToGamePlan(startTime time.Time, minutesPerGame int, c []competito
 	for kp := range cp {
 		calcedTime := startTime.Add(time.Minute * time.Duration(minutesPerGame*kp))
 		for pi := range cp[kp] {
-			out.pairingInfo = append(out.pairingInfo,
+			out.PairingInfo = append(out.PairingInfo,
 				PairingInfo{calcedTime,
+					calcedTime.Format("15:04"),
 					strconv.Itoa(pi + 1),
 					cp[kp][pi],
 					competitors.GetCompetitor(c, cp[kp][pi].Competitor1ID).Name(),
@@ -37,11 +40,13 @@ func calcedPlanToGamePlan(startTime time.Time, minutesPerGame int, c []competito
 				})
 		}
 	}
+	fmt.Println(out)
+	fmt.Println(ToHTML(out))
 	return out
 }
 
 // ToHTML renders the Pairing List to a HTML Page
-func ToHTML(gp []GamePlan) string {
+func ToHTML(gp GamePlan) string {
 	tpl := template.Must(template.ParseFiles("PairingsList.html"))
 	var b bytes.Buffer
 	tpl.Execute(&b, gp)
