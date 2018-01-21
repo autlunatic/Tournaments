@@ -129,7 +129,7 @@ func TestCalcPairings12Competitors(t *testing.T) {
 }
 
 func getPairingsForTestMaxRound() []P {
-	p := make([]P, 4)
+	p := make([]P, 3)
 	p[0] = P{1, 2, 3, 1, 1}
 	p[1] = P{3, 4, 6, 1, 1}
 	p[2] = P{1, 2, 5, 1, 1}

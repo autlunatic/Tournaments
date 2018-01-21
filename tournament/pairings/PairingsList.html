@@ -5,14 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=800, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Pairings List</title>
+    <title>Gameplan</title>
 </head>
 
 <body>
-    <h1>Paarungen: </h1>
-    <div class="pairingList">
-        {{range .}}
-        <div class="pairingItem">{{.Competitor1ID}}</div>    {{end}}
+    <h1>Spielplan</h1>
+    <div class="Plan">
+        <!-- header -->
+        <div class="pairingHeader">
+            <div class="Time">Zeit</div>
+            <div class="Court">Platz</div>
+            <div class="Round">Runde</div>
+            <div class="C1">Team 1</div>
+            <div class="C2">Team 2</div>
+        </div>
+        <!-- plan -->
+        <div class="pairingList">
+            {{range .}}
+            <div class="pairingItem"></div>
+            <div class="time">.startTime</div>
+            <div class="round">.pairing.Round</div>
+            <div class="court">.court</div>
+            <div class="C1">.Comp1Name</div>
+            <div class="C2">.Comp2Name</div>
+            {{end}}
+        </div>
     </div>
 </body>
 

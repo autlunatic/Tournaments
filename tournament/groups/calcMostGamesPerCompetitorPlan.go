@@ -6,7 +6,7 @@ import (
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
 
-func calcMostGamesPerCompetitorPlan(cg []competitors.C, details detail.Details) ([][]pairings.P, []G) {
+func calcMostGamesPerCompetitorPlan(cg []competitors.C, details detail.D) ([][]pairings.P, []G) {
 	var plan [][]pairings.P
 	var groups []G
 	var err error

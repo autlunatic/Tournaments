@@ -10,7 +10,7 @@ import (
 // Tournament holds all data about the tournament
 // details about durations etc./competitors/pairings
 type Tournament struct {
-	Details     detail.Details  //
+	Details     detail.D        //
 	Competitors []competitors.C // a complete slice of all competitors
 
 	Groups         []groups.G
@@ -18,18 +18,18 @@ type Tournament struct {
 	PairingResults []pairings.Results
 }
 
-func (t Tournament) getTournamentDetails() detail.Details {
+func (t Tournament) getTournamentDetails() detail.D {
 	return t.Details
 }
 
 // NewTournament returns a Tournament initialized with the given details
-func NewTournament(details detail.Details) Tournament {
+func NewTournament(details detail.D) Tournament {
 	t := Tournament{}
 	t.Details = details
 	return t
 }
 
-func (t *Tournament) setTournamentDetails(td detail.Details) {
+func (t *Tournament) setTournamentDetails(td detail.D) {
 	t.Details = td
 }
 
