@@ -2,7 +2,6 @@ package pairings
 
 import (
 	"bytes"
-	"fmt"
 	"strconv"
 	"text/template"
 	"time"
@@ -40,8 +39,6 @@ func calcedPlanToGamePlan(startTime time.Time, minutesPerGame int, c []competito
 				})
 		}
 	}
-	fmt.Println(out)
-	fmt.Println(ToHTML(out))
 	return out
 }
 
