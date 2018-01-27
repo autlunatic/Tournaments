@@ -31,11 +31,10 @@ func GToGroupInfo(g []G) []GroupInfo {
 // ToHTML calculates HTML string for representing the groups
 func ToHTML(g []G) string {
 
-	tpl := template.Must(template.ParseFiles("renderGroups.html"))
+	tpl := template.Must(template.ParseFiles("groups/renderGroups.html"))
 	gi := GToGroupInfo(g)
 	var b bytes.Buffer
 	tpl.Execute(&b, gi)
 	fmt.Println(b.String())
 	return b.String()
-	return ""
 }

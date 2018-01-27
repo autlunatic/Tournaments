@@ -1,46 +1,26 @@
-<!doctype html>
-<html lang="en">
+<h1>Ergebnisse</h1>
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<div class="container">
+    <div class="row">
+        <table class="table table-striped">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <link rel="Stylesheet" href="style_b.css">
+            <tr>
+                <th class="Time">Spiel</th>
+                <th class="Court">Team 1</th>
+                <th class="Round">Team 2</th>
+                <th class="C1">Spiel Punkte</th>
+                <th class="C2">Gruppen Punkte</th>
+            </tr>
 
-    <title>Pairings list</title>
-</head>
-
-<body>
-    <h1>Ergebnisse</h1>
-
-    <div class="container">
-        <div class="row">
-            <table class="table table-striped">
-
-                <tr>
-                    <th class="Time">Spiel</th>
-                    <th class="Court">Team 1</th>
-                    <th class="Round">Team 2</th>
-                    <th class="C1">Spiel Punkte</th>
-                    <th class="C2">Gruppen Punkte</th>
-                </tr>
-
-                {{range .}}
-                <tr>
-                    <td class="Time">{{.PairingID}}</td>
-                    <td class="Court">{{.Comp1Name}}</td>
-                    <td class="Round">{{.Comp2Name}}</td>
-                    <td class="C1">{{.Pairing1Pts}}:{{.Pairing2Pts}}</td>
-                    <td class="C2">{{.Group1Pts}}:{{.Group2Pts}}</td>
-                </tr>
-                {{end}}
-            </table>
-        </div>
-        
-</body>
-
-</html>
+            {{range .}}
+            <tr>
+                <td class="Time">{{.PairingID}}</td>
+                <td class="Court">{{.Comp1Name}}</td>
+                <td class="Round">{{.Comp2Name}}</td>
+                <td class="C1">{{.Pairing1Pts}}:{{.Pairing2Pts}}</td>
+                <td class="C2">{{.Group1Pts}}:{{.Group2Pts}}</td>
+            </tr>
+            {{end}}
+        </table>
+    </div>
+</div>

@@ -7,11 +7,11 @@ import (
 	"github.com/autlunatic/Tournaments/tournament/detail"
 )
 
-func (t *Tournament) AddCompetitor(c competitors.C) {
+func (t *T) AddCompetitor(c competitors.C) {
 	t.Competitors = append(t.Competitors, c)
 }
 
-func newTestTournament() Tournament {
+func newTestTournament() T {
 	td := detail.New(2, 1, 0)
 	tournament := NewTournament(*td)
 	return tournament

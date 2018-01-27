@@ -24,7 +24,7 @@ type GamePlan struct {
 	PairingInfo []PairingInfo
 }
 
-func calcedPlanToGamePlan(startTime time.Time, minutesPerGame int, c []competitors.C, cp [][]P) GamePlan {
+func CalcedPlanToGamePlan(startTime time.Time, minutesPerGame int, c []competitors.C, cp [][]P) GamePlan {
 	var out GamePlan
 	for kp := range cp {
 		calcedTime := startTime.Add(time.Minute * time.Duration(minutesPerGame*kp))
@@ -44,7 +44,7 @@ func calcedPlanToGamePlan(startTime time.Time, minutesPerGame int, c []competito
 
 // ToHTML renders the Pairing List to a HTML Page
 func ToHTML(gp GamePlan) string {
-	tpl := template.Must(template.ParseFiles("PairingsList.html"))
+	tpl := template.Must(template.ParseFiles("pairings/PairingsList.html"))
 	var b bytes.Buffer
 	tpl.Execute(&b, gp)
 	return b.String()

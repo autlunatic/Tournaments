@@ -1,32 +1,14 @@
-<!doctype html>
-<html lang="en">
+<h1>Gruppen</h1>
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <link rel="Stylesheet" href="style_b.css">
-
-    <title>Pairings list</title>
-</head>
-
-<body>
-    <h1>Gruppen</h1>
-
-    {{range .}}
-    <div class="container">
-        <table class="table table-striped">
-            <th>Gruppe {{.ID}}</th>
-            {{range .CompetitorNames}}
-            <tr><td>{{.}}</td></tr>
-            {{end}}
-        </table>
-    </div>
-    {{end}}
-</body>
-
-</html>
+{{range .}}
+<div class="container">
+    <table class="table table-striped">
+        <th>Gruppe {{.ID}}</th>
+        {{range .CompetitorNames}}
+        <tr>
+            <td>{{.}}</td>
+        </tr>
+        {{end}}
+    </table>
+</div>
+{{end}}

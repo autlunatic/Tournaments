@@ -8,6 +8,6 @@ import (
 // CalcGroupCountMaxGames calculates the possible count of groups given in that time slot.
 // this func focuses on having as much games as possible by making the count of competitors per Group as big as possible
 func CalcGroupCountMaxGames(c []competitors.C, totalTimeMinutes int, minutesPerGame int, countOfParallelGames int) int {
-	_, g := calcMostGamesPerCompetitorPlan(c, *detail.New(countOfParallelGames, minutesPerGame, totalTimeMinutes))
+	_, g, _ := CalcMostGamesPerCompetitorPlan(c, *detail.New(countOfParallelGames, minutesPerGame, totalTimeMinutes))
 	return len(g)
 }

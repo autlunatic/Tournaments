@@ -42,7 +42,7 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 // ResultsToHTML renders the results of a given pairings to HTML
 func ResultsToHTML(c []competitors.C, p []P, r Results, tpc tournamentPoints.TournamentPointCalcer) string {
 
-	tpl := template.Must(template.ParseFiles("ResultList.html"))
+	tpl := template.Must(template.ParseFiles("pairings/ResultList.html"))
 	pi := ResultsToResultInfo(c, p, r, tpc)
 	var b bytes.Buffer
 	tpl.Execute(&b, pi)

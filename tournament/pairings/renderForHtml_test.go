@@ -57,7 +57,7 @@ func Test_calcedPlanToGamePlan(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := calcedPlanToGamePlan(tt.args.startTime, tt.args.durationPerGame, tt.args.c, tt.args.cp); !reflect.DeepEqual(got, tt.want) {
+			if got := CalcedPlanToGamePlan(tt.args.startTime, tt.args.durationPerGame, tt.args.c, tt.args.cp); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("calcedPlanToGamePlan() =\n got: %v,  \n want %v", got, tt.want)
 			}
 		})

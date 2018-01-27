@@ -15,7 +15,7 @@ type planCalc struct {
 
 // CalcPlan gives us a tournamentplan its s slice of rounds, one round contains a slice of pairings
 // one round ist meant to be one round that can be played simultaneously
-func CalcPlan(allCompetitors []competitors.C, Groups []G, countOfParallelGames int) [][]pairings.P {
+func CalcPlan(allCompetitors []competitors.C, Groups []G, countOfParallelGames int) ([][]pairings.P, []pairings.P) {
 
 	calc := planCalc{
 		groups:               Groups,
@@ -25,7 +25,7 @@ func CalcPlan(allCompetitors []competitors.C, Groups []G, countOfParallelGames i
 
 	allPairs, err := calc.calcPairsFromGroups()
 	if err != nil {
-		return nil
+		return nil, nil
 	}
 
 	for i := range allPairs {
@@ -47,7 +47,7 @@ func CalcPlan(allCompetitors []competitors.C, Groups []G, countOfParallelGames i
 	if len(round) >= 1 {
 		result = append(result, round)
 	}
-	return result
+	return result, allPairs
 }
 
 func (c planCalc) needNewGroup(round []pairings.P, p pairings.P) bool {
