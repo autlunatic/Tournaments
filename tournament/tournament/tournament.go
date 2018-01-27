@@ -10,12 +10,14 @@ import (
 // Tournament holds all data about the tournament
 // details about durations etc./competitors/pairings
 type Tournament struct {
+	ID          int64
 	Details     detail.D        //
 	Competitors []competitors.C // a complete slice of all competitors
 
 	Groups         []groups.G
 	Pairings       []pairings.P
 	PairingResults []pairings.Results
+	Plan           [][]pairings.P
 }
 
 func (t Tournament) getTournamentDetails() detail.D {

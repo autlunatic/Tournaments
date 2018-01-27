@@ -13,7 +13,9 @@ type planCalc struct {
 	countOfParallelGames int
 }
 
-func calcPlan(allCompetitors []competitors.C, Groups []G, countOfParallelGames int) [][]pairings.P {
+// CalcPlan gives us a tournamentplan its s slice of rounds, one round contains a slice of pairings
+// one round ist meant to be one round that can be played simultaneously
+func CalcPlan(allCompetitors []competitors.C, Groups []G, countOfParallelGames int) [][]pairings.P {
 
 	calc := planCalc{
 		groups:               Groups,
