@@ -1,7 +1,6 @@
 package groups
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 
@@ -11,12 +10,6 @@ import (
 func calcGroupsForTest() []G {
 	c := competitors.NewTestCompetitors(9)
 	g, _ := CalcGroups(c, 3)
-	for gi := range g {
-		for _, i := range g[gi].Competitors {
-
-			fmt.Println(i)
-		}
-	}
 	return g
 }
 
@@ -44,7 +37,6 @@ func TestGToGroupInfo(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			fmt.Println(ToHTML(tt.args.g))
 			if got := GToGroupInfo(tt.args.g); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GToGroupInfo() = %v, want %v", got, tt.want)
 			}
