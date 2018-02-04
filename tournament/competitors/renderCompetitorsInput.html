@@ -1,0 +1,17 @@
+<h1>Team hinzufügen</h1>
+<form method="POST">
+    <div class="form-group">
+        <label for="teamName">Name:</label>
+        <input type="text" class="form-control" id="teamName">
+        
+        <button type="button" class="btn btn-default">Hinzufügen</button>
+    </div>
+</form>
+
+<h1>Liste der Teams</h1>
+
+<ul class="list-group">
+    {{range .}}
+    <li class="list-group-item">{{.Name}}</li>
+    {{end}}
+</ul>

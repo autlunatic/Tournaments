@@ -25,7 +25,9 @@ func main() {
 	http.HandleFunc("/groups", groupsHandler)
 	http.HandleFunc("/results", resultsHandler)
 	http.HandleFunc("mainPage.html", mainPage)
+	http.HandleFunc("/inputCompetitors", inputCompetitorsHandler)
 	http.HandleFunc("/default.css", defaultCSS)
+	http.Handle("/favicon.ico", http.NotFoundHandler())
 	t.Details = detail.D{
 		MinutesAvailForGroupsPhase: 90,
 		MinutesPerGame:             15,
@@ -58,6 +60,12 @@ func groupsHandler(w http.ResponseWriter, req *http.Request) {
 }
 func gamePlanHandler(w http.ResponseWriter, req *http.Request) {
 	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(time.Now(), t.Details.MinutesPerGame, t.Competitors, t.Plan))
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	io.WriteString(w, mainpage.ToHTML(html))
+}
+
+func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request) {
+	html := competitors.InputCompetitorsHTML(t.Competitors)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	io.WriteString(w, mainpage.ToHTML(html))
 }
