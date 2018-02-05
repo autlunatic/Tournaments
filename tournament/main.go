@@ -11,7 +11,6 @@ import (
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
-	"github.com/autlunatic/Tournaments/tournament/detail"
 	"github.com/autlunatic/Tournaments/tournament/groups"
 	"github.com/autlunatic/Tournaments/tournament/mainpage"
 	"github.com/autlunatic/Tournaments/tournament/tournament"
@@ -28,13 +27,7 @@ func main() {
 	http.HandleFunc("/inputCompetitors", inputCompetitorsHandler)
 	http.HandleFunc("/default.css", defaultCSS)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
-	t.Details = detail.D{
-		MinutesAvailForGroupsPhase: 90,
-		MinutesPerGame:             15,
-		NumberOfParallelGames:      4,
-	}
-	t.Competitors = competitors.NewTestCompetitors(9)
-	t.Plan, t.Groups, t.Pairings = groups.CalcMostGamesPerCompetitorPlan(t.Competitors, t.Details)
+	t.Build()
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -65,11 +58,24 @@ func gamePlanHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request) {
-	html := competitors.InputCompetitorsHTML(t.Competitors)
+	if req.Method == http.MethodPost {
+		inputTeamName := req.FormValue("competitorName")
+		if len(inputTeamName) > 0 {
+			err := tryToAddCompetitor(inputTeamName)
+			if err != nil {
+				// Todo show error
+			}
+		}
+	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	html := competitors.InputCompetitorsHTML(t.Competitors)
 	io.WriteString(w, mainpage.ToHTML(html))
 }
-
+func tryToAddCompetitor(compName string) error {
+	var err error
+	t.Competitors, err = competitors.AddByName(t.Competitors, compName)
+	return err
+}
 func defaultCSS(w http.ResponseWriter, req *http.Request) {
 	http.ServeFile(w, req, "default.css")
 }

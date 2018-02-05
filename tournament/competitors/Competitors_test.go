@@ -118,3 +118,88 @@ func TestClearPoints(t *testing.T) {
 	}
 
 }
+
+func getWantedTestAddByName1() []C {
+	var out = NewTestCompetitors(5)
+	out = append(out, New("Hans", 5))
+	return out
+}
+func TestAddByName(t *testing.T) {
+	type args struct {
+		cs   []C
+		name string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    []C
+		wantErr bool
+	}{
+		{"add not taken Name", args{NewTestCompetitors(5), "Hans"}, getWantedTestAddByName1(), false},
+		{"add Name", args{NewTestCompetitors(5), "Benni"}, NewTestCompetitors(5), true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := AddByName(tt.args.cs, tt.args.name)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("AddByName() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if len(got) != len(tt.want) {
+				t.Errorf("AddByName() = %v, want %v", got, tt.want)
+			}
+			for i, cgot := range got {
+				if cgot.Name() != tt.want[i].Name() {
+					t.Errorf("AddByName() = %v, want %v", cgot.Name(), tt.want[i].Name())
+				}
+			}
+			for i, cgot := range got {
+				if cgot.ID() != tt.want[i].ID() {
+					t.Errorf("AddByName() = %v, want %v", cgot.ID(), tt.want[i].ID())
+				}
+			}
+		})
+	}
+}
+
+func TestContainsName(t *testing.T) {
+	type args struct {
+		cs   []C
+		name string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{"not containing should return false", args{NewTestCompetitors(5), "Hugo"}, false},
+		{"not containing should return false", args{NewTestCompetitors(5), "Benni"}, true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ContainsName(tt.args.cs, tt.args.name); got != tt.want {
+				t.Errorf("ContainsName() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestGetMaxID(t *testing.T) {
+	type args struct {
+		cs []C
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{"6 test competitors highest id should be 5, as ID begins at 0", args{NewTestCompetitors(6)}, 5},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := GetMaxID(tt.args.cs); got != tt.want {
+				t.Errorf("GetMaxID() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

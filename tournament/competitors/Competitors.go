@@ -50,6 +50,37 @@ type SimpleCompetitor struct {
 	groupPlacement int
 }
 
+// ContainsName Checks if the competitor Name is already taken
+func ContainsName(cs []C, name string) bool {
+	for _, c := range cs {
+		if c.Name() == name {
+			return true
+		}
+	}
+	return false
+}
+
+// GetMaxID returns the highest ID of a competitor in the given slice
+func GetMaxID(cs []C) int {
+	var out int
+	for _, c := range cs {
+		if out < c.ID() {
+			out = c.ID()
+		}
+	}
+	return out
+}
+
+// AddByName adds a competitor by name, the ID is automatically generated
+// it returns an error if the name is already taken
+func AddByName(cs []C, name string) ([]C, error) {
+	if ContainsName(cs, name) {
+		return cs, errors.New("Name already taken")
+	}
+	cs = append(cs, New(name, GetMaxID(cs)+1))
+	return cs, nil
+}
+
 // Add adds a competitor to the slice of competitors
 func Add(cs []C, c C) ([]C, error) {
 	for _, item := range cs {
