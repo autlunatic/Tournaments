@@ -2,15 +2,19 @@ package competitors
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 )
 
+type inputCompetitors struct {
+	C       []C
+	ErrHTML string
+}
+
 // InputCompetitorsHTML creates the HTML code for the input of the Competitors
-func InputCompetitorsHTML(c []C) string {
+func InputCompetitorsHTML(c []C, errHTML string) string {
 	tpl := template.Must(template.ParseFiles("competitors/renderCompetitorsInput.html"))
 	var b bytes.Buffer
-	tpl.Execute(&b, c)
-	fmt.Println(b.String())
+	ic := inputCompetitors{c, errHTML}
+	tpl.Execute(&b, ic)
 	return b.String()
 }

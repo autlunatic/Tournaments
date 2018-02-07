@@ -32,44 +32,43 @@ func main() {
 }
 
 func defaultHandler(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("handling default")
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	io.WriteString(w, mainpage.ToHTML("mainpage"))
+	html := "<h1> mainPage </h1>"
+	writeHeaderAndHTML(w, html)
 }
 func mainPage(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("serving mainpage...")
 	http.ServeFile(w, req, "mainpage/mainPage.html")
 }
 func resultsHandler(w http.ResponseWriter, req *http.Request) {
 	html := pairings.ResultsToHTML(t.Competitors, t.Pairings, t.PairingResults, tournamentPoints.NewSimpleTournamentPointCalc(1, 3, 0))
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	io.WriteString(w, mainpage.ToHTML(html))
+	writeHeaderAndHTML(w, html)
 }
 func groupsHandler(w http.ResponseWriter, req *http.Request) {
 	html := groups.ToHTML(t.Groups)
-	fmt.Println()
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	io.WriteString(w, mainpage.ToHTML(html))
+	writeHeaderAndHTML(w, html)
 }
 func gamePlanHandler(w http.ResponseWriter, req *http.Request) {
 	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(time.Now(), t.Details.MinutesPerGame, t.Competitors, t.Plan))
+	writeHeaderAndHTML(w, html)
+}
+func writeHeaderAndHTML(w http.ResponseWriter, html string) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	io.WriteString(w, mainpage.ToHTML(html))
-}
 
+}
 func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request) {
+	var errHTML string
+	fmt.Println(req.Method)
 	if req.Method == http.MethodPost {
 		inputTeamName := req.FormValue("competitorName")
 		if len(inputTeamName) > 0 {
 			err := tryToAddCompetitor(inputTeamName)
 			if err != nil {
-				// Todo show error
+				errHTML = err.Error()
 			}
 		}
 	}
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	html := competitors.InputCompetitorsHTML(t.Competitors)
-	io.WriteString(w, mainpage.ToHTML(html))
+	html := competitors.InputCompetitorsHTML(t.Competitors, errHTML)
+	writeHeaderAndHTML(w, html)
 }
 func tryToAddCompetitor(compName string) error {
 	var err error

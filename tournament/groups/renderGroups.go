@@ -2,7 +2,6 @@ package groups
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 )
 
@@ -35,6 +34,5 @@ func ToHTML(g []G) string {
 	gi := GToGroupInfo(g)
 	var b bytes.Buffer
 	tpl.Execute(&b, gi)
-	fmt.Println(b.String())
 	return b.String()
 }

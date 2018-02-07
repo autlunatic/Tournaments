@@ -2,15 +2,21 @@
 <form method="POST">
     <div class="form-group">
         <label for="competitorName">Name:</label>
-        <input type="text" class="form-control" id="competitorName" name="competitorName">
-        <button type="button" class="btn btn-default">Hinzufügen</button>
+
+        <input type="text" class="form-control" id="competitorName" name="competitorName"> 
+        {{if .ErrHTML}}
+        <div class="alert alert-danger">
+            <strong>{{.ErrHTML}}</strong>
+        </div>
+        {{end}}
+        <input type="submit" class="btn btn-default" value="Hinzufügen">
     </div>
 </form>
 
 <h1>Liste der Teams</h1>
 
 <ul class="list-group">
-    {{range .}}
+    {{range .C}}
     <li class="list-group-item">{{.Name}}</li>
     {{end}}
 </ul>

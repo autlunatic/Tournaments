@@ -2,7 +2,6 @@ package pairings
 
 import (
 	"bytes"
-	"fmt"
 	"text/template"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
@@ -46,6 +45,5 @@ func ResultsToHTML(c []competitors.C, p []P, r Results, tpc tournamentPoints.Tou
 	pi := ResultsToResultInfo(c, p, r, tpc)
 	var b bytes.Buffer
 	tpl.Execute(&b, pi)
-	fmt.Println(b.String())
 	return b.String()
 }
