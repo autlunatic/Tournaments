@@ -3,8 +3,8 @@
     <div class="form-group">
         <label for="competitorName">Name:</label>
 
-        <input type="text" class="form-control" id="competitorName" name="competitorName"> 
-        {{if .ErrHTML}}
+        <input type="text" class="form-control" id="competitorName" name="competitorName"> {{if .ErrHTML}}
+        </br>
         <div class="alert alert-danger">
             <strong>{{.ErrHTML}}</strong>
         </div>
@@ -14,9 +14,10 @@
 </form>
 
 <h1>Liste der Teams</h1>
-
-<ul class="list-group">
-    {{range .C}}
-    <li class="list-group-item">{{.Name}}</li>
-    {{end}}
-</ul>
+<div class="container">
+        <div class="d-flex flex-row flex-wrap">
+            {{range .C}}
+            <a href="competitor/{{.Name}}" class="card p-2 px-3 w-50 list-group-item-action">{{.Name}}</a>
+            {{end}}
+        </div>
+</div>
