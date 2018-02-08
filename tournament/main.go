@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"time"
 
 	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
+	"github.com/julienschmidt/httprouter"
 
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 
@@ -19,12 +19,15 @@ import (
 var t tournament.T
 
 func main() {
+	mux := httprouter.New()
+
 	http.HandleFunc("/", defaultHandler)
 	http.HandleFunc("/gameplan", gamePlanHandler)
 	http.HandleFunc("/groups", groupsHandler)
 	http.HandleFunc("/results", resultsHandler)
 	http.HandleFunc("mainPage.html", mainPage)
 	http.HandleFunc("/inputCompetitors", inputCompetitorsHandler)
+	mux.GET("/inputResults/:id", inputResultHandler)
 	http.HandleFunc("/default.css", defaultCSS)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 	t.Build()
@@ -57,7 +60,6 @@ func writeHeaderAndHTML(w http.ResponseWriter, html string) {
 }
 func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request) {
 	var errHTML string
-	fmt.Println(req.Method)
 	if req.Method == http.MethodPost {
 		inputTeamName := req.FormValue("competitorName")
 		if len(inputTeamName) > 0 {
@@ -77,4 +79,19 @@ func tryToAddCompetitor(compName string) error {
 }
 func defaultCSS(w http.ResponseWriter, req *http.Request) {
 	http.ServeFile(w, req, "default.css")
+}
+func inputResultHandler(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	var errHTML string
+	ps.
+	if req.Method == http.MethodPost {
+		inputTeamName := req.FormValue("competitorName")
+		if len(inputTeamName) > 0 {
+			err := tryToAddCompetitor(inputTeamName)
+			if err != nil {
+				errHTML = err.Error()
+			}
+		}
+	}
+	html := competitors.InputCompetitorsHTML(t.Competitors, errHTML)
+	writeHeaderAndHTML(w, html)
 }

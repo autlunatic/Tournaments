@@ -1,0 +1,18 @@
+<h1>Ergebnisse eintragen</h1>
+<form method="POST">
+    <div class="form-group">
+        <h2>Spielnummer: {{.ID}} - Runde: {{.Round}}</h2>
+        <label for="competitorPoints1">{{Competitor1Name}}</label>
+        <input type="number" class="form-control" id="competitorPoints1" name="competitorPoints1" value="{{Competitor1Points}}">
+
+        <label for="competitor2">{{Competitor2Name}}</label>
+        <input type="number" class="form-control" id="competitorPoints2" name="competitorPoints2" value="{{Competitor2Points}}">
+        {{if .ErrHTML}}
+        </br>
+        <div class="alert alert-danger">
+            <strong>{{.ErrHTML}}</strong>
+        </div>
+        {{end}}
+        <input type="submit" class="btn btn-default" value="OK">
+    </div>
+</form>
