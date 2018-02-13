@@ -15,7 +15,7 @@ func CalcNextFinalRound(pairs []P, res Results, calcer tournamentPoints.Tourname
 			oid := (-p.ID + maxPairID) / 2
 			out[oid].ID = minPairID - (oid) - 1
 			out[oid].Round = -len(pairs) / 2
-			r1, r2 := calcer.Calc(r.gamePoints1, r.gamePoints2)
+			r1, r2 := calcer.Calc(r.GamePoints1, r.GamePoints2)
 			calcAndSetCompetitorIds(&out[oid], r1, r2, p)
 		}
 	}

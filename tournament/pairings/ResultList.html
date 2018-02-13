@@ -14,11 +14,11 @@
 
             {{range .}}
             <tr>
-                <td class="Time">{{.PairingID}}</td>
+                <td class="Time"><a href="/inputResults/{{.PairingID}}">{{.PairingID}}</a></td>
                 <td class="Court">{{.Comp1Name}}</td>
                 <td class="Round">{{.Comp2Name}}</td>
-                <td class="C1">{{.Pairing1Pts}}:{{.Pairing2Pts}}</td>
-                <td class="C2">{{.Group1Pts}}:{{.Group2Pts}}</td>
+                <td class="C1"> {{if .Done}} {{.Pairing1Pts}}:{{.Pairing2Pts}}{{end}}</td>
+                <td class="C2"> {{if .Done}} {{.Group1Pts}}:{{.Group2Pts}}  {{end}}   </td>
             </tr>
             {{end}}
         </table>

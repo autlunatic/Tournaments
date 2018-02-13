@@ -33,7 +33,6 @@ func TestGToGroupInfo(t *testing.T) {
 		{"3 groups 9 competitors",
 			args{competitors.NewTestCompetitors(9), calcGroupsForTest()},
 			getGroupInfoWanted()},
-		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -53,7 +53,6 @@ func Test_calcedPlanToGamePlan(t *testing.T) {
 		want GamePlan
 	}{
 		{"4 competitors", args{time.Date(2018, 1, 20, 14, 0, 0, 0, time.UTC), 15, getTestCompetitors(), getCalcedPlanFor4Competitors()}, getGamePlanForFirstTest()},
-		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

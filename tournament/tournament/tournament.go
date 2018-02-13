@@ -1,6 +1,8 @@
 package tournament
 
 import (
+	"fmt"
+
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/detail"
 	"github.com/autlunatic/Tournaments/tournament/groups"
@@ -38,12 +40,17 @@ func (t *T) setTournamentDetails(td detail.D) {
 // Build calculates the tournament with the given Details and competitors
 func (t *T) Build() error {
 	// calc the tournament plan for the - take in account that no team should play twice in a round ;) and that the last round should be all of one group at once
-	t.Details = detail.D{
-		MinutesAvailForGroupsPhase: 90,
-		MinutesPerGame:             15,
-		NumberOfParallelGames:      4,
-	}
-	t.Competitors = competitors.NewTestCompetitors(9)
 	t.Plan, t.Groups, t.Pairings = groups.CalcMostGamesPerCompetitorPlan(t.Competitors, t.Details)
 	return nil
+}
+
+// GetPairingByID returns the Pairing with the given ID from the tournament
+// it returns an Error if the ID is not valid
+func (t *T) GetPairingByID(ID int) (pairings.P, error) {
+	for i, p := range t.Pairings {
+		if p.ID == ID {
+			return t.Pairings[i], nil
+		}
+	}
+	return pairings.P{}, fmt.Errorf("Invalid Pairing ID")
 }

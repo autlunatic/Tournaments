@@ -3,7 +3,8 @@
     <div class="form-group">
         <label for="competitorName">Name:</label>
 
-        <input type="text" class="form-control" id="competitorName" name="competitorName"> {{if .ErrHTML}}
+        <input type="text" class="form-control" id="competitorName" name="competitorName"> 
+        {{if .ErrHTML}}
         </br>
         <div class="alert alert-danger">
             <strong>{{.ErrHTML}}</strong>

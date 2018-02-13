@@ -17,23 +17,38 @@ type ResultInfo struct {
 	Pairing2Pts int
 	Group1Pts   int
 	Group2Pts   int
+	Done        bool
 }
 
 // ResultsToResultInfo calculates the struct that is used for presenting the data in HTML
 func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoints.TournamentPointCalcer) []ResultInfo {
 	var out []ResultInfo
 	for _, pi := range p {
-		res := r[pi.ID]
-		tp1, tp2 := tpc.Calc(res.gamePoints1, res.gamePoints2)
-		out = append(out, ResultInfo{
-			pi.ID,
-			competitors.GetCompetitor(c, pi.Competitor1ID).Name(),
-			competitors.GetCompetitor(c, pi.Competitor2ID).Name(),
-			res.gamePoints1,
-			res.gamePoints2,
-			tp1,
-			tp2,
-		})
+		if res, ok := r[pi.ID]; ok {
+			tp1, tp2 := tpc.Calc(res.GamePoints1, res.GamePoints2)
+			out = append(out, ResultInfo{
+				pi.ID,
+				competitors.GetCompetitor(c, pi.Competitor1ID).Name(),
+				competitors.GetCompetitor(c, pi.Competitor2ID).Name(),
+				res.GamePoints1,
+				res.GamePoints2,
+				tp1,
+				tp2,
+				true,
+			})
+		} else {
+			out = append(out, ResultInfo{
+				pi.ID,
+				competitors.GetCompetitor(c, pi.Competitor1ID).Name(),
+				competitors.GetCompetitor(c, pi.Competitor2ID).Name(),
+				0,
+				0,
+				0,
+				0,
+				false,
+			})
+
+		}
 	}
 	return out
 }

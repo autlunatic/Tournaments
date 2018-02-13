@@ -24,10 +24,10 @@ func getPairingsForQuarterFinals(aIdsFrom16 bool) calcNextFinalRoundArgs {
 		{7, 8, -4, -4 - offset, 0},
 	}
 	outR := Results{
-		-1 - offset: Result{3, 1},
-		-2 - offset: Result{5, 6},
-		-3 - offset: Result{2, 1},
-		-4 - offset: Result{1, 3},
+		-1 - offset: &Result{3, 1},
+		-2 - offset: &Result{5, 6},
+		-3 - offset: &Result{2, 1},
+		-4 - offset: &Result{1, 3},
 	}
 	return calcNextFinalRoundArgs{outP, outR}
 }
@@ -37,8 +37,8 @@ func getPairingsForSemiFinals() calcNextFinalRoundArgs {
 		{3, 4, -2, -6, 0},
 	}
 	outR := Results{
-		-5: Result{3, 1},
-		-6: Result{5, 6},
+		-5: &Result{3, 1},
+		-6: &Result{5, 6},
 	}
 	return calcNextFinalRoundArgs{outP, outR}
 }

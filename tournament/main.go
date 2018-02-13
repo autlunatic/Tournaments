@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"time"
 
+	"github.com/autlunatic/Tournaments/tournament/detail"
 	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
 	"github.com/julienschmidt/httprouter"
 
@@ -21,35 +24,46 @@ var t tournament.T
 func main() {
 	mux := httprouter.New()
 
-	http.HandleFunc("/", defaultHandler)
-	http.HandleFunc("/gameplan", gamePlanHandler)
-	http.HandleFunc("/groups", groupsHandler)
-	http.HandleFunc("/results", resultsHandler)
-	http.HandleFunc("mainPage.html", mainPage)
-	http.HandleFunc("/inputCompetitors", inputCompetitorsHandler)
+	http.Handle("/", mux)
+	mux.GET("/", defaultHandler)
+	mux.GET("/gameplan", gamePlanHandler)
+	mux.GET("/groups", groupsHandler)
+	mux.GET("/results", resultsHandler)
+	mux.GET("/mainPage.html", mainPage)
+	mux.GET("/inputCompetitors", inputCompetitorsHandler)
+	mux.POST("/inputCompetitors", inputCompetitorsHandler)
 	mux.GET("/inputResults/:id", inputResultHandler)
-	http.HandleFunc("/default.css", defaultCSS)
-	http.Handle("/favicon.ico", http.NotFoundHandler())
+	mux.POST("/inputResults/:id", inputResultHandler)
+	mux.ServeFiles("/css/*filepath", http.Dir("./css/"))
+	mux.Handler("GET", "/favicon.ico", http.NotFoundHandler())
+	t.Details = detail.D{
+		MinutesAvailForGroupsPhase: 90,
+		MinutesPerGame:             15,
+		NumberOfParallelGames:      4,
+	}
+	t.Competitors = competitors.NewTestCompetitors(9)
+	t.PairingResults = make(map[int]*pairings.Result)
+
 	t.Build()
 	http.ListenAndServe(":8080", nil)
 }
 
-func defaultHandler(w http.ResponseWriter, req *http.Request) {
+func defaultHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	html := "<h1> mainPage </h1>"
 	writeHeaderAndHTML(w, html)
 }
-func mainPage(w http.ResponseWriter, req *http.Request) {
+func mainPage(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	http.ServeFile(w, req, "mainpage/mainPage.html")
 }
-func resultsHandler(w http.ResponseWriter, req *http.Request) {
+func resultsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	html := pairings.ResultsToHTML(t.Competitors, t.Pairings, t.PairingResults, tournamentPoints.NewSimpleTournamentPointCalc(1, 3, 0))
 	writeHeaderAndHTML(w, html)
 }
-func groupsHandler(w http.ResponseWriter, req *http.Request) {
+func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	html := groups.ToHTML(t.Groups)
 	writeHeaderAndHTML(w, html)
 }
-func gamePlanHandler(w http.ResponseWriter, req *http.Request) {
+func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(time.Now(), t.Details.MinutesPerGame, t.Competitors, t.Plan))
 	writeHeaderAndHTML(w, html)
 }
@@ -58,7 +72,7 @@ func writeHeaderAndHTML(w http.ResponseWriter, html string) {
 	io.WriteString(w, mainpage.ToHTML(html))
 
 }
-func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request) {
+func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var errHTML string
 	if req.Method == http.MethodPost {
 		inputTeamName := req.FormValue("competitorName")
@@ -66,6 +80,8 @@ func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request) {
 			err := tryToAddCompetitor(inputTeamName)
 			if err != nil {
 				errHTML = err.Error()
+			} else {
+				t.Build()
 			}
 		}
 	}
@@ -77,21 +93,47 @@ func tryToAddCompetitor(compName string) error {
 	t.Competitors, err = competitors.AddByName(t.Competitors, compName)
 	return err
 }
-func defaultCSS(w http.ResponseWriter, req *http.Request) {
+func defaultCSS(w http.ResponseWriter, req *http.Request, _ps httprouter.Params) {
+	fmt.Println("requesting css")
 	http.ServeFile(w, req, "default.css")
 }
 func inputResultHandler(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	var errHTML string
-	ps.
-	if req.Method == http.MethodPost {
-		inputTeamName := req.FormValue("competitorName")
-		if len(inputTeamName) > 0 {
-			err := tryToAddCompetitor(inputTeamName)
-			if err != nil {
-				errHTML = err.Error()
-			}
-		}
+	id, err := strconv.Atoi(ps.ByName("id"))
+	if err != nil {
+		id = 0
 	}
-	html := competitors.InputCompetitorsHTML(t.Competitors, errHTML)
+
+	p, err2 := t.GetPairingByID(id)
+	if err2 != nil {
+		writeHeaderAndHTML(w, "<h1> "+err2.Error()+"</h1>")
+		return
+	}
+
+	var errHTML string
+	if req.Method == http.MethodPost {
+		ptsC1, err := strconv.Atoi(req.FormValue("competitor1Points"))
+		if err != nil {
+			errHTML = "Invalid input for Points 1"
+		}
+		ptsC2, err2 := strconv.Atoi(req.FormValue("competitor2Points"))
+		if err2 != nil {
+			errHTML = "Invalid input for Points 2"
+		}
+		if pr, ok := t.PairingResults[p.ID]; ok {
+			pr.SetPoints(ptsC1, ptsC2)
+		}
+		req.Method = http.MethodGet
+		resultsHandler(w, req, ps)
+		return
+	}
+	//t.PairingResults[p.ID].gamePoints1 = 1
+
+	if errHTML != "" {
+		writeHeaderAndHTML(w, "<h1> "+errHTML+"</h1>")
+		return
+	}
+	var sif pairings.SimpleInputFormGetter
+
+	html := sif.GetInputForm(t.Competitors, p, t.PairingResults, errHTML)
 	writeHeaderAndHTML(w, html)
 }

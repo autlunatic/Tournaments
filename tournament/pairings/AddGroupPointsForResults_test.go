@@ -18,11 +18,11 @@ func getArgsFor5() args {
 	out.pairings = append(out.pairings, P{2, 3, 2, 2, 1})
 	out.pairings = append(out.pairings, P{0, 4, 3, 3, 1})
 	out.pairings = append(out.pairings, P{1, 3, 4, 4, 1})
-	out.results = make(map[int]Result)
-	out.results[1] = Result{5, 5}
-	out.results[2] = Result{3, 1}
-	out.results[3] = Result{1, 2}
-	out.results[4] = Result{4, 3}
+	out.results = make(map[int]*Result)
+	out.results[1] = &Result{5, 5}
+	out.results[2] = &Result{3, 1}
+	out.results[3] = &Result{1, 2}
+	out.results[4] = &Result{4, 3}
 	return out
 }
 func getArgsFor2() args {
@@ -31,29 +31,29 @@ func getArgsFor2() args {
 	out.pairings = append(out.pairings, P{0, 1, 2, 2, 1})
 	out.pairings = append(out.pairings, P{0, 1, 3, 3, 1})
 	out.pairings = append(out.pairings, P{0, 1, 4, 4, 1})
-	out.results = make(map[int]Result)
-	out.results[1] = Result{1, 5}
-	out.results[2] = Result{3, 1}
-	out.results[3] = Result{4, 5}
-	out.results[4] = Result{4, 4}
+	out.results = make(map[int]*Result)
+	out.results[1] = &Result{1, 5}
+	out.results[2] = &Result{3, 1}
+	out.results[3] = &Result{4, 5}
+	out.results[4] = &Result{4, 4}
 	return out
 }
 func getArgsForError1() args {
 	var out args
 	out.pairings = append(out.pairings, P{0, 5, 1, 1, 1})
 	out.pairings = append(out.pairings, P{0, 5, 2, 2, 1})
-	out.results = make(map[int]Result)
-	out.results[1] = Result{1, 5}
-	out.results[5] = Result{4, 4}
+	out.results = make(map[int]*Result)
+	out.results[1] = &Result{1, 5}
+	out.results[5] = &Result{4, 4}
 	return out
 }
 func getArgsForError2() args {
 	var out args
 	out.pairings = append(out.pairings, P{5, 0, 1, 1, 1})
 	out.pairings = append(out.pairings, P{5, 0, 2, 2, 1})
-	out.results = make(map[int]Result)
-	out.results[1] = Result{1, 5}
-	out.results[5] = Result{4, 4}
+	out.results = make(map[int]*Result)
+	out.results[1] = &Result{1, 5}
+	out.results[5] = &Result{4, 4}
 	return out
 }
 
