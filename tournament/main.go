@@ -32,6 +32,8 @@ func main() {
 	mux.GET("/mainPage.html", mainPage)
 	mux.GET("/inputCompetitors", inputCompetitorsHandler)
 	mux.POST("/inputCompetitors", inputCompetitorsHandler)
+	mux.GET("/adminPage", adminPageHandler)
+	mux.POST("/adminPage", adminPageHandler)
 	mux.GET("/inputResults/:id", inputResultHandler)
 	mux.POST("/inputResults/:id", inputResultHandler)
 	mux.ServeFiles("/css/*filepath", http.Dir("./css/"))
@@ -72,6 +74,41 @@ func writeHeaderAndHTML(w http.ResponseWriter, html string) {
 	io.WriteString(w, mainpage.ToHTML(html))
 
 }
+
+func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	var errHTML string
+	if req.Method == http.MethodPost {
+		fmt.Println(req)
+		minsPerGame, err := strconv.Atoi(req.FormValue("MinutesPerGame"))
+		if err != nil {
+			errHTML = "Invalid minutes per game value"
+		}
+		minsTotal, err2 := strconv.Atoi(req.FormValue("MinutesAvailForGroupsPhase"))
+		if err2 != nil {
+			errHTML = "Invalid total minutes value"
+		}
+		numberParallel, err3 := strconv.Atoi(req.FormValue("NumberOfParallelGames"))
+		if err3 != nil {
+			errHTML = "Invalid number of fields"
+		}
+		if req.PostFormValue("OK") != "" {
+			if errHTML == "" {
+				t.Details.MinutesAvailForGroupsPhase = minsTotal
+				t.Details.MinutesPerGame = minsPerGame
+				t.Details.NumberOfParallelGames = numberParallel
+			}
+		} else if req.PostFormValue("build") != "" {
+			fmt.Println("building new Tournament")
+			t.Build()
+		} else if req.PostFormValue("calcFinals") != "" {
+			fmt.Println("calcing finals")
+		}
+	}
+	fmt.Println(errHTML)
+	html := tournament.RenderAdminPage(t, errHTML)
+	writeHeaderAndHTML(w, html)
+}
+
 func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var errHTML string
 	if req.Method == http.MethodPost {

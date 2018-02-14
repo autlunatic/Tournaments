@@ -24,6 +24,7 @@ type GamePlan struct {
 	PairingInfo []PairingInfo
 }
 
+// CalcedPlanToGamePlan calces the plan for the HTML list
 func CalcedPlanToGamePlan(startTime time.Time, minutesPerGame int, c []competitors.C, cp [][]P) GamePlan {
 	var out GamePlan
 	for kp := range cp {

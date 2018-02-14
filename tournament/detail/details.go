@@ -9,9 +9,7 @@ type D struct {
 
 // New creates and initializes Details
 func New(numberOfFields int, minutesPerGame int, minAvail int) *D {
-	d := new(D)
-	d.NumberOfParallelGames = numberOfFields
-	d.MinutesPerGame = minutesPerGame
-	d.MinutesAvailForGroupsPhase = minAvail
-	return d
+	return &D{MinutesAvailForGroupsPhase: numberOfFields,
+		MinutesPerGame:        minutesPerGame,
+		NumberOfParallelGames: numberOfFields}
 }

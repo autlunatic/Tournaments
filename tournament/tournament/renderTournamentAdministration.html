@@ -1,0 +1,27 @@
+<h1>Turnier Administration</h1>
+<div class="container">
+    <form method="POST">
+
+        <div class="form-group">
+            <h2>Turniereinstellungen</h2>
+            <label for="numberOfParallelGames">Anzahl Felder: </label>
+            <input type="number" class="form-control" id="NumberOfParallelGames" name="NumberOfParallelGames" value="{{.Det.NumberOfParallelGames}}">
+
+            <label for="numberOfParallelGames">Minuten pro Spiel</label>
+            <input type="number" class="form-control" id="MinutesPerGame" name="MinutesPerGame" value="{{.Det.MinutesPerGame}}">
+            
+            <label for="numberOfParallelGames">Minuten für Gruppenphase: </label>
+            <input type="number" class="form-control" id="MinutesAvailForGroupsPhase" name="MinutesAvailForGroupsPhase" value="{{.Det.MinutesAvailForGroupsPhase}}">
+             {{if .Err}}
+            </br>
+            <div class="alert alert-danger">
+                <strong>{{.Err}}</strong>
+            </div>
+            {{end}}
+
+            <input type="submit" class="btn btn-default" name="OK" value="OK">
+            <input type="submit" class="btn btn-default" name="build" value="Build Tournament">
+            <input type="submit" class="btn btn-default" name="calcFinals" value="CalcFinals">
+        </div>
+    </form>
+</div>
