@@ -34,7 +34,6 @@ func GetGroupIDOfCompetitor(gs []G, competitorID int) (int, error) {
 		}
 	}
 	return -1, errors.New("competitorID not found in Groups")
-
 }
 
 // AddCompetitors adds the given competitors to the Group
@@ -66,4 +65,12 @@ func (g G) getGamesPerRound() int {
 		m[p.Round]++
 	}
 	return m[1]
+}
+
+func getCompetitorCount(gs []G) int {
+	var out int
+	for _, g := range gs {
+		out += len(g.Competitors)
+	}
+	return out
 }

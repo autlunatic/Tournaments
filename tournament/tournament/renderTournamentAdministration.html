@@ -7,11 +7,15 @@
             <label for="numberOfParallelGames">Anzahl Felder: </label>
             <input type="number" class="form-control" id="NumberOfParallelGames" name="NumberOfParallelGames" value="{{.Det.NumberOfParallelGames}}">
 
-            <label for="numberOfParallelGames">Minuten pro Spiel</label>
+            <label for="MinutesPerGame">Minuten pro Spiel</label>
             <input type="number" class="form-control" id="MinutesPerGame" name="MinutesPerGame" value="{{.Det.MinutesPerGame}}">
             
-            <label for="numberOfParallelGames">Minuten für Gruppenphase: </label>
+            <label for="MinutesAvailForGroupsPhase">Minuten für Gruppenphase: </label>
             <input type="number" class="form-control" id="MinutesAvailForGroupsPhase" name="MinutesAvailForGroupsPhase" value="{{.Det.MinutesAvailForGroupsPhase}}">
+
+            <label for="FinalistCount">Anzahl der Finalisten: </label>
+            <input type="number" class="form-control" id="FinalistCount" name="FinalistCount" value="{{.Det.FinalistCount}}">
+ 
              {{if .Err}}
             </br>
             <div class="alert alert-danger">

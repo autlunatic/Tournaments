@@ -12,10 +12,14 @@ import (
 
 // CalcPairingsForFinals generates the pairings for the finalists, it takes in account that no one should play
 // against an competitor wich he already faced in groupphase
-func CalcPairingsForFinals(groups []G, finalistCount int) ([]pairings.P, error) {
-	calc := newCalcForFinals(groups)
+func CalcPairingsForFinals(g []G, finalistCount int) ([]pairings.P, error) {
+	if getCompetitorCount(g) < finalistCount {
+		return nil, fmt.Errorf("error! more finalists than competitors")
+	}
+	calc := newCalcForFinals(g)
 	calc.finalistCount = finalistCount
 	calc.doCalc()
+
 	return calc.out, nil
 }
 
@@ -49,8 +53,7 @@ type calcPairingsForFinals struct {
 }
 
 func newCalcForFinals(groups []G) *calcPairingsForFinals {
-	out := new(calcPairingsForFinals)
-	out.groups = groups
+	out := &calcPairingsForFinals{groups: groups}
 	return out
 }
 
@@ -83,7 +86,6 @@ func (c *calcPairingsForFinals) doCalc() {
 			log.Println("Error occurred while filling lower half reversed")
 		}
 	}
-
 }
 
 func (c *calcPairingsForFinals) calcIndex(reversed bool, index int) int {

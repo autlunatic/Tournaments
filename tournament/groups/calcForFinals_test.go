@@ -127,6 +127,7 @@ func TestCalcPairingsForFinals(t *testing.T) {
 		{name: "3 Groups 8 Competitors quarterfinals not first round not from group", args: args{getGroupsFor2(true), 8}, want: getWantedFor3(), wantErr: false},
 		{name: "1 Group 8 Competitors, when one group no changes should be made to the calced ranking", args: args{getGroupsFor4(true), 8}, want: getWantedFor4(), wantErr: false},
 		{name: "2 Groups 8 Competitors, half finals should play against other groups in first game", args: args{getGroupsFor5(), 8}, want: getWantedFor5(), wantErr: false},
+		{name: "2 Groups 8 Competitors, more Finalists than competitors", args: args{getGroupsFor5(), 16}, want: nil, wantErr: true},
 		//TODO Need an additional test when only last one fails because of same grp
 	}
 	for _, tt := range tests {

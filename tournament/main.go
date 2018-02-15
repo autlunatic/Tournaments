@@ -42,6 +42,7 @@ func main() {
 		MinutesAvailForGroupsPhase: 90,
 		MinutesPerGame:             15,
 		NumberOfParallelGames:      4,
+		FinalistCount:              8,
 	}
 	t.Competitors = competitors.NewTestCompetitors(9)
 	t.PairingResults = make(map[int]*pairings.Result)
@@ -66,7 +67,7 @@ func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params
 	writeHeaderAndHTML(w, html)
 }
 func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(time.Now(), t.Details.MinutesPerGame, t.Competitors, t.Plan))
+	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(time.Now(), t.Details.MinutesPerGame, t.Competitors, t.))
 	writeHeaderAndHTML(w, html)
 }
 func writeHeaderAndHTML(w http.ResponseWriter, html string) {
@@ -78,7 +79,6 @@ func writeHeaderAndHTML(w http.ResponseWriter, html string) {
 func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var errHTML string
 	if req.Method == http.MethodPost {
-		fmt.Println(req)
 		minsPerGame, err := strconv.Atoi(req.FormValue("MinutesPerGame"))
 		if err != nil {
 			errHTML = "Invalid minutes per game value"
@@ -91,16 +91,25 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 		if err3 != nil {
 			errHTML = "Invalid number of fields"
 		}
+		finalistCount, err4 := strconv.Atoi(req.FormValue("FinalistCount"))
+		if err4 != nil {
+		}
 		if req.PostFormValue("OK") != "" {
 			if errHTML == "" {
 				t.Details.MinutesAvailForGroupsPhase = minsTotal
 				t.Details.MinutesPerGame = minsPerGame
 				t.Details.NumberOfParallelGames = numberParallel
+				t.Details.FinalistCount = finalistCount
 			}
 		} else if req.PostFormValue("build") != "" {
 			fmt.Println("building new Tournament")
 			t.Build()
 		} else if req.PostFormValue("calcFinals") != "" {
+
+			t.FinalPairings, err = groups.CalcPairingsForFinals(t.Groups, t.Details.FinalistCount)
+			if err != nil {
+				t.FinalPairings = []pairings.P{}
+			}
 			fmt.Println("calcing finals")
 		}
 	}

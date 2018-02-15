@@ -5,11 +5,12 @@ type D struct {
 	NumberOfParallelGames      int
 	MinutesPerGame             int
 	MinutesAvailForGroupsPhase int
+	FinalistCount              int
 }
 
 // New creates and initializes Details
-func New(numberOfFields int, minutesPerGame int, minAvail int) *D {
-	return &D{MinutesAvailForGroupsPhase: numberOfFields,
+func New(numberOfFields int, minutesPerGame int, minAvail int, finalistCount int) *D {
+	return &D{MinutesAvailForGroupsPhase: minAvail,
 		MinutesPerGame:        minutesPerGame,
 		NumberOfParallelGames: numberOfFields}
 }

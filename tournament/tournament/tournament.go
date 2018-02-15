@@ -20,6 +20,7 @@ type T struct {
 	Pairings       []pairings.P
 	PairingResults pairings.Results
 	Plan           [][]pairings.P
+	FinalPairings  []pairings.P
 }
 
 func (t T) getTournamentDetails() detail.D {
