@@ -8,7 +8,7 @@ import (
 // CompetitorPageInfo is used in the template for the page of one Competitor
 type CompetitorPageInfo struct {
 	pairs []pairings.P
-	gi    groups.GroupInfo
+	g     groups.G
 	ri    []pairings.ResultInfo
 }
 
