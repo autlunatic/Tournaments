@@ -53,10 +53,10 @@ func TestAdd(t *testing.T) {
 
 func TestSimpleCompetitor_AddPoints(t *testing.T) {
 	type fields struct {
-		id          int
-		name        string
-		GroupPoints int
-		drawNumber  int64
+		id         int
+		name       string
+		Points     int
+		drawNumber int64
 	}
 	tests := []struct {
 		name   string
@@ -70,12 +70,17 @@ func TestSimpleCompetitor_AddPoints(t *testing.T) {
 			c := &SimpleCompetitor{
 				id:          tt.fields.id,
 				name:        tt.fields.name,
-				GroupPoints: tt.fields.GroupPoints,
+				GroupPoints: tt.fields.Points,
 				drawNumber:  tt.fields.drawNumber,
+				GamePoints:  tt.fields.Points,
 			}
 			c.AddPoints(tt.p)
 			if c.GetPoints() != 8 {
 				t.Errorf("points were not added or not read after adding: have %v, want %v", c.GetPoints(), 8)
+			}
+			c.AddGamePoints(tt.p)
+			if c.GetGamePoints() != 8 {
+				t.Errorf("gamepoints were not added or not read after adding: have %v, want %v", c.GetGamePoints(), 8)
 			}
 		})
 	}

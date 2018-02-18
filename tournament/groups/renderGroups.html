@@ -1,14 +1,5 @@
 <h1>Gruppen</h1>
 
 {{range .}}
-<div class="container">
-    <table class="table table-striped">
-        <th>Gruppe {{.ID}}</th>
-        {{range .CompetitorNames}}
-        <tr>
-            <td>{{.}}</td>
-        </tr>
-        {{end}}
-    </table>
-</div>
+{{.}}
 {{end}}

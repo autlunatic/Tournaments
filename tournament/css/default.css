@@ -16,7 +16,7 @@ nav {
 
 
 h1 { text-align: center;
-height: 50px;
+    height: 50px;
     font-family: arial;
     font-weight: bold;
     color: floralwhite;
@@ -26,7 +26,7 @@ height: 50px;
 }
 
 h2 { text-align: center;
-height: 35px;
+    height: 35px;
     font-family: arial;
     font-weight: bold;
     text-transform: uppercase;
@@ -35,12 +35,16 @@ height: 35px;
 }
 
 h3 { text-align: center;
-height: 30px;
+    height: 30px;
     font-family: arial;
     font-weight: bold;
     text-transform: uppercase;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+h3.GroupHeader{
+    padding:10px;
+    margin-bottom: 20px;
 }
 
 div.container{

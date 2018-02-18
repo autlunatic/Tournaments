@@ -33,6 +33,8 @@ func ClearPoints(c []C) {
 type C interface {
 	AddPoints(p int)
 	GetPoints() int
+	AddGamePoints(p int)
+	GetGamePoints() int
 	ID() int
 	Name() string
 	DrawNumber() int64
@@ -46,6 +48,7 @@ type SimpleCompetitor struct {
 	id             int
 	name           string
 	GroupPoints    int
+	GamePoints     int
 	drawNumber     int64
 	groupPlacement int
 }
@@ -123,6 +126,16 @@ func (c *SimpleCompetitor) AddPoints(p int) {
 // GetPoints is for implementing the Competitor Interface
 func (c *SimpleCompetitor) GetPoints() int {
 	return c.GroupPoints
+}
+
+// AddGamePoints is for implementing the Competitor Interface
+func (c *SimpleCompetitor) AddGamePoints(p int) {
+	c.GamePoints += p
+}
+
+// GetGamePoints is for implementing the Competitor Interface
+func (c *SimpleCompetitor) GetGamePoints() int {
+	return c.GamePoints
 }
 
 // ID is for implementing the Competitor Interface

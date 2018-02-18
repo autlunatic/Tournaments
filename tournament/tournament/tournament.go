@@ -3,6 +3,8 @@ package tournament
 import (
 	"fmt"
 
+	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
+
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/detail"
 	"github.com/autlunatic/Tournaments/tournament/groups"
@@ -21,17 +23,11 @@ type T struct {
 	PairingResults pairings.Results
 	Plan           [][]pairings.P
 	FinalPairings  []pairings.P
+	PointCalcer    tournamentPoints.TournamentPointCalcer
 }
 
 func (t T) getTournamentDetails() detail.D {
 	return t.Details
-}
-
-// NewTournament returns a Tournament initialized with the given details
-func NewTournament(details detail.D) T {
-	t := T{}
-	t.Details = details
-	return t
 }
 
 func (t *T) setTournamentDetails(td detail.D) {

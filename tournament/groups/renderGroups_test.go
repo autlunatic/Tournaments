@@ -7,28 +7,29 @@ import (
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
 
-func calcGroupsForTest() []G {
+func calcGroupsForTest() G {
 	c := competitors.NewTestCompetitors(9)
 	g, _ := CalcGroups(c, 3)
-	return g
+	return g[0]
 }
 
-func getGroupInfoWanted() []GroupInfo {
-	gi := make([]GroupInfo, 3)
-	gi[0] = GroupInfo{1, []string{"Benni", "Dani", "Mona"}}
-	gi[1] = GroupInfo{2, []string{"Andrea", "Zoé", "Andreas"}}
-	gi[2] = GroupInfo{3, []string{"Bernhard", "Florian", "Simon"}}
-	return gi
+func getGroupInfoWanted() GroupInfo {
+	out := GroupInfo{1, []CompetitorInfos{CompetitorInfos{"Benni", 0, 1},
+		CompetitorInfos{"Dani", 0, 2},
+		CompetitorInfos{"Mona", 0, 3},
+	}}
+
+	return out
 }
 func TestGToGroupInfo(t *testing.T) {
 	type args struct {
 		c []competitors.C
-		g []G
+		g G
 	}
 	tests := []struct {
 		name string
 		args args
-		want []GroupInfo
+		want GroupInfo
 	}{
 		{"3 groups 9 competitors",
 			args{competitors.NewTestCompetitors(9), calcGroupsForTest()},

@@ -46,6 +46,7 @@ func main() {
 	}
 	t.Competitors = competitors.NewTestCompetitors(9)
 	t.PairingResults = make(map[int]*pairings.Result)
+	t.PointCalcer = tournamentPoints.NewSimpleTournamentPointCalc(1, 3, 0)
 
 	t.Build()
 	http.ListenAndServe(":8080", nil)
@@ -59,7 +60,7 @@ func mainPage(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	http.ServeFile(w, req, "mainpage/mainPage.html")
 }
 func resultsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	html := pairings.ResultsToHTML(t.Competitors, t.Pairings, t.PairingResults, tournamentPoints.NewSimpleTournamentPointCalc(1, 3, 0))
+	html := pairings.ResultsToHTML(t.Competitors, t.Pairings, t.PairingResults, t.PointCalcer)
 	writeHeaderAndHTML(w, html)
 }
 func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
@@ -67,7 +68,7 @@ func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params
 	writeHeaderAndHTML(w, html)
 }
 func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(time.Now(), t.Details.MinutesPerGame, t.Competitors, t.))
+	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(time.Now(), t.Details.MinutesPerGame, t.Competitors, t.Plan))
 	writeHeaderAndHTML(w, html)
 }
 func writeHeaderAndHTML(w http.ResponseWriter, html string) {

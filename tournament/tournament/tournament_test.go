@@ -13,12 +13,12 @@ func (t *T) AddCompetitor(c competitors.C) {
 	t.Competitors = append(t.Competitors, c)
 }
 
-func newTestTournament() T {
-	td := &detail.D{
+func NewTestTournament() T {
+	td := detail.D{
 		MinutesAvailForGroupsPhase: 90,
 		MinutesPerGame:             15,
 		NumberOfParallelGames:      4}
-	tournament := NewTournament(*td)
+	tournament := T{Details: td}
 	tournament.Competitors = competitors.NewTestCompetitors(9)
 	tournament.Build()
 
@@ -26,7 +26,7 @@ func newTestTournament() T {
 }
 
 func TestAddCompetitor(t *testing.T) {
-	tournament := newTestTournament()
+	tournament := NewTestTournament()
 	tournament.AddCompetitor(competitors.New("NotInTestList", 0))
 	if len(tournament.Competitors) != 10 {
 		t.Error("Should be ten competitors")
@@ -37,7 +37,7 @@ func TestAddCompetitor(t *testing.T) {
 
 }
 
-var trmntForTestGetPairingByID = newTestTournament()
+var trmntForTestGetPairingByID = NewTestTournament()
 
 func TestT_GetPairingByID(t *testing.T) {
 	tests := []struct {
