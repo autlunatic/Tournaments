@@ -23,6 +23,18 @@ func NewTestGroups(count int) []G {
 	return out
 }
 
+// GOfCompentitorID returns the groupt of the competitor
+func GOfCompentitorID(gs []G, competitorID int) (G, error) {
+	for _, g := range gs {
+		for _, c := range g.Competitors {
+			if c.ID() == competitorID {
+				return g, nil
+			}
+		}
+	}
+	return G{}, errors.New("competitorID not found in Groups")
+}
+
 // GetGroupIDOfCompetitor returns the id of the group in which the competitorID was found
 // returns an error if competitor id was not found in the given slice
 func GetGroupIDOfCompetitor(gs []G, competitorID int) (int, error) {

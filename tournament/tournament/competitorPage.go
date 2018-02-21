@@ -14,7 +14,18 @@ type CompetitorPageInfo struct {
 
 // ToCompetitorPageInfo calculates the Info for the competitorPage
 func ToCompetitorPageInfo(competitorID int, t T) CompetitorPageInfo {
-	return CompetitorPageInfo{}
+	var out CompetitorPageInfo
+	var err error
+
+	out.g, err = groups.GOfCompentitorID(t.Groups, competitorID)
+	if err != nil {
+		out.g = groups.G{}
+	}
+	out.pairs = pairings.OfCompetitorID(t.Pairings, competitorID)
+	allResults := pairings.ResultsToResultInfo(t.Competitors, t.Pairings, t.PairingResults, t.PointCalcer)
+	out.ri = pairings.FilterResultInfoByCompID(allResults, competitorID)
+
+	return out
 
 }
 
