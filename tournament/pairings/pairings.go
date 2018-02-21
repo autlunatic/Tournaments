@@ -27,6 +27,17 @@ func (p P) InPairings(ps []P) bool {
 	return false
 }
 
+// OfCompetitorID returns all Pairings where the competitor is playing
+func OfCompetitorID(ps []P, compID int) []P {
+	var out []P
+	for i, p := range ps {
+		if p.Competitor1ID == compID || p.Competitor2ID == compID {
+			out = append(out, ps[i])
+		}
+	}
+	return out
+}
+
 func (p P) equals(p2 P) bool {
 	return p.Competitor1ID == p2.Competitor1ID &&
 		p.Competitor2ID == p2.Competitor2ID &&

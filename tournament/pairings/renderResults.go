@@ -11,7 +11,9 @@ import (
 // ResultInfo ist the struct for representing Data in the Template
 type ResultInfo struct {
 	PairingID   int
+	Comp1ID     int
 	Comp1Name   string
+	Comp2ID     int
 	Comp2Name   string
 	Pairing1Pts int
 	Pairing2Pts int
@@ -28,7 +30,9 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 			tp1, tp2 := tpc.Calc(res.GamePoints1, res.GamePoints2)
 			out = append(out, ResultInfo{
 				pi.ID,
+				pi.Competitor1ID,
 				competitors.GetCompetitor(c, pi.Competitor1ID).Name(),
+				pi.Competitor2ID,
 				competitors.GetCompetitor(c, pi.Competitor2ID).Name(),
 				res.GamePoints1,
 				res.GamePoints2,
@@ -39,7 +43,9 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 		} else {
 			out = append(out, ResultInfo{
 				pi.ID,
+				pi.Competitor1ID,
 				competitors.GetCompetitor(c, pi.Competitor1ID).Name(),
+				pi.Competitor2ID,
 				competitors.GetCompetitor(c, pi.Competitor2ID).Name(),
 				0,
 				0,
@@ -61,4 +67,15 @@ func ResultsToHTML(c []competitors.C, p []P, r Results, tpc tournamentPoints.Tou
 	var b bytes.Buffer
 	tpl.Execute(&b, pi)
 	return b.String()
+}
+
+// FilterResultInfoByCompID returns resultinfos for one Competitor
+func FilterResultInfoByCompID(ris []ResultInfo, compID int) []ResultInfo {
+	var out []ResultInfo
+	for i, ri := range ris {
+		if ri.Comp1ID == compID || ri.Comp2ID == compID {
+			out = append(out, ris[i])
+		}
+	}
+	return out
 }

@@ -2,6 +2,7 @@ package pairings
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 
 	"github.com/autlunatic/TestingUtils"
@@ -215,6 +216,33 @@ func TestPairing_InPairings(t *testing.T) {
 			ps[2] = P{5, 6, 1, 3, 1}
 			if got := p.InPairings(ps); got != tt.want {
 				t.Errorf("Pairing.InPairings() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestOfCompetitorID(t *testing.T) {
+	type args struct {
+		ps     []P
+		compID int
+	}
+	tests := []struct {
+		name string
+		args args
+		want []P
+	}{
+		{"simple with 3 pairings",
+			args{ps: []P{{1, 2, 1, 1, 1},
+				{1, 3, 2, 2, 1},
+				{2, 3, 3, 3, 1},
+			}, compID: 1},
+			[]P{{1, 2, 1, 1, 1},
+				{1, 3, 2, 2, 1}}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := OfCompetitorID(tt.args.ps, tt.args.compID); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("OfCompetitorID() = %v, want %v", got, tt.want)
 			}
 		})
 	}
