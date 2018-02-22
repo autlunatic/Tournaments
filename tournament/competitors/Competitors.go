@@ -26,6 +26,7 @@ func New(name string, id int) *SimpleCompetitor {
 func ClearPoints(c []C) {
 	for _, c := range c {
 		c.AddPoints(-c.GetPoints())
+		c.AddGamePoints(-c.GetGamePoints())
 	}
 }
 

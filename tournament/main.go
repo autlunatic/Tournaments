@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -114,6 +116,7 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 			if err != nil {
 				t.FinalPairings = []pairings.P{}
 			}
+			fmt.Println(t.FinalPairings)
 		}
 	}
 	html := tournament.RenderAdminPage(t, errHTML)
@@ -177,7 +180,13 @@ func inputResultHandler(w http.ResponseWriter, req *http.Request, ps httprouter.
 			pr.SetPoints(ptsC1, ptsC2)
 		}
 		req.Method = http.MethodGet
+		competitors.ClearPoints(t.Competitors)
+		err = pairings.AddPointsForResults(t.Competitors, t.Pairings, t.PairingResults, t.PointCalcer)
+		if err != nil {
+			log.Println(err)
+		}
 		resultsHandler(w, req, ps)
+
 		return
 	}
 	//t.PairingResults[p.ID].gamePoints1 = 1

@@ -1,24 +1,37 @@
 <h1>Team hinzufügen</h1>
-<form method="POST">
-    <div class="form-group">
-        <label for="competitorName">Name:</label>
-
-        <input type="text" class="form-control" id="competitorName" name="competitorName"> 
-        {{if .ErrHTML}}
-        </br>
-        <div class="alert alert-danger">
-            <strong>{{.ErrHTML}}</strong>
+</br>
+<form class="form-hotizontal" method="POST">
+    <div class="form-group row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control form-control-lg " autofocus id="competitorName" name="competitorName" placeholder="Teamname">
         </div>
-        {{end}}
-        <input type="submit" class="btn btn-default" value="Hinzufügen">
     </div>
+    <div class="form-group row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <input type="submit" class="btn btn-default btn-block" value="Hinzufügen">
+        </div>
+    </div>
+    {{if .ErrHTML}}
+    <div class="form-group row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <div class="alert alert-danger text-center">
+                <strong>{{.ErrHTML}}</strong>
+            </div>
+        </div>
+    </div>
+    {{end}}
 </form>
+
+
 
 <h1>Liste der Teams</h1>
 <div class="container">
-        <div class="d-flex flex-row flex-wrap">
-            {{range .C}}
-            <a href="competitor/{{.Name}}" class="card p-2 px-3 w-50 list-group-item-action">{{.Name}}</a>
-            {{end}}
-        </div>
+    <div class="d-flex flex-row flex-wrap">
+        {{range .C}}
+        <a href="competitor/{{.Name}}" class="card p-2 px-3 w-50 list-group-item-action">{{.Name}}</a>
+        {{end}}
+    </div>
 </div>

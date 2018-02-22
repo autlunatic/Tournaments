@@ -66,25 +66,31 @@ func TestAddGroupPointsForResults(t *testing.T) {
 		args         args
 		wantErr      bool
 		resultPoints []int
+		gamePoints   []int
 	}{
-		{name: "Two competitors 4 games", args: getArgsFor2(), wantErr: false, resultPoints: []int{4, 7}},
-		{name: "Five competitors 4 games", args: getArgsFor5(), wantErr: false, resultPoints: []int{1, 4, 3, 0, 3}},
+		{name: "Two competitors 4 games", args: getArgsFor2(), wantErr: false, resultPoints: []int{4, 7}, gamePoints: []int{12, 15}},
+		{name: "Five competitors 4 games", args: getArgsFor5(), wantErr: false, resultPoints: []int{1, 4, 3, 0, 3}, gamePoints: []int{6, 9, 3, 4, 2}},
 		{name: "Error wanted because Competitor 1 was not found", args: getArgsForError1(), wantErr: true, resultPoints: []int{}},
 		{name: "Error wanted because Competitor 2 was not found", args: getArgsForError2(), wantErr: true, resultPoints: []int{}},
 	}
 	for _, tt := range tests {
 		competitors.ClearPoints(cs)
 		t.Run(tt.name, func(t *testing.T) {
-			if err := AddGroupPointsForResults(cs, tt.args.pairings, tt.args.results, calc); (err != nil) != tt.wantErr {
+			if err := AddPointsForResults(cs, tt.args.pairings, tt.args.results, calc); (err != nil) != tt.wantErr {
 				t.Errorf("AddGroupPointsForResults() error = %v, wantErr %v", err, tt.wantErr)
 
 			}
 			for i, r := range tt.resultPoints {
-
 				if competitors.GetCompetitor(cs, i).GetPoints() != r {
 					t.Errorf("competitorPoints %v, wanted %v", competitors.GetCompetitor(cs, i).GetPoints(), r)
 				}
 			}
+			for i, r := range tt.gamePoints {
+				if competitors.GetCompetitor(cs, i).GetGamePoints() != r {
+					t.Errorf("gamePoints %v, wanted %v", competitors.GetCompetitor(cs, i).GetGamePoints(), r)
+				}
+			}
+
 		})
 	}
 }

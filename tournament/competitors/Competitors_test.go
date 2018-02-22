@@ -114,12 +114,17 @@ func TestClearPoints(t *testing.T) {
 		if cs[i].GetPoints() == 0 {
 			t.Error("no points should be Zero")
 		}
+		cs[i].AddGamePoints(i + 1)
 	}
 	ClearPoints(cs)
 	for i := range cs {
 		if cs[i].GetPoints() != 0 {
 			t.Error("all points should be Zero after clear")
 		}
+		if cs[i].GetGamePoints() != 0 {
+			t.Error("all points should be Zero after clear")
+		}
+
 	}
 
 }
