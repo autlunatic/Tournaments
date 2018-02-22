@@ -166,7 +166,27 @@ func TestAddByName(t *testing.T) {
 		})
 	}
 }
-
+func TestNameToID(t *testing.T) {
+	type args struct {
+		cs   []C
+		name string
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{"not containing should return -1", args{NewTestCompetitors(5), "Hugo"}, -1},
+		{"Benni should return 0", args{NewTestCompetitors(5), "Benni"}, 0},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NameToID(tt.args.cs, tt.args.name); got != tt.want {
+				t.Errorf("ContainsName() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
 func TestContainsName(t *testing.T) {
 	type args struct {
 		cs   []C
@@ -178,7 +198,7 @@ func TestContainsName(t *testing.T) {
 		want bool
 	}{
 		{"not containing should return false", args{NewTestCompetitors(5), "Hugo"}, false},
-		{"not containing should return false", args{NewTestCompetitors(5), "Benni"}, true},
+		{"containing should return true", args{NewTestCompetitors(5), "Benni"}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

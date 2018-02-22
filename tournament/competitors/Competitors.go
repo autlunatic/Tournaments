@@ -63,6 +63,16 @@ func ContainsName(cs []C, name string) bool {
 	return false
 }
 
+// NameToID returns the competitor ID of the given Competitor Name
+func NameToID(cs []C, name string) int {
+	for _, c := range cs {
+		if c.Name() == name {
+			return c.ID()
+		}
+	}
+	return -1
+}
+
 // GetMaxID returns the highest ID of a competitor in the given slice
 func GetMaxID(cs []C) int {
 	var out int

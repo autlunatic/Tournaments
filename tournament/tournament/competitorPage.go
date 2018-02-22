@@ -1,6 +1,10 @@
 package tournament
 
 import (
+	"bytes"
+	"html/template"
+
+	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/groups"
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
@@ -10,6 +14,22 @@ type CompetitorPageInfo struct {
 	pairs []pairings.P
 	g     groups.G
 	ri    []pairings.ResultInfo
+}
+
+// CompetitorPageInfoHTML provides the rendered HTML text for the CompetitorPageInfo
+type CompetitorPageInfoHTML struct {
+	Pairs  template.HTML
+	Group  template.HTML
+	Result template.HTML
+}
+
+func compPageInfoToHTML(cs []competitors.C, cpi CompetitorPageInfo) CompetitorPageInfoHTML {
+	var out CompetitorPageInfoHTML
+	gp := pairings.AllPairsToGamePlan(cs, cpi.pairs)
+	out.Pairs = template.HTML(pairings.ToHTML(gp))
+	out.Group = template.HTML(groups.RenderOneGroup(cpi.g))
+	out.Result = template.HTML(pairings.RenderResultInfos(cpi.ri))
+	return out
 }
 
 // ToCompetitorPageInfo calculates the Info for the competitorPage
@@ -31,6 +51,11 @@ func ToCompetitorPageInfo(competitorID int, t T) CompetitorPageInfo {
 
 // CompetitorPageHTML returns the page for a Competitor the page includes the following
 // next pairings, Group with group points, results of this competitor
-func CompetitorPageHTML(t T) {
-
+func CompetitorPageHTML(competitorID int, t T) string {
+	cpi := ToCompetitorPageInfo(competitorID, t)
+	cpiH := compPageInfoToHTML(t.Competitors, cpi)
+	tpl := template.Must(template.ParseFiles("tournament/competitorPage.html"))
+	var b bytes.Buffer
+	tpl.Execute(&b, cpiH)
+	return b.String()
 }

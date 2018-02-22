@@ -1,7 +1,6 @@
 package tournament
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 
@@ -21,7 +20,6 @@ func getResultInfoWanted() []pairings.ResultInfo {
 }
 
 func getWantedCompPageInfo() CompetitorPageInfo {
-	fmt.Println(ttForCompPage.Pairings)
 	ttp := ttForCompPage.Pairings
 	p := []pairings.P{ttp[1],
 		ttp[5],

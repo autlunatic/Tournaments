@@ -15,7 +15,7 @@ func CalcMostGamesPerCompetitorPlan(cg []competitors.C, details detail.D) ([][]p
 	for i := 1; ; i++ {
 		groups, err = CalcGroups(cg, i)
 		if err == nil {
-			plan, allPairs = CalcPlan(cg, groups, details.NumberOfParallelGames)
+			plan, allPairs = CalcPlan(cg, groups, details)
 			if len(plan)*details.MinutesPerGame <= details.MinutesAvailForGroupsPhase {
 				break
 			}

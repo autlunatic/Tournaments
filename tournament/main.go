@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -36,6 +35,9 @@ func main() {
 	mux.POST("/adminPage", adminPageHandler)
 	mux.GET("/inputResults/:id", inputResultHandler)
 	mux.POST("/inputResults/:id", inputResultHandler)
+
+	mux.GET("/competitor/:name", competitorPageHandler)
+
 	mux.ServeFiles("/css/*filepath", http.Dir("./css/"))
 	mux.Handler("GET", "/favicon.ico", http.NotFoundHandler())
 	t.Details = detail.D{
@@ -43,6 +45,7 @@ func main() {
 		MinutesPerGame:             15,
 		NumberOfParallelGames:      4,
 		FinalistCount:              8,
+		TournamentStartTime:        time.Now(),
 	}
 	t.Competitors = competitors.NewTestCompetitors(9)
 	t.PairingResults = make(map[int]*pairings.Result)
@@ -68,7 +71,8 @@ func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params
 	writeHeaderAndHTML(w, html)
 }
 func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(time.Now(), t.Details.MinutesPerGame, t.Competitors, t.Plan))
+
+	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(t.Competitors, t.Plan))
 	writeHeaderAndHTML(w, html)
 }
 func writeHeaderAndHTML(w http.ResponseWriter, html string) {
@@ -103,7 +107,6 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 				t.Details.FinalistCount = finalistCount
 			}
 		} else if req.PostFormValue("build") != "" {
-			fmt.Println("building new Tournament")
 			t.Build()
 		} else if req.PostFormValue("calcFinals") != "" {
 
@@ -111,10 +114,8 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 			if err != nil {
 				t.FinalPairings = []pairings.P{}
 			}
-			fmt.Println("calcing finals")
 		}
 	}
-	fmt.Println(errHTML)
 	html := tournament.RenderAdminPage(t, errHTML)
 	writeHeaderAndHTML(w, html)
 }
@@ -141,9 +142,15 @@ func tryToAddCompetitor(compName string) error {
 	return err
 }
 func defaultCSS(w http.ResponseWriter, req *http.Request, _ps httprouter.Params) {
-	fmt.Println("requesting css")
 	http.ServeFile(w, req, "default.css")
 }
+
+func competitorPageHandler(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	id := competitors.NameToID(t.Competitors, ps.ByName("name"))
+	html := tournament.CompetitorPageHTML(id, t)
+	writeHeaderAndHTML(w, html)
+}
+
 func inputResultHandler(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	id, err := strconv.Atoi(ps.ByName("id"))
 	if err != nil {

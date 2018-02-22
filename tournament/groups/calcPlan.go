@@ -2,8 +2,10 @@ package groups
 
 import (
 	"sort"
+	"time"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/detail"
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 )
 
@@ -13,13 +15,14 @@ type planCalc struct {
 	countOfParallelGames int
 }
 
-// CalcPlan gives us a tournamentplan its s slice of rounds, one round contains a slice of pairings
+// CalcPlan gives us a tournamentplan its slice of rounds, one round contains a slice of pairings.P
+// second return value is a slice of all pairings.P
 // one round ist meant to be one round that can be played simultaneously
-func CalcPlan(allCompetitors []competitors.C, Groups []G, countOfParallelGames int) ([][]pairings.P, []pairings.P) {
+func CalcPlan(allCompetitors []competitors.C, Groups []G, details detail.D) ([][]pairings.P, []pairings.P) {
 
 	calc := planCalc{
 		groups:               Groups,
-		countOfParallelGames: countOfParallelGames,
+		countOfParallelGames: details.NumberOfParallelGames,
 		allCompetitors:       allCompetitors,
 	}
 
@@ -36,13 +39,14 @@ func CalcPlan(allCompetitors []competitors.C, Groups []G, countOfParallelGames i
 	var result [][]pairings.P
 	i := 0
 
-	for _, p := range allPairs {
+	for pi, p := range allPairs {
 		if calc.needNewGroup(round, p) {
 			result = append(result, round)
 			i++
 			round = []pairings.P{}
 		}
-		round = append(round, p)
+		allPairs[pi].StartTime = details.TournamentStartTime.Add(time.Minute * time.Duration(details.MinutesPerGame*len(result)))
+		round = append(round, allPairs[pi])
 	}
 	if len(round) >= 1 {
 		result = append(result, round)

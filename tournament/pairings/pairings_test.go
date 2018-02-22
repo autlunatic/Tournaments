@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/autlunatic/TestingUtils"
 	"github.com/autlunatic/Tournaments/tournament/competitors"
@@ -131,9 +132,9 @@ func TestCalcPairings12Competitors(t *testing.T) {
 
 func getPairingsForTestMaxRound() []P {
 	p := make([]P, 3)
-	p[0] = P{1, 2, 3, 1, 1}
-	p[1] = P{3, 4, 6, 1, 1}
-	p[2] = P{1, 2, 5, 1, 1}
+	p[0] = P{1, 2, 3, 1, 1, time.Time{}}
+	p[1] = P{3, 4, 6, 1, 1, time.Time{}}
+	p[2] = P{1, 2, 5, 1, 1, time.Time{}}
 	return p
 }
 func TestGetMaxRoundOfPairings(t *testing.T) {
@@ -211,9 +212,9 @@ func TestPairing_InPairings(t *testing.T) {
 				GroupID:       tt.fields.GroupID,
 			}
 			ps := make([]P, 3)
-			ps[0] = P{1, 2, 1, 1, 1}
-			ps[1] = P{3, 4, 1, 2, 1}
-			ps[2] = P{5, 6, 1, 3, 1}
+			ps[0] = P{1, 2, 1, 1, 1, time.Time{}}
+			ps[1] = P{3, 4, 1, 2, 1, time.Time{}}
+			ps[2] = P{5, 6, 1, 3, 1, time.Time{}}
 			if got := p.InPairings(ps); got != tt.want {
 				t.Errorf("Pairing.InPairings() = %v, want %v", got, tt.want)
 			}
@@ -232,12 +233,12 @@ func TestOfCompetitorID(t *testing.T) {
 		want []P
 	}{
 		{"simple with 3 pairings",
-			args{ps: []P{{1, 2, 1, 1, 1},
-				{1, 3, 2, 2, 1},
-				{2, 3, 3, 3, 1},
+			args{ps: []P{{1, 2, 1, 1, 1, time.Time{}},
+				{1, 3, 2, 2, 1, time.Time{}},
+				{2, 3, 3, 3, 1, time.Time{}},
 			}, compID: 1},
-			[]P{{1, 2, 1, 1, 1},
-				{1, 3, 2, 2, 1}}},
+			[]P{{1, 2, 1, 1, 1, time.Time{}},
+				{1, 3, 2, 2, 1, time.Time{}}}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

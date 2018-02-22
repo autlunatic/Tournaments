@@ -4,6 +4,7 @@ import (
 	"errors"
 	"sort"
 	"strconv"
+	"time"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
@@ -15,6 +16,7 @@ type P struct {
 	Round         int
 	ID            int
 	GroupID       int
+	StartTime     time.Time
 }
 
 // InPairings checks if the given slice of Pairing contains the Pairing
@@ -128,6 +130,7 @@ func addPair(pairings *[]P, c1 int, c2 int, round int, groupID int) {
 	if c1 == -1 || c2 == -1 {
 		return
 	}
-	pair := P{c1, c2, round, 0, groupID}
+	pair := P{c1, c2, round, 0, groupID, time.Time{}}
+
 	*pairings = append(*pairings, pair)
 }

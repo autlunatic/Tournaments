@@ -2,6 +2,7 @@ package pairings
 
 import (
 	"testing"
+	"time"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
@@ -14,10 +15,10 @@ type args struct {
 
 func getArgsFor5() args {
 	var out args
-	out.pairings = append(out.pairings, P{0, 1, 1, 1, 1})
-	out.pairings = append(out.pairings, P{2, 3, 2, 2, 1})
-	out.pairings = append(out.pairings, P{0, 4, 3, 3, 1})
-	out.pairings = append(out.pairings, P{1, 3, 4, 4, 1})
+	out.pairings = append(out.pairings, P{0, 1, 1, 1, 1, time.Time{}})
+	out.pairings = append(out.pairings, P{2, 3, 2, 2, 1, time.Time{}})
+	out.pairings = append(out.pairings, P{0, 4, 3, 3, 1, time.Time{}})
+	out.pairings = append(out.pairings, P{1, 3, 4, 4, 1, time.Time{}})
 	out.results = make(map[int]*Result)
 	out.results[1] = &Result{5, 5}
 	out.results[2] = &Result{3, 1}
@@ -27,10 +28,10 @@ func getArgsFor5() args {
 }
 func getArgsFor2() args {
 	var out args
-	out.pairings = append(out.pairings, P{0, 1, 1, 1, 1})
-	out.pairings = append(out.pairings, P{0, 1, 2, 2, 1})
-	out.pairings = append(out.pairings, P{0, 1, 3, 3, 1})
-	out.pairings = append(out.pairings, P{0, 1, 4, 4, 1})
+	out.pairings = append(out.pairings, P{0, 1, 1, 1, 1, time.Time{}})
+	out.pairings = append(out.pairings, P{0, 1, 2, 2, 1, time.Time{}})
+	out.pairings = append(out.pairings, P{0, 1, 3, 3, 1, time.Time{}})
+	out.pairings = append(out.pairings, P{0, 1, 4, 4, 1, time.Time{}})
 	out.results = make(map[int]*Result)
 	out.results[1] = &Result{1, 5}
 	out.results[2] = &Result{3, 1}
@@ -40,8 +41,8 @@ func getArgsFor2() args {
 }
 func getArgsForError1() args {
 	var out args
-	out.pairings = append(out.pairings, P{0, 5, 1, 1, 1})
-	out.pairings = append(out.pairings, P{0, 5, 2, 2, 1})
+	out.pairings = append(out.pairings, P{0, 5, 1, 1, 1, time.Time{}})
+	out.pairings = append(out.pairings, P{0, 5, 2, 2, 1, time.Time{}})
 	out.results = make(map[int]*Result)
 	out.results[1] = &Result{1, 5}
 	out.results[5] = &Result{4, 4}
@@ -49,8 +50,8 @@ func getArgsForError1() args {
 }
 func getArgsForError2() args {
 	var out args
-	out.pairings = append(out.pairings, P{5, 0, 1, 1, 1})
-	out.pairings = append(out.pairings, P{5, 0, 2, 2, 1})
+	out.pairings = append(out.pairings, P{5, 0, 1, 1, 1, time.Time{}})
+	out.pairings = append(out.pairings, P{5, 0, 2, 2, 1, time.Time{}})
 	out.results = make(map[int]*Result)
 	out.results[1] = &Result{1, 5}
 	out.results[5] = &Result{4, 4}
