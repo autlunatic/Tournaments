@@ -3,6 +3,8 @@ package groups
 import (
 	"bytes"
 	"html/template"
+
+	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
 
 // CompetitorInfos represents one row in the display of the group
@@ -47,6 +49,7 @@ func ToHTML(g []G) string {
 func RenderOneGroup(g G) string {
 	tpl := template.Must(template.ParseFiles("groups/oneGroup.html"))
 	var b bytes.Buffer
+	g.Competitors = competitors.SortedByPoints(g.Competitors)
 	gi := GToGroupInfo(g)
 	tpl.Execute(&b, gi)
 	return b.String()

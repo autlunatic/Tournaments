@@ -68,7 +68,7 @@ func isInSlice(slice []int, val int) bool {
 
 func (c *calcPairingsForFinals) doCalc() {
 	fin := DetermineFinalists(c.groups, c.finalistCount)
-	cs := competitors.GetCompetitorsSortedByPlacementAndGroupPoints(fin)
+	cs := competitors.SortedByPlacementAndPoints(fin)
 	c.out = make([]pairings.P, c.finalistCount/2)
 	finRankPos := CalcFinalistRankings(int(math.Log2(float64(c.finalistCount))))
 	// first fill the better half, the better half should be fixed,

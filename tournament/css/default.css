@@ -65,3 +65,11 @@ th{
     font-size: 20px;
     border-bottom: solid;
 }
+td.clickableGroup{
+    padding: 0px;
+}
+a.clickableGroup{
+    display: block; 
+    padding: 0.6rem;
+    color: black;
+}

@@ -44,11 +44,11 @@ func (d *determineFinalists) getSortedCompetitorsForGroup() (out []competitors.C
 	var scID int
 	var sc []competitors.C
 	for i := range d.grps {
-		gc := competitors.GetCompetitorsSortedByGroupPoints(d.grps[i].Competitors)
+		gc := competitors.SortedByPoints(d.grps[i].Competitors)
 		if len(gc) > d.placementIndex {
 			sc = append(sc, gc[d.placementIndex])
 		}
 		scID++
 	}
-	return competitors.GetCompetitorsSortedByGroupPoints(sc)
+	return competitors.SortedByPoints(sc)
 }

@@ -5,17 +5,17 @@ import (
 	"sort"
 )
 
-// GetCompetitorsSortedByGroupPoints returns a slice of Competitor which is sorted by GroupPoints ;)
+// SortedByPoints returns a slice of Competitor which is sorted by GroupPoints ;)
 // High points come first
-func GetCompetitorsSortedByGroupPoints(c []C) []C {
+func SortedByPoints(c []C) []C {
 	sorter := &sortByGroupPoints{c}
 	sort.Sort(sorter)
 	return sorter.items
 }
 
-// GetCompetitorsSortedByPlacementAndGroupPoints returns a slice of Competitor which is sorted first by Placemnt and then by GroupPoints ;)
+// SortedByPlacementAndPoints returns a slice of Competitor which is sorted first by Placemnt and then by GroupPoints ;)
 // Placement 1 comes first, if the placement is the same the one with higher points comes first.
-func GetCompetitorsSortedByPlacementAndGroupPoints(c []C) []C {
+func SortedByPlacementAndPoints(c []C) []C {
 	sorter := &sortByPlacementAndGroupPoints{c}
 	sort.Sort(sorter)
 	return sorter.items
@@ -30,7 +30,10 @@ func (s sortByGroupPoints) Len() int {
 }
 
 func (s sortByGroupPoints) Less(i, j int) bool {
-	return s.items[i].GetPoints() > s.items[j].GetPoints()
+	if s.items[i].GetPoints() != s.items[j].GetPoints() {
+		return s.items[i].GetPoints() > s.items[j].GetPoints()
+	}
+	return s.items[i].GetGamePoints() > s.items[j].GetGamePoints()
 }
 
 func (s sortByGroupPoints) Swap(i, j int) {

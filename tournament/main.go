@@ -189,7 +189,6 @@ func inputResultHandler(w http.ResponseWriter, req *http.Request, ps httprouter.
 
 		return
 	}
-	//t.PairingResults[p.ID].gamePoints1 = 1
 
 	if errHTML != "" {
 		writeHeaderAndHTML(w, "<h1> "+errHTML+"</h1>")
