@@ -4,6 +4,19 @@ import (
 	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
 )
 
+// RecalcFinals calculates all the final rounds it stops when no results are available
+func RecalcFinals(pairs []P, res Results, calcer tournamentPoints.TournamentPointCalcer) []P {
+	calcedPairs := filterOutFirstFinalRound(pairs)
+	out := calcedPairs
+	for {
+		calcedPairs = CalcNextFinalRound(calcedPairs, res, calcer)
+		if len(calcedPairs) == 0 {
+			return doSortByIDDesc(out)
+		}
+		out = append(out, calcedPairs...)
+	}
+}
+
 // CalcNextFinalRound creates a slice of pairings for the next final round
 // e.g. from quarterfinals to semifinals
 // it also can be used if no all Results are given to calculate the plan before the finals are over
@@ -51,4 +64,18 @@ func calcAndSetCompetitorIds(aOut *P, r1 int, r2 int, p P) {
 			aOut.Competitor2ID = p.Competitor2ID
 		}
 	}
+}
+
+func filterOutFirstFinalRound(ps []P) []P {
+	ps = doSortByIDDesc(ps)
+	var out []P
+	var lastRound int
+	for i, p := range ps {
+		if lastRound < p.Round {
+			return out
+		}
+		lastRound = p.Round
+		out = append(out, ps[i])
+	}
+	return out
 }

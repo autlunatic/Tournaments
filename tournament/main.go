@@ -75,6 +75,7 @@ func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params
 func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(t.Competitors, t.Plan))
+	html = html + pairings.ToHTML(pairings.AllPairsToGamePlan(t.Competitors, t.FinalPairings))
 	writeHeaderAndHTML(w, html)
 }
 func writeHeaderAndHTML(w http.ResponseWriter, html string) {
@@ -111,11 +112,15 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 		} else if req.PostFormValue("build") != "" {
 			t.Build()
 		} else if req.PostFormValue("calcFinals") != "" {
-
-			t.FinalPairings, err = groups.CalcPairingsForFinals(t.Groups, t.Details.FinalistCount)
-			if err != nil {
-				t.FinalPairings = []pairings.P{}
+			if len(t.FinalPairings) == 0 {
+				t.FinalPairings, err = groups.CalcPairingsForFinals(t.Groups, t.Details.FinalistCount)
+				if err != nil {
+					t.FinalPairings = []pairings.P{}
+				}
+			} else {
+				t.FinalPairings = pairings.RecalcFinals(t.FinalPairings, t.PairingResults, t.PointCalcer)
 			}
+
 			fmt.Println(t.FinalPairings)
 		}
 	}
