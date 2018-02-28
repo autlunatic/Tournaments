@@ -3,6 +3,7 @@ package tournament
 import (
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/detail"
@@ -18,11 +19,22 @@ func NewTestTournament() T {
 		MinutesAvailForGroupsPhase: 90,
 		MinutesPerGame:             15,
 		NumberOfParallelGames:      4}
-	tournament := T{Details: td}
-	tournament.Competitors = competitors.NewTestCompetitors(9)
-	tournament.Build()
+	t := T{Details: td}
+	t.Competitors = competitors.NewTestCompetitors(9)
 
-	return tournament
+	t.FinalPairings = []pairings.P{
+		pairings.P{Competitor1ID: 1, Competitor2ID: 2, Round: -4, ID: -1, GroupID: 0, StartTime: time.Time{}},
+		pairings.P{Competitor1ID: 3, Competitor2ID: 4, Round: -4, ID: -2, GroupID: 0, StartTime: time.Time{}},
+		pairings.P{Competitor1ID: 5, Competitor2ID: 6, Round: -4, ID: -3, GroupID: 0, StartTime: time.Time{}},
+		pairings.P{Competitor1ID: 7, Competitor2ID: 8, Round: -4, ID: -4, GroupID: 0, StartTime: time.Time{}},
+		pairings.P{Competitor1ID: 1, Competitor2ID: 3, Round: -2, ID: -5, GroupID: 0, StartTime: time.Time{}},
+		pairings.P{Competitor1ID: 5, Competitor2ID: 7, Round: -2, ID: -6, GroupID: 0, StartTime: time.Time{}},
+		pairings.P{Competitor1ID: 1, Competitor2ID: 0, Round: -1, ID: -7, GroupID: 0, StartTime: time.Time{}},
+	}
+
+	t.Build()
+
+	return t
 }
 
 func TestAddCompetitor(t *testing.T) {
@@ -49,6 +61,7 @@ func TestT_GetPairingByID(t *testing.T) {
 	}{
 		{"empty Tournament returns error", T{}, 27, pairings.P{}, true},
 		{"TestTournament with correct ID returns P", trmntForTestGetPairingByID, 2, trmntForTestGetPairingByID.Pairings[2], false},
+		{"TestTournament with Finalpairings should return Final", trmntForTestGetPairingByID, -1, trmntForTestGetPairingByID.FinalPairings[0], false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

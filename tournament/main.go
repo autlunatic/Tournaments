@@ -66,6 +66,9 @@ func mainPage(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 }
 func resultsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	html := pairings.ResultsToHTML(t.Competitors, t.Pairings, t.PairingResults, t.PointCalcer)
+	if len(t.FinalPairings) > 0 {
+		html += pairings.ResultsToHTML(t.Competitors, t.FinalPairings, t.PairingResults, t.PointCalcer)
+	}
 	writeHeaderAndHTML(w, html)
 }
 func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
@@ -74,8 +77,10 @@ func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params
 }
 func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
-	html := pairings.ToHTML(pairings.CalcedPlanToGamePlan(t.Competitors, t.Plan))
-	html = html + pairings.ToHTML(pairings.AllPairsToGamePlan(t.Competitors, t.FinalPairings))
+	html := pairings.ToHTML("Spielplan", pairings.CalcedPlanToGamePlan(t.Competitors, t.Plan))
+	if len(t.FinalPairings) > 0 {
+		html = html + pairings.ToHTML("Finalrunden", pairings.AllPairsToGamePlan(t.Competitors, t.FinalPairings))
+	}
 	writeHeaderAndHTML(w, html)
 }
 func writeHeaderAndHTML(w http.ResponseWriter, html string) {
@@ -122,6 +127,9 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 			}
 
 			fmt.Println(t.FinalPairings)
+		} else if req.PostFormValue("deleteFinals") != "" {
+			t.FinalPairings = []pairings.P{}
+
 		}
 	}
 	html := tournament.RenderAdminPage(t, errHTML)

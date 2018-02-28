@@ -21,15 +21,27 @@ func RecalcFinals(pairs []P, res Results, calcer tournamentPoints.TournamentPoin
 // e.g. from quarterfinals to semifinals
 // it also can be used if no all Results are given to calculate the plan before the finals are over
 func CalcNextFinalRound(pairs []P, res Results, calcer tournamentPoints.TournamentPointCalcer) []P {
-	out := make([]P, len(pairs)/2)
+	mOut := make([]P, len(pairs)/2)
+
+	var oneResFound bool
 	minPairID, maxPairID := calcMinMaxPairID(pairs)
 	for _, p := range pairs {
 		if r, ok := res[p.ID]; ok {
+			oneResFound = true
 			oid := (-p.ID + maxPairID) / 2
-			out[oid].ID = minPairID - (oid) - 1
-			out[oid].Round = -len(pairs) / 2
+			mOut[oid].ID = minPairID - (oid) - 1
+			mOut[oid].Round = -len(pairs) / 2
 			r1, r2 := calcer.Calc(r.GamePoints1, r.GamePoints2)
-			calcAndSetCompetitorIds(&out[oid], r1, r2, p)
+			calcAndSetCompetitorIds(&mOut[oid], r1, r2, p)
+		}
+	}
+	if !oneResFound {
+		return []P{}
+	}
+	var out []P
+	for _, p := range mOut {
+		if p.Round < 0 {
+			out = append(out, p)
 		}
 	}
 	return out

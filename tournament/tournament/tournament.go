@@ -49,5 +49,11 @@ func (t *T) GetPairingByID(ID int) (pairings.P, error) {
 			return t.Pairings[i], nil
 		}
 	}
+	for i, p := range t.FinalPairings {
+		if p.ID == ID {
+			return t.FinalPairings[i], nil
+		}
+	}
+
 	return pairings.P{}, fmt.Errorf("Invalid Pairing ID")
 }

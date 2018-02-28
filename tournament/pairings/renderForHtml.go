@@ -57,9 +57,13 @@ func AllPairsToGamePlan(c []competitors.C, ap []P) GamePlan {
 }
 
 // ToHTML renders the Pairing List to a HTML Page
-func ToHTML(gp GamePlan) string {
+func ToHTML(description string, gp GamePlan) string {
+	htmlData := struct {
+		Description string
+		Gp          GamePlan
+	}{description, gp}
 	tpl := template.Must(template.ParseFiles("pairings/PairingsList.html"))
 	var b bytes.Buffer
-	tpl.Execute(&b, gp)
+	tpl.Execute(&b, htmlData)
 	return b.String()
 }
