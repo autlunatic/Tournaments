@@ -122,7 +122,7 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 					t.FinalPairings = []pairings.P{}
 				}
 			} else {
-				t.FinalPairings = pairings.RecalcFinals(t.FinalPairings, t.PairingResults, t.PointCalcer)
+				t.RecalcFinals()
 			}
 
 		} else if req.PostFormValue("deleteFinals") != "" {
@@ -189,6 +189,9 @@ func inputResultHandler(w http.ResponseWriter, req *http.Request, ps httprouter.
 		}
 		if pr, ok := t.PairingResults[p.ID]; ok {
 			pr.SetPoints(ptsC1, ptsC2)
+			if id < 0 {
+				t.RecalcFinals()
+			}
 		}
 		req.Method = http.MethodGet
 		competitors.ClearPoints(t.Competitors)

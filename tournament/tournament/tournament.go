@@ -57,3 +57,10 @@ func (t *T) GetPairingByID(ID int) (pairings.P, error) {
 
 	return pairings.P{}, fmt.Errorf("Invalid Pairing ID")
 }
+
+// RecalcFinals calculates the Finals from beginning.
+// note there must be the finalpairings set from the groupphase this function only recalculates the
+// finals from first round to final
+func (t *T) RecalcFinals() {
+	t.FinalPairings = pairings.RecalcFinals(t.FinalPairings, t.PairingResults, t.PointCalcer)
+}

@@ -84,6 +84,15 @@ func getPairingsWithInvalidResults() calcNextFinalRoundArgs {
 	}
 	return calcNextFinalRoundArgs{outP, outR}
 }
+func getFinalWithResult() calcNextFinalRoundArgs {
+	outP := []P{
+		{1, 3, -1, -3, 0, time.Time{}},
+	}
+	outR := Results{
+		-3: &Result{3, 1},
+	}
+	return calcNextFinalRoundArgs{outP, outR}
+}
 
 func TestCalcNextFinalRound(t *testing.T) {
 	tests := []struct {
@@ -94,6 +103,7 @@ func TestCalcNextFinalRound(t *testing.T) {
 		{"quarter to semi", getPairingsForQuarterFinals(false), []P{{1, 4, -2, -5, 0, time.Time{}}, {5, 8, -2, -6, 0, time.Time{}}}},
 		{"quarter to semi, but the ids of quarter are coming from a round of 16", getPairingsForQuarterFinals(true), []P{{1, 4, -2, -13, 0, time.Time{}}, {5, 8, -2, -14, 0, time.Time{}}}},
 		{"semi to finals", getPairingsForSemiFinals(), []P{{1, 4, -1, -7, 0, time.Time{}}}},
+		{"final should always return empty", getFinalWithResult(), []P{}},
 		{"quarter to semi 1 result", quarterToSemiOnlyOneResult(), []P{{1, -1, -2, -5, 0, time.Time{}}}},
 		{"quarter to semi 2 results", quarterToSemi(), []P{{1, 4, -2, -5, 0, time.Time{}}}},
 		{"quarter to semi invalid results", getPairingsWithInvalidResults(), []P{}},
