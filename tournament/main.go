@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -126,7 +125,6 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 				t.FinalPairings = pairings.RecalcFinals(t.FinalPairings, t.PairingResults, t.PointCalcer)
 			}
 
-			fmt.Println(t.FinalPairings)
 		} else if req.PostFormValue("deleteFinals") != "" {
 			t.FinalPairings = []pairings.P{}
 

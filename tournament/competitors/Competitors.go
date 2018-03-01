@@ -11,7 +11,7 @@ func GetCompetitor(c []C, ID int) C {
 			return item
 		}
 	}
-	return nil
+	return &EmptyCompetitor{}
 }
 
 // New generates a New SimpleCompetitor with the given Name
@@ -167,4 +167,53 @@ func (c *SimpleCompetitor) SetGroupPlacement(in int) {
 // GroupPlacement is for the Competitor Interface
 func (c *SimpleCompetitor) GroupPlacement() int {
 	return c.groupPlacement
+}
+
+// EmptyCompetitor is used as Return when the competitor can not be found
+type EmptyCompetitor struct{}
+
+// DrawNumber is for implementing the Competitor interface
+func (c *EmptyCompetitor) DrawNumber() int64 {
+	return 0
+}
+
+// Name is for implementing the Competitor Interface
+func (c *EmptyCompetitor) Name() string {
+	return ""
+}
+
+// AddPoints is for implementing the Competitor Interface
+func (c *EmptyCompetitor) AddPoints(p int) {
+}
+
+// GetPoints is for implementing the Competitor Interface
+func (c *EmptyCompetitor) GetPoints() int {
+	return 0
+}
+
+// AddGamePoints is for implementing the Competitor Interface
+func (c *EmptyCompetitor) AddGamePoints(p int) {
+}
+
+// GetGamePoints is for implementing the Competitor Interface
+func (c *EmptyCompetitor) GetGamePoints() int {
+	return 0
+}
+
+// ID is for implementing the Competitor Interface
+func (c *EmptyCompetitor) ID() int {
+	return -1
+}
+
+// SetDrawNumber is for the Competitor Interface
+func (c *EmptyCompetitor) SetDrawNumber(number int64) {
+}
+
+// SetGroupPlacement is for the Competitor Interface
+func (c *EmptyCompetitor) SetGroupPlacement(in int) {
+}
+
+// GroupPlacement is for the Competitor Interface
+func (c *EmptyCompetitor) GroupPlacement() int {
+	return 0
 }

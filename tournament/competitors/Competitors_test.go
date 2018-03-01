@@ -94,7 +94,7 @@ func TestGetCompetitor(t *testing.T) {
 		want C
 	}{
 		{"Get competitor", 1, cs[1]},
-		{"invalid Competitor", 9, nil},
+		{"invalid Competitor", 9, &EmptyCompetitor{}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
