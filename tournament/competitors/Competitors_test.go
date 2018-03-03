@@ -204,6 +204,7 @@ func TestContainsName(t *testing.T) {
 	}{
 		{"not containing should return false", args{NewTestCompetitors(5), "Hugo"}, false},
 		{"containing should return true", args{NewTestCompetitors(5), "Benni"}, true},
+		{"containing should ignore case ", args{NewTestCompetitors(5), "benni"}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

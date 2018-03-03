@@ -9,6 +9,7 @@ type D struct {
 	MinutesAvailForGroupsPhase int
 	FinalistCount              int
 	TournamentStartTime        time.Time
+	FinalsStartTime            time.Time
 }
 
 // New creates and initializes Details

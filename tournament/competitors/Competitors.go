@@ -2,6 +2,7 @@ package competitors
 
 import (
 	"errors"
+	"strings"
 )
 
 // GetCompetitor gets the Competitor of the Items with the given ID
@@ -57,7 +58,7 @@ type SimpleCompetitor struct {
 // ContainsName Checks if the competitor Name is already taken
 func ContainsName(cs []C, name string) bool {
 	for _, c := range cs {
-		if c.Name() == name {
+		if strings.ToUpper(c.Name()) == strings.ToUpper(name) {
 			return true
 		}
 	}
