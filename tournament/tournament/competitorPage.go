@@ -23,9 +23,9 @@ type CompetitorPageInfoHTML struct {
 	Result template.HTML
 }
 
-func compPageInfoToHTML(cs []competitors.C, cpi CompetitorPageInfo) CompetitorPageInfoHTML {
+func compPageInfoToHTML(cs []competitors.C, cpi CompetitorPageInfo, parallelGames int) CompetitorPageInfoHTML {
 	var out CompetitorPageInfoHTML
-	gp := pairings.AllPairsToGamePlan(cs, cpi.pairs)
+	gp := pairings.AllPairsToGamePlan(cs, cpi.pairs, parallelGames)
 	out.Pairs = template.HTML(pairings.ToHTML("Spielplan", gp))
 	out.Group = template.HTML(groups.RenderOneGroup(cpi.g))
 	out.Result = template.HTML(pairings.RenderResultInfos(cpi.ri))
@@ -53,7 +53,7 @@ func ToCompetitorPageInfo(competitorID int, t T) CompetitorPageInfo {
 // next pairings, Group with group points, results of this competitor
 func CompetitorPageHTML(competitorID int, t T) string {
 	cpi := ToCompetitorPageInfo(competitorID, t)
-	cpiH := compPageInfoToHTML(t.Competitors, cpi)
+	cpiH := compPageInfoToHTML(t.Competitors, cpi, t.Details.NumberOfParallelGames)
 	tpl := template.Must(template.ParseFiles("tournament/competitorPage.html"))
 	var b bytes.Buffer
 	tpl.Execute(&b, cpiH)

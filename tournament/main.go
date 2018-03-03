@@ -78,7 +78,7 @@ func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Para
 
 	html := pairings.ToHTML("Spielplan", pairings.CalcedPlanToGamePlan(t.Competitors, t.Plan))
 	if len(t.FinalPairings) > 0 {
-		html = html + pairings.ToHTML("Finalrunden", pairings.AllPairsToGamePlan(t.Competitors, t.FinalPairings))
+		html = html + pairings.ToHTML("Finalrunden", pairings.AllPairsToGamePlan(t.Competitors, t.FinalPairings, t.Details.NumberOfParallelGames))
 	}
 	writeHeaderAndHTML(w, html)
 }

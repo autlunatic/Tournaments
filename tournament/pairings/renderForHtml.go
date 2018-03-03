@@ -41,13 +41,13 @@ func CalcedPlanToGamePlan(c []competitors.C, cp [][]P) GamePlan {
 }
 
 // AllPairsToGamePlan returns Gameplan from allpairs for HTML
-func AllPairsToGamePlan(c []competitors.C, ap []P) GamePlan {
+func AllPairsToGamePlan(c []competitors.C, ap []P, parallelGames int) GamePlan {
 	var out GamePlan
 	for pi := range ap {
 		out.PairingInfo = append(out.PairingInfo,
 			PairingInfo{
 				ap[pi].StartTime.Format("15:04"),
-				strconv.Itoa(pi + 1),
+				strconv.Itoa(pi%parallelGames + 1),
 				ap[pi],
 				competitors.GetCompetitor(c, ap[pi].Competitor1ID).Name(),
 				competitors.GetCompetitor(c, ap[pi].Competitor2ID).Name(),
