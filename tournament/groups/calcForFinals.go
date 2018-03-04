@@ -125,17 +125,17 @@ func (c *calcPairingsForFinals) setNextRankingIndexForCompetitor(finRankPos []in
 }
 
 func (c *calcPairingsForFinals) setPairingForSortedID(sID int, compID int, checkForDuplicates bool) error {
-	pairingID := (sID - 1) / 2
+	pID := (sID - 1) / 2
 	competID := sID % 2
-	c.out[pairingID].Round = -c.finalistCount
-	c.out[pairingID].ID = -pairingID - 1
+	c.out[pID].Round = -c.finalistCount / 2
+	c.out[pID].ID = -pID - 1
 	if competID == 1 {
-		c.out[pairingID].Competitor1ID = compID
+		c.out[pID].Competitor1ID = compID
 	} else {
-		c.out[pairingID].Competitor2ID = compID
+		c.out[pID].Competitor2ID = compID
 	}
 	if checkForDuplicates {
-		err := c.doCheckForDuplicates(pairingID)
+		err := c.doCheckForDuplicates(pID)
 		if err != nil {
 			return err
 		}
@@ -143,17 +143,17 @@ func (c *calcPairingsForFinals) setPairingForSortedID(sID int, compID int, check
 	return nil
 }
 
-func (c *calcPairingsForFinals) doCheckForDuplicates(pairingID int) error {
-	g1, err1 := GetGroupIDOfCompetitor(c.groups, c.out[pairingID].Competitor1ID)
+func (c *calcPairingsForFinals) doCheckForDuplicates(pID int) error {
+	g1, err1 := GetGroupIDOfCompetitor(c.groups, c.out[pID].Competitor1ID)
 	if err1 != nil {
 		return err1
 	}
-	g2, err2 := GetGroupIDOfCompetitor(c.groups, c.out[pairingID].Competitor2ID)
+	g2, err2 := GetGroupIDOfCompetitor(c.groups, c.out[pID].Competitor2ID)
 	if err2 != nil {
 		return err2
 	}
 	if len(c.groups) > 1 && g1 == g2 {
-		return fmt.Errorf("Same Group not possible C1: %v C2: %v both in group: %v", c.out[pairingID].Competitor1ID, c.out[pairingID].Competitor2ID, g1)
+		return fmt.Errorf("Same Group not possible C1: %v C2: %v both in group: %v", c.out[pID].Competitor1ID, c.out[pID].Competitor2ID, g1)
 	}
 	return nil
 }

@@ -248,3 +248,27 @@ func TestOfCompetitorID(t *testing.T) {
 		})
 	}
 }
+func getPairingsWithTime() []P {
+	p := make([]P, 3)
+	p[0] = P{1, 2, 3, 1, 1, time.Date(2018, 3, 3, 14, 15, 0, 0, time.UTC)}
+	p[1] = P{3, 4, 6, 1, 1, time.Date(2018, 3, 3, 14, 15, 0, 0, time.UTC)}
+	p[2] = P{1, 2, 5, 1, 1, time.Date(2018, 3, 3, 14, 16, 0, 0, time.UTC)}
+	return p
+}
+func TestLatestGameStart(t *testing.T) {
+	tests := []struct {
+		name string
+		args []P
+		want time.Time
+	}{
+		{"3 Pairings without time", getPairingsForTestMaxRound(), time.Time{}},
+		{"3 Pairings without time", getPairingsWithTime(), time.Date(2018, 3, 3, 14, 16, 0, 0, time.UTC)},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := LatestGameStart(tt.args); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("LatestGameStart() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

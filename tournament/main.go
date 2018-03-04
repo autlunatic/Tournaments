@@ -118,6 +118,7 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 		} else if req.PostFormValue("calcFinals") != "" {
 			if len(t.FinalPairings) == 0 {
 				t.FinalPairings, err = groups.CalcPairingsForFinals(t.Groups, t.Details.FinalistCount)
+				t.SetFinalTimes()
 				if err != nil {
 					t.FinalPairings = []pairings.P{}
 				}

@@ -134,3 +134,14 @@ func addPair(pairings *[]P, c1 int, c2 int, round int, groupID int) {
 
 	*pairings = append(*pairings, pair)
 }
+
+// LatestGameStart returns the starttime of the LastGame played
+func LatestGameStart(ps []P) time.Time {
+	var out time.Time
+	for _, p := range ps {
+		if p.StartTime.After(out) {
+			out = p.StartTime
+		}
+	}
+	return out
+}

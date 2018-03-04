@@ -2,6 +2,7 @@ package pairings
 
 import (
 	"bytes"
+	"strconv"
 	"text/template"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
@@ -11,6 +12,7 @@ import (
 // ResultInfo ist the struct for representing Data in the Template
 type ResultInfo struct {
 	PairingID   int
+	PairingInfo string
 	Comp1ID     int
 	Comp1Name   string
 	Comp2ID     int
@@ -30,6 +32,7 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 			tp1, tp2 := tpc.Calc(res.GamePoints1, res.GamePoints2)
 			out = append(out, ResultInfo{
 				pi.ID,
+				roundToInfo(pi.Round),
 				pi.Competitor1ID,
 				competitors.GetCompetitor(c, pi.Competitor1ID).Name(),
 				pi.Competitor2ID,
@@ -43,6 +46,7 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 		} else {
 			out = append(out, ResultInfo{
 				pi.ID,
+				roundToInfo(pi.Round),
 				pi.Competitor1ID,
 				competitors.GetCompetitor(c, pi.Competitor1ID).Name(),
 				pi.Competitor2ID,
@@ -82,4 +86,13 @@ func FilterResultInfoByCompID(ris []ResultInfo, compID int) []ResultInfo {
 		}
 	}
 	return out
+}
+
+// PairingIDToInfo returns the string for the PairingsID
+// it formats negative Ids to F[ID] -1 -> F1
+func PairingIDToInfo(pID int) string {
+	if pID < 0 {
+		return "F" + strconv.Itoa(-pID)
+	}
+	return strconv.Itoa(pID)
 }

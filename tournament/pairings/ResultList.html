@@ -14,7 +14,7 @@
 
             {{range .}}
             <tr>
-                <td class="Time"><a href="/inputResults/{{.PairingID}}">{{.PairingID}}</a></td>
+                <td class="Time"><a href="/inputResults/{{.PairingID}}">{{.PairingInfo}}</a></td>
                 <td class="Court">{{.Comp1Name}}</td>
                 <td class="Round">{{.Comp2Name}}</td>
                 <td class="C1"> {{if .Done}} {{.Pairing1Pts}}:{{.Pairing2Pts}}{{end}}</td>

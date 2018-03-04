@@ -21,8 +21,8 @@ func getGroupsFor1() []groups.G {
 
 func getWantedFor1() []pairings.P {
 	out := []pairings.P{
-		pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -4, ID: -1, GroupID: 0},
-		pairings.P{Competitor1ID: 6, Competitor2ID: 3, Round: -4, ID: -2, GroupID: 0}}
+		pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -2, ID: -1, GroupID: 0},
+		pairings.P{Competitor1ID: 6, Competitor2ID: 3, Round: -2, ID: -2, GroupID: 0}}
 	/*	out := make([]pairings.P, 2)
 		out[0] = pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -4, ID: -1, GroupID: 0}
 		out[1] = pairings.P{Competitor1ID: 6, Competitor2ID: 3, Round: -4, ID: -2, GroupID: 0}*/
@@ -46,10 +46,10 @@ func getWantedFor2() []pairings.P {
 	// 11, 7, 3,10, 6, 2, 9, 5
 	//  1, 8, 5, 4, 3, 6, 7, 2
 	out := []pairings.P{
-		pairings.P{Competitor1ID: 11, Competitor2ID: 5, Round: -8, ID: -1, GroupID: 0},
-		pairings.P{Competitor1ID: 2, Competitor2ID: 10, Round: -8, ID: -2, GroupID: 0},
-		pairings.P{Competitor1ID: 3, Competitor2ID: 6, Round: -8, ID: -3, GroupID: 0},
-		pairings.P{Competitor1ID: 9, Competitor2ID: 7, Round: -8, ID: -4, GroupID: 0}}
+		pairings.P{Competitor1ID: 11, Competitor2ID: 5, Round: -4, ID: -1, GroupID: 0},
+		pairings.P{Competitor1ID: 2, Competitor2ID: 10, Round: -4, ID: -2, GroupID: 0},
+		pairings.P{Competitor1ID: 3, Competitor2ID: 6, Round: -4, ID: -3, GroupID: 0},
+		pairings.P{Competitor1ID: 9, Competitor2ID: 7, Round: -4, ID: -4, GroupID: 0}}
 	return out
 }
 
@@ -57,10 +57,10 @@ func getWantedFor3() []pairings.P {
 	//4,11, 3, 10, 7, 2, 9, 6
 	//1, 8, 5,  4, 3, 6, 7, 2
 	out := []pairings.P{
-		pairings.P{Competitor1ID: 4, Competitor2ID: 9, Round: -8, ID: -1, GroupID: 0},
-		pairings.P{Competitor1ID: 2, Competitor2ID: 10, Round: -8, ID: -2, GroupID: 0},
-		pairings.P{Competitor1ID: 3, Competitor2ID: 7, Round: -8, ID: -3, GroupID: 0},
-		pairings.P{Competitor1ID: 6, Competitor2ID: 11, Round: -8, ID: -4, GroupID: 0}}
+		pairings.P{Competitor1ID: 4, Competitor2ID: 9, Round: -4, ID: -1, GroupID: 0},
+		pairings.P{Competitor1ID: 2, Competitor2ID: 10, Round: -4, ID: -2, GroupID: 0},
+		pairings.P{Competitor1ID: 3, Competitor2ID: 7, Round: -4, ID: -3, GroupID: 0},
+		pairings.P{Competitor1ID: 6, Competitor2ID: 11, Round: -4, ID: -4, GroupID: 0}}
 	return out
 }
 
@@ -78,10 +78,10 @@ func getWantedFor4() []pairings.P {
 	//4,11, 10, 9, 8, 7, 6, 5
 	//1, 8, 5,  4, 3, 6, 7, 2
 	out := []pairings.P{
-		pairings.P{Competitor1ID: 4, Competitor2ID: 5, Round: -8, ID: -1, GroupID: 0},
-		pairings.P{Competitor1ID: 8, Competitor2ID: 9, Round: -8, ID: -2, GroupID: 0},
-		pairings.P{Competitor1ID: 10, Competitor2ID: 7, Round: -8, ID: -3, GroupID: 0},
-		pairings.P{Competitor1ID: 6, Competitor2ID: 11, Round: -8, ID: -4, GroupID: 0}}
+		pairings.P{Competitor1ID: 4, Competitor2ID: 5, Round: -4, ID: -1, GroupID: 0},
+		pairings.P{Competitor1ID: 8, Competitor2ID: 9, Round: -4, ID: -2, GroupID: 0},
+		pairings.P{Competitor1ID: 10, Competitor2ID: 7, Round: -4, ID: -3, GroupID: 0},
+		pairings.P{Competitor1ID: 6, Competitor2ID: 11, Round: -4, ID: -4, GroupID: 0}}
 	return out
 }
 func getGroupsFor5() []groups.G {
@@ -104,10 +104,10 @@ func getWantedFor5() []pairings.P {
 	//7, 5, 3, 1, 0, 4, 6, 2
 	//1, 8, 5, 4, 3, 6, 7, 2
 	out := []pairings.P{
-		pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -8, ID: -1, GroupID: 0},
-		pairings.P{Competitor1ID: 4, Competitor2ID: 1, Round: -8, ID: -2, GroupID: 0},
-		pairings.P{Competitor1ID: 3, Competitor2ID: 0, Round: -8, ID: -3, GroupID: 0},
-		pairings.P{Competitor1ID: 6, Competitor2ID: 5, Round: -8, ID: -4, GroupID: 0}}
+		pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -4, ID: -1, GroupID: 0},
+		pairings.P{Competitor1ID: 4, Competitor2ID: 1, Round: -4, ID: -2, GroupID: 0},
+		pairings.P{Competitor1ID: 3, Competitor2ID: 0, Round: -4, ID: -3, GroupID: 0},
+		pairings.P{Competitor1ID: 6, Competitor2ID: 5, Round: -4, ID: -4, GroupID: 0}}
 	return out
 }
 

@@ -63,4 +63,10 @@ func (t *T) GetPairingByID(ID int) (pairings.P, error) {
 // finals from first round to final
 func (t *T) RecalcFinals() {
 	t.FinalPairings = pairings.RecalcFinals(t.FinalPairings, t.PairingResults, t.PointCalcer)
+	t.SetFinalTimes()
+}
+
+// SetFinalTimes calculates the times for the finalPairings
+func (t *T) SetFinalTimes() {
+	t.FinalPairings = pairings.CalcTimesForFinalPairings(pairings.LatestGameStart(t.Pairings), t.FinalPairings, t.Details)
 }

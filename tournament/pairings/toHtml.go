@@ -12,6 +12,7 @@ import (
 type PairingInfo struct {
 	FormattedTime string
 	Court         string
+	RoundInfo     string
 	Pairing       P
 	Comp1Name     string
 	Comp2Name     string
@@ -31,6 +32,7 @@ func CalcedPlanToGamePlan(c []competitors.C, cp [][]P) GamePlan {
 				PairingInfo{
 					cp[kp][pi].StartTime.Format("15:04"),
 					strconv.Itoa(pi + 1),
+					roundToInfo(cp[kp][pi].Round),
 					cp[kp][pi],
 					competitors.GetCompetitor(c, cp[kp][pi].Competitor1ID).Name(),
 					competitors.GetCompetitor(c, cp[kp][pi].Competitor2ID).Name(),
@@ -48,6 +50,7 @@ func AllPairsToGamePlan(c []competitors.C, ap []P, parallelGames int) GamePlan {
 			PairingInfo{
 				ap[pi].StartTime.Format("15:04"),
 				strconv.Itoa(pi%parallelGames + 1),
+				roundToInfo(ap[pi].Round),
 				ap[pi],
 				competitors.GetCompetitor(c, ap[pi].Competitor1ID).Name(),
 				competitors.GetCompetitor(c, ap[pi].Competitor2ID).Name(),
@@ -66,4 +69,18 @@ func ToHTML(description string, gp GamePlan) string {
 	var b bytes.Buffer
 	tpl.Execute(&b, htmlData)
 	return b.String()
+}
+
+func roundToInfo(r int) string {
+	if r == 0 {
+		return ""
+	}
+	if r == -1 {
+		return "Finale"
+	}
+	if r > 0 {
+		return strconv.Itoa(r)
+	}
+	r = -r
+	return "1/" + strconv.Itoa(r) + " F."
 }
