@@ -130,18 +130,22 @@ func TestFilterResultInfoByCompID(t *testing.T) {
 }
 
 func TestPairingIDToInfo(t *testing.T) {
+	type args struct {
+		id    int
+		round int
+	}
 	tests := []struct {
 		name string
-		args int
+		args args
 		want string
 	}{
-		{"positive ID", 1, "1"},
-		{"Negative ID", -1, "F1"},
+		{"positive ID", args{1, 1}, "1"},
+		{"Negative ID", args{-1, -2}, "1/2 F."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := PairingIDToInfo(tt.args); got != tt.want {
-				t.Errorf("PairingIDToInfo() = %v, want %v", got, tt.want)
+			if got := pairingIDToInfo(tt.args.id, tt.args.round); got != tt.want {
+				t.Errorf("pairingIDToInfo() = %v, want %v", got, tt.want)
 			}
 		})
 	}

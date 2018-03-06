@@ -3,8 +3,10 @@
     <form method="POST">
 
         <div class="form-group">
-            <h2>Spielnummer: {{.ID}}</h2>
-            <h3>Runde: {{.Round}}</h3>
+            {{if .IDInfo}}
+            <h2>Spielnummer: {{.IDInfo}}</h2>
+            {{end}}
+            <h3>Runde: {{.RoundInfo}}</h3>
             <label for="competitorPoints1">{{.Competitor1Name}}</label>
             <input type="number" class="form-control" id="competitor1Points" name="competitor1Points" value="{{.Competitor1Points}}" autofocus>
 

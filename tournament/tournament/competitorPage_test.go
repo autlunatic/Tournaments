@@ -11,10 +11,10 @@ var ttForCompPage = NewTestTournament()
 
 func getResultInfoWanted() []pairings.ResultInfo {
 	out := []pairings.ResultInfo{
-		{Comp1ID: 0, Comp1Name: "Benni", Comp2ID: 1, Comp2Name: "Dani", Group1Pts: 0, Group2Pts: 0, Pairing1Pts: 0, Pairing2Pts: 0, PairingInfo: "1", Done: false},
-		{Comp1ID: 0, Comp1Name: "Benni", Comp2ID: 2, Comp2Name: "Mona", Group1Pts: 0, Group2Pts: 0, Pairing1Pts: 0, Pairing2Pts: 0, PairingInfo: "5", Done: false},
-		{Comp1ID: 0, Comp1Name: "Benni", Comp2ID: 3, Comp2Name: "Andrea", Group1Pts: 0, Group2Pts: 0, Pairing1Pts: 0, Pairing2Pts: 0, PairingInfo: "8", Done: false},
-		{Comp1ID: 0, Comp1Name: "Benni", Comp2ID: 4, Comp2Name: "Zoé", Group1Pts: 0, Group2Pts: 0, Pairing1Pts: 0, Pairing2Pts: 0, PairingInfo: "13", Done: false},
+		{Comp1ID: 0, Comp1Name: "Benni", Comp2ID: 1, Comp2Name: "Dani", Group1Pts: 0, Group2Pts: 0, Pairing1Pts: 0, Pairing2Pts: 0, PairingID: 1, PairingInfo: "1", Done: false},
+		{Comp1ID: 0, Comp1Name: "Benni", Comp2ID: 2, Comp2Name: "Mona", Group1Pts: 0, Group2Pts: 0, Pairing1Pts: 0, Pairing2Pts: 0, PairingID: 5, PairingInfo: "5", Done: false},
+		{Comp1ID: 0, Comp1Name: "Benni", Comp2ID: 3, Comp2Name: "Andrea", Group1Pts: 0, Group2Pts: 0, Pairing1Pts: 0, Pairing2Pts: 0, PairingID: 8, PairingInfo: "8", Done: false},
+		{Comp1ID: 0, Comp1Name: "Benni", Comp2ID: 4, Comp2Name: "Zoé", Group1Pts: 0, Group2Pts: 0, Pairing1Pts: 0, Pairing2Pts: 0, PairingID: 13, PairingInfo: "13", Done: false},
 	}
 	return out
 }

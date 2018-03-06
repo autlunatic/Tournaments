@@ -11,8 +11,8 @@ import (
 type SimpleInputFormGetter struct{}
 
 type simpleInputFields struct {
-	ID                int
-	Round             int
+	IDInfo            string
+	RoundInfo         string
 	Competitor1Name   string
 	Competitor2Name   string
 	Competitor1Points int
@@ -27,8 +27,14 @@ func (s SimpleInputFormGetter) GetInputForm(c []competitors.C, p P, results Resu
 		pr = &Result{0, 0}
 		results[p.ID] = pr
 	}
-	sif := simpleInputFields{p.ID,
-		p.Round,
+	pInfo := pairingIDToInfo(p.ID, p.Round)
+	if pInfo == roundToInfo(p.Round) {
+		pInfo = ""
+	}
+
+	sif := simpleInputFields{
+		pInfo, roundToInfo(p.Round),
+
 		competitors.GetCompetitor(c, p.Competitor1ID).Name(),
 		competitors.GetCompetitor(c, p.Competitor2ID).Name(),
 		pr.GamePoints1,

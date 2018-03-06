@@ -32,7 +32,7 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 			tp1, tp2 := tpc.Calc(res.GamePoints1, res.GamePoints2)
 			out = append(out, ResultInfo{
 				pi.ID,
-				roundToInfo(pi.Round),
+				pairingIDToInfo(pi.ID, pi.Round),
 				pi.Competitor1ID,
 				competitors.GetCompetitor(c, pi.Competitor1ID).Name(),
 				pi.Competitor2ID,
@@ -46,7 +46,7 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 		} else {
 			out = append(out, ResultInfo{
 				pi.ID,
-				roundToInfo(pi.Round),
+				pairingIDToInfo(pi.ID, pi.Round),
 				pi.Competitor1ID,
 				competitors.GetCompetitor(c, pi.Competitor1ID).Name(),
 				pi.Competitor2ID,
@@ -88,11 +88,9 @@ func FilterResultInfoByCompID(ris []ResultInfo, compID int) []ResultInfo {
 	return out
 }
 
-// PairingIDToInfo returns the string for the PairingsID
-// it formats negative Ids to F[ID] -1 -> F1
-func PairingIDToInfo(pID int) string {
+func pairingIDToInfo(pID int, round int) string {
 	if pID < 0 {
-		return "F" + strconv.Itoa(-pID)
+		return roundToInfo(round)
 	}
 	return strconv.Itoa(pID)
 }
