@@ -18,8 +18,8 @@ func GetCompetitor(c []C, ID int) C {
 // New generates a New SimpleCompetitor with the given Name
 func New(name string, id int) *SimpleCompetitor {
 	c := new(SimpleCompetitor)
-	c.name = name
-	c.id = id
+	c.TeamName = name
+	c.Id = id
 	return c
 }
 
@@ -47,12 +47,12 @@ type C interface {
 
 // SimpleCompetitor holds information for an minimalistic Competitor
 type SimpleCompetitor struct {
-	id             int
-	name           string
-	GroupPoints    int
-	GamePoints     int
-	drawNumber     int64
-	groupPlacement int
+	Id          int
+	TeamName    string
+	GroupPoints int
+	GamePoints  int
+	DrawNr      int64
+	GroupPlace  int
 }
 
 // ContainsName Checks if the competitor Name is already taken
@@ -122,12 +122,12 @@ func Delete(cs []C, competitorID int) int {
 
 // DrawNumber is for implementing the Competitor interface
 func (c *SimpleCompetitor) DrawNumber() int64 {
-	return c.drawNumber
+	return c.DrawNr
 }
 
 // Name is for implementing the Competitor Interface
 func (c *SimpleCompetitor) Name() string {
-	return c.name
+	return c.TeamName
 }
 
 // AddPoints is for implementing the Competitor Interface
@@ -152,22 +152,22 @@ func (c *SimpleCompetitor) GetGamePoints() int {
 
 // ID is for implementing the Competitor Interface
 func (c *SimpleCompetitor) ID() int {
-	return c.id
+	return c.Id
 }
 
 // SetDrawNumber is for the Competitor Interface
 func (c *SimpleCompetitor) SetDrawNumber(number int64) {
-	c.drawNumber = number
+	c.DrawNr = number
 }
 
 // SetGroupPlacement is for the Competitor Interface
 func (c *SimpleCompetitor) SetGroupPlacement(in int) {
-	c.groupPlacement = in
+	c.GroupPlace = in
 }
 
 // GroupPlacement is for the Competitor Interface
 func (c *SimpleCompetitor) GroupPlacement() int {
-	return c.groupPlacement
+	return c.GroupPlace
 }
 
 // EmptyCompetitor is used as Return when the competitor can not be found

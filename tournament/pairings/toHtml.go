@@ -8,14 +8,20 @@ import (
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
 
+// PairingInfoSection is used for one Section of Pairings, either groupPhase or Finals
+type PairingInfoSection struct {
+	Description string
+	Pairings    []PairingInfo
+}
+
 // PairingInfo is used as Struct for the Template that populates one item of the gameplan
 type PairingInfo struct {
 	FormattedTime string
 	Court         string
 	RoundInfo     string
-	Pairing       P
-	Comp1Name     string
-	Comp2Name     string
+	// Pairing       P
+	Comp1Name string
+	Comp2Name string
 }
 
 // GamePlan is used as struct for the Gameplan List.
@@ -33,7 +39,7 @@ func CalcedPlanToGamePlan(c []competitors.C, cp [][]P) GamePlan {
 					cp[kp][pi].StartTime.Format("15:04"),
 					strconv.Itoa(pi + 1),
 					roundToInfo(cp[kp][pi].Round),
-					cp[kp][pi],
+					// cp[kp][pi],
 					competitors.GetCompetitor(c, cp[kp][pi].Competitor1ID).Name(),
 					competitors.GetCompetitor(c, cp[kp][pi].Competitor2ID).Name(),
 				})
@@ -51,7 +57,7 @@ func AllPairsToGamePlan(c []competitors.C, ap []P, parallelGames int) GamePlan {
 				ap[pi].StartTime.Format("15:04"),
 				strconv.Itoa(pi%parallelGames + 1),
 				roundToInfo(ap[pi].Round),
-				ap[pi],
+				// ap[pi],
 				competitors.GetCompetitor(c, ap[pi].Competitor1ID).Name(),
 				competitors.GetCompetitor(c, ap[pi].Competitor2ID).Name(),
 			})

@@ -68,10 +68,10 @@ func TestSimpleCompetitor_AddPoints(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := &SimpleCompetitor{
-				id:          tt.fields.id,
-				name:        tt.fields.name,
+				Id:          tt.fields.id,
+				TeamName:    tt.fields.name,
 				GroupPoints: tt.fields.Points,
-				drawNumber:  tt.fields.drawNumber,
+				DrawNr:      tt.fields.drawNumber,
 				GamePoints:  tt.fields.Points,
 			}
 			c.AddPoints(tt.p)

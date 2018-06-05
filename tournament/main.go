@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -22,6 +24,14 @@ import (
 var t tournament.T
 
 func main() {
+	apimux := httprouter.New()
+	apimux.GET("/", gamePlanAPI)
+	apimux.GET("/gamePlan", gamePlanAPI)
+	apimux.GET("/results", resultsAPI)
+	go func() {
+		http.ListenAndServe(":5050", apimux)
+	}()
+
 	mux := httprouter.New()
 
 	http.Handle("/", mux)
@@ -53,13 +63,21 @@ func main() {
 	t.PointCalcer = tournamentPoints.NewSimpleTournamentPointCalc(1, 3, 0)
 
 	t.Build()
+	b, err := json.MarshalIndent(t, "  ", "  ")
+	if err == nil {
+		fmt.Println(string(b))
+	} else {
+		fmt.Println(err)
+	}
 	http.ListenAndServe(":8080", nil)
+
 }
 
 func defaultHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	html := "<h1> mainPage </h1>"
 	writeHeaderAndHTML(w, html)
 }
+
 func mainPage(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	http.ServeFile(w, req, "mainpage/mainPage.html")
 }
@@ -74,6 +92,18 @@ func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params
 	html := groups.ToHTML(t.Groups)
 	writeHeaderAndHTML(w, html)
 }
+
+func gamePlanAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	json := pairings.AllPairsJSON(t.Competitors, t.Plan, t.FinalPairings, t.Details.NumberOfParallelGames)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	io.WriteString(w, json)
+}
+func resultsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	json := pairings.ResultsToJSON(t.Competitors, t.Pairings, t.PairingResults, t.PointCalcer)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	io.WriteString(w, json)
+}
+
 func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 	html := pairings.ToHTML("Spielplan", pairings.CalcedPlanToGamePlan(t.Competitors, t.Plan))

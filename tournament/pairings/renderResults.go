@@ -2,6 +2,7 @@ package pairings
 
 import (
 	"bytes"
+	"encoding/json"
 	"strconv"
 	"text/template"
 
@@ -67,6 +68,20 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 func ResultsToHTML(c []competitors.C, p []P, r Results, tpc tournamentPoints.TournamentPointCalcer) string {
 	ri := ResultsToResultInfo(c, p, r, tpc)
 	return RenderResultInfos(ri)
+}
+
+// ResultsToJSON returns the JSON string for API calls
+func ResultsToJSON(c []competitors.C, p []P, r Results, tpc tournamentPoints.TournamentPointCalcer) string {
+	ri := ResultsToResultInfo(c, p, r, tpc)
+	data := struct {
+		Description string
+		ResultInfos []ResultInfo
+	}{"resultinfos", ri}
+	json, err := json.Marshal(data)
+	if err != nil {
+		return ""
+	}
+	return string(json)
 }
 
 // RenderResultInfos renders the slice of ResultInfo to HTML
