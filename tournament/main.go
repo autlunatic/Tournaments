@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/rs/cors"
+
 	"github.com/autlunatic/Tournaments/tournament/detail"
 	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
 	"github.com/julienschmidt/httprouter"
@@ -28,8 +30,11 @@ func main() {
 	apimux.GET("/", gamePlanAPI)
 	apimux.GET("/gamePlan", gamePlanAPI)
 	apimux.GET("/results", resultsAPI)
+	apimux.POST("/saveResults", resultsInputAPI)
+	handler := cors.AllowAll().Handler(apimux)
+	// apimux.GET("/saveResults", resultsInputAPI)
 	go func() {
-		http.ListenAndServe(":5050", apimux)
+		http.ListenAndServe(":5050", handler)
 	}()
 
 	mux := httprouter.New()
@@ -54,7 +59,7 @@ func main() {
 	t.Details = detail.D{
 		MinutesAvailForGroupsPhase: 90,
 		MinutesPerGame:             15,
-		NumberOfParallelGames:      4,
+		NumberOfParallelGames:      1,
 		FinalistCount:              8,
 		TournamentStartTime:        time.Now(),
 	}
@@ -99,9 +104,46 @@ func gamePlanAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 	io.WriteString(w, json)
 }
 func resultsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	json := pairings.ResultsToJSON(t.Competitors, t.Pairings, t.PairingResults, t.PointCalcer)
+	j := pairings.ResultsToJSON(t.Competitors, t.Pairings, t.FinalPairings, t.PairingResults, t.PointCalcer)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	io.WriteString(w, json)
+	io.WriteString(w, string(j))
+}
+
+func resultsInputAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	var ri pairings.ResultInfo
+	_ = json.NewDecoder(req.Body).Decode(&ri)
+	// json.NewEncoder(w).Encode(result)
+	fmt.Println("request", ri)
+
+	p, err2 := t.GetPairingByID(ri.PairingID)
+	if err2 != nil {
+		fmt.Println(err2)
+		return
+	}
+	fmt.Println(p)
+	fmt.Println(p.ID)
+	fmt.Println(len(t.PairingResults))
+	pr, ok := t.PairingResults[p.ID]
+	if !ok {
+		pr = &pairings.Result{GamePoints1: ri.Pairing1Pts, GamePoints2: ri.Pairing2Pts}
+		t.PairingResults[p.ID] = pr
+	}
+	pr.SetPoints(ri.Pairing1Pts, ri.Pairing2Pts)
+	if p.ID < 0 {
+		t.RecalcFinals()
+	}
+	fmt.Println("pr", pr)
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	competitors.ClearPoints(t.Competitors)
+	err := pairings.AddPointsForResults(t.Competitors, t.Pairings, t.PairingResults, t.PointCalcer)
+	if err != nil {
+		log.Println(err)
+		io.WriteString(w, err.Error())
+		return
+	}
+	io.WriteString(w, "OK")
+	fmt.Println("OK")
 }
 
 func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
@@ -197,6 +239,7 @@ func competitorPageHandler(w http.ResponseWriter, req *http.Request, ps httprout
 }
 
 func inputResultHandler(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	fmt.Println(len(t.PairingResults))
 	id, err := strconv.Atoi(ps.ByName("id"))
 	if err != nil {
 		id = 0
@@ -218,6 +261,7 @@ func inputResultHandler(w http.ResponseWriter, req *http.Request, ps httprouter.
 		if err2 != nil {
 			errHTML = "Invalid input for Points 2"
 		}
+		fmt.Println(len(t.PairingResults))
 		if pr, ok := t.PairingResults[p.ID]; ok {
 			pr.SetPoints(ptsC1, ptsC2)
 			if id < 0 {

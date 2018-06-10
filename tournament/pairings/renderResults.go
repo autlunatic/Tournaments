@@ -25,6 +25,11 @@ type ResultInfo struct {
 	Done        bool
 }
 
+type ResultInfoJSON struct {
+	Description string
+	ResultInfos []ResultInfo
+}
+
 // ResultsToResultInfo calculates the struct that is used for presenting the data in HTML
 func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoints.TournamentPointCalcer) []ResultInfo {
 	var out []ResultInfo
@@ -71,12 +76,16 @@ func ResultsToHTML(c []competitors.C, p []P, r Results, tpc tournamentPoints.Tou
 }
 
 // ResultsToJSON returns the JSON string for API calls
-func ResultsToJSON(c []competitors.C, p []P, r Results, tpc tournamentPoints.TournamentPointCalcer) string {
-	ri := ResultsToResultInfo(c, p, r, tpc)
-	data := struct {
-		Description string
-		ResultInfos []ResultInfo
-	}{"resultinfos", ri}
+func ResultsToJSON(c []competitors.C, pg []P, pf []P, r Results, tpc tournamentPoints.TournamentPointCalcer) string {
+
+	var data []ResultInfoJSON
+	ri := ResultsToResultInfo(c, pg, r, tpc)
+	data = append(data, ResultInfoJSON{"Ergebnisse", ri})
+	if pf != nil && len(pf) > 0 {
+		ri := ResultsToResultInfo(c, pf, r, tpc)
+		data = append(data, ResultInfoJSON{"Finalrunden", ri})
+	}
+
 	json, err := json.Marshal(data)
 	if err != nil {
 		return ""
