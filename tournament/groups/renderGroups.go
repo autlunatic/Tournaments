@@ -54,3 +54,12 @@ func RenderOneGroup(g G) string {
 	tpl.Execute(&b, gi)
 	return b.String()
 }
+
+// GetGroupInfos returns all Groupinfos for the G-Slice
+func GetGroupInfos(g []G) []GroupInfo {
+	var out []GroupInfo
+	for _, gi := range g {
+		out = append(out, GToGroupInfo(gi))
+	}
+	return out
+}

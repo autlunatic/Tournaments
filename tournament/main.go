@@ -30,7 +30,9 @@ func main() {
 	apimux.GET("/", gamePlanAPI)
 	apimux.GET("/gamePlan", gamePlanAPI)
 	apimux.GET("/results", resultsAPI)
+	apimux.GET("/competitors", competitorsAPI)
 	apimux.POST("/saveResults", resultsInputAPI)
+	apimux.GET("/groups", groupsAPI)
 	handler := cors.AllowAll().Handler(apimux)
 	// apimux.GET("/saveResults", resultsInputAPI)
 	go func() {
@@ -103,8 +105,19 @@ func gamePlanAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, json)
 }
+
+func competitorsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	j, _ := json.Marshal(competitors.ToCompetitorInfo(t.Competitors))
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	io.WriteString(w, string(j))
+}
 func resultsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	j := pairings.ResultsToJSON(t.Competitors, t.Pairings, t.FinalPairings, t.PairingResults, t.PointCalcer)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	io.WriteString(w, string(j))
+}
+func groupsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	j, _ := json.Marshal(groups.GetGroupInfos(t.Groups))
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, string(j))
 }
@@ -142,7 +155,9 @@ func resultsInputAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Para
 		io.WriteString(w, err.Error())
 		return
 	}
-	io.WriteString(w, "OK")
+	result, _ := json.Marshal("OK")
+
+	io.WriteString(w, string(result))
 	fmt.Println("OK")
 }
 
