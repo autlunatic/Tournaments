@@ -32,6 +32,7 @@ func main() {
 	apimux.GET("/results", resultsAPI)
 	apimux.GET("/competitors", competitorsAPI)
 	apimux.POST("/saveResults", resultsInputAPI)
+	apimux.POST("/saveCompetitors", saveCompetitorsAPI)
 	apimux.GET("/groups", groupsAPI)
 	handler := cors.AllowAll().Handler(apimux)
 	// apimux.GET("/saveResults", resultsInputAPI)
@@ -121,7 +122,18 @@ func groupsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, string(j))
 }
+func saveCompetitorsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	var compNames []string
+	_ = json.NewDecoder(req.Body).Decode(&compNames)
+	// json.NewEncoder(w).Encode(result)
+	fmt.Println("request", compNames)
+	t.SetNewCompetitors(compNames)
 
+	result, _ := json.Marshal("OK")
+	fmt.Println(len(t.Competitors))
+	io.WriteString(w, string(result))
+	fmt.Println("OK")
+}
 func resultsInputAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var ri pairings.ResultInfo
 	_ = json.NewDecoder(req.Body).Decode(&ri)

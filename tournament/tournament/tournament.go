@@ -2,6 +2,7 @@ package tournament
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
 
@@ -69,4 +70,18 @@ func (t *T) RecalcFinals() {
 // SetFinalTimes calculates the times for the finalPairings
 func (t *T) SetFinalTimes() {
 	t.FinalPairings = pairings.CalcTimesForFinalPairings(pairings.LatestGameStart(t.Pairings), t.FinalPairings, t.Details)
+}
+
+// SetNewCompetitors resets the Competitors if the tournament got a new set of Competitors
+func (t *T) SetNewCompetitors(compNames []string) {
+	t.Competitors = t.Competitors[:0]
+	for _, cn := range compNames {
+		fmt.Println(cn, "added")
+		var err error
+		t.Competitors, err = competitors.AddByName(t.Competitors, cn)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+	fmt.Println(t.Competitors)
 }
