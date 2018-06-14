@@ -39,6 +39,7 @@ func (t *T) setTournamentDetails(td detail.D) {
 func (t *T) Build() error {
 	// calc the tournament plan for the - take in account that no team should play twice in a round ;) and that the last round should be all of one group at once
 	t.Plan, t.Groups, t.Pairings = groups.CalcMostGamesPerCompetitorPlan(t.Competitors, t.Details)
+	t.PairingResults = make(map[int]*pairings.Result)
 	return nil
 }
 
@@ -76,7 +77,6 @@ func (t *T) SetFinalTimes() {
 func (t *T) SetNewCompetitors(compNames []string) {
 	t.Competitors = t.Competitors[:0]
 	for _, cn := range compNames {
-		fmt.Println(cn, "added")
 		var err error
 		t.Competitors, err = competitors.AddByName(t.Competitors, cn)
 		if err != nil {

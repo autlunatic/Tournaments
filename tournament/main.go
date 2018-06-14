@@ -33,7 +33,9 @@ func main() {
 	apimux.GET("/competitors", competitorsAPI)
 	apimux.POST("/saveResults", resultsInputAPI)
 	apimux.POST("/saveCompetitors", saveCompetitorsAPI)
+	apimux.POST("/adminFunction", adminFunctionAPI)
 	apimux.GET("/groups", groupsAPI)
+	apimux.GET("/getDetails", detailsAPI)
 	handler := cors.AllowAll().Handler(apimux)
 	// apimux.GET("/saveResults", resultsInputAPI)
 	go func() {
@@ -65,9 +67,9 @@ func main() {
 		NumberOfParallelGames:      1,
 		FinalistCount:              8,
 		TournamentStartTime:        time.Now(),
+		FinalsStartTime:            time.Now().Add(time.Minute * 60),
 	}
 	t.Competitors = competitors.NewTestCompetitors(9)
-	t.PairingResults = make(map[int]*pairings.Result)
 	t.PointCalcer = tournamentPoints.NewSimpleTournamentPointCalc(1, 3, 0)
 
 	t.Build()
@@ -117,11 +119,50 @@ func resultsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, string(j))
 }
+func detailsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	fmt.Println(t.Details)
+	j, _ := json.Marshal(t.Details)
+	io.WriteString(w, string(j))
+}
+
 func groupsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	j, _ := json.Marshal(groups.GetGroupInfos(t.Groups))
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, string(j))
 }
+
+type adminFunction struct {
+	Function string
+	Params   []string
+}
+
+func adminFunctionAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	var function adminFunction
+	err := json.NewDecoder(req.Body).Decode(&function)
+	if err != nil {
+		fmt.Println(err)
+	}
+	// json.NewEncoder(w).Encode(result)
+	fmt.Println("request", function)
+	var body []byte
+	req.Body.Read(body)
+	fmt.Println(body)
+	fmt.Println(req.Body)
+	switch function.Function {
+	case "calcFinals":
+		calcFin()
+		fmt.Println("recalcing")
+	case "buildTournament":
+		t.Build()
+	case "deleteFinalRound":
+		t.FinalPairings = []pairings.P{}
+	}
+
+	result, _ := json.Marshal("OK")
+	io.WriteString(w, string(result))
+	fmt.Println("OK")
+}
+
 func saveCompetitorsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var compNames []string
 	_ = json.NewDecoder(req.Body).Decode(&compNames)
@@ -132,6 +173,7 @@ func saveCompetitorsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.P
 	result, _ := json.Marshal("OK")
 	fmt.Println(len(t.Competitors))
 	io.WriteString(w, string(result))
+	t.Build()
 	fmt.Println("OK")
 }
 func resultsInputAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
@@ -215,16 +257,7 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 		} else if req.PostFormValue("build") != "" {
 			t.Build()
 		} else if req.PostFormValue("calcFinals") != "" {
-			if len(t.FinalPairings) == 0 {
-				t.FinalPairings, err = groups.CalcPairingsForFinals(t.Groups, t.Details.FinalistCount)
-				t.SetFinalTimes()
-				if err != nil {
-					t.FinalPairings = []pairings.P{}
-				}
-			} else {
-				t.RecalcFinals()
-			}
-
+			calcFin()
 		} else if req.PostFormValue("deleteFinals") != "" {
 			t.FinalPairings = []pairings.P{}
 
@@ -232,6 +265,19 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 	}
 	html := tournament.RenderAdminPage(t, errHTML)
 	writeHeaderAndHTML(w, html)
+}
+func calcFin() {
+	var err error
+	if len(t.FinalPairings) == 0 {
+		t.FinalPairings, err = groups.CalcPairingsForFinals(t.Groups, t.Details.FinalistCount)
+		t.SetFinalTimes()
+		if err != nil {
+			t.FinalPairings = []pairings.P{}
+		}
+	} else {
+		t.RecalcFinals()
+	}
+
 }
 
 func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
