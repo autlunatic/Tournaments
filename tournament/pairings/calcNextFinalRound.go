@@ -28,6 +28,7 @@ func CalcNextFinalRound(pairs []P, res Results, calcer tournamentPoints.Tourname
 	for i := range mOut {
 		mOut[i].Competitor1ID = -1
 		mOut[i].Competitor2ID = -1
+		mOut[i].Court = -1
 	}
 
 	var oneResFound bool

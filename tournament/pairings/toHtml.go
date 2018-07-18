@@ -55,7 +55,7 @@ func AllPairsToGamePlan(c []competitors.C, ap []P, parallelGames int) GamePlan {
 		out.PairingInfo = append(out.PairingInfo,
 			PairingInfo{
 				ap[pi].StartTime.Format("15:04"),
-				strconv.Itoa(pi%parallelGames + 1),
+				strconv.Itoa(ap[pi].Court),
 				roundToInfo(ap[pi].Round),
 				// ap[pi],
 				competitors.GetCompetitor(c, ap[pi].Competitor1ID).Name(),

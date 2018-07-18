@@ -68,10 +68,10 @@ func testArgsFinals() testRenderResultArgs {
 	out.c = competitors.NewTestCompetitors(5)
 	out.tpc = tournamentPoints.NewSimpleTournamentPointCalc(1, 3, 0)
 	var p []P
-	p = append(p, P{0, 1, -4, -1, 1, time.Time{}})
-	p = append(p, P{2, 3, -4, -2, 1, time.Time{}})
-	p = append(p, P{0, 4, -2, -3, 1, time.Time{}})
-	p = append(p, P{1, 3, -2, -4, 1, time.Time{}})
+	p = append(p, P{0, 1, -4, -1, 1, time.Time{}, -1})
+	p = append(p, P{2, 3, -4, -2, 1, time.Time{}, -1})
+	p = append(p, P{0, 4, -2, -3, 1, time.Time{}, -1})
+	p = append(p, P{1, 3, -2, -4, 1, time.Time{}, -1})
 	out.p = p
 	out.r = make(map[int]*Result)
 	out.r[-1] = &Result{5, 5}

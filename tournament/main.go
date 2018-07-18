@@ -9,58 +9,57 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/julienschmidt/httprouter"
 	"github.com/rs/cors"
 
-	"github.com/autlunatic/Tournaments/tournament/detail"
-	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
-	"github.com/julienschmidt/httprouter"
-
-	"github.com/autlunatic/Tournaments/tournament/pairings"
-
 	"github.com/autlunatic/Tournaments/tournament/competitors"
+	"github.com/autlunatic/Tournaments/tournament/detail"
 	"github.com/autlunatic/Tournaments/tournament/groups"
 	"github.com/autlunatic/Tournaments/tournament/mainpage"
+	"github.com/autlunatic/Tournaments/tournament/pairings"
 	"github.com/autlunatic/Tournaments/tournament/tournament"
+	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
 )
 
 var t tournament.T
 
 func main() {
+
 	apimux := httprouter.New()
-	apimux.GET("/", gamePlanAPI)
-	apimux.GET("/gamePlan", gamePlanAPI)
-	apimux.GET("/results", resultsAPI)
-	apimux.GET("/competitors", competitorsAPI)
-	apimux.POST("/saveResults", resultsInputAPI)
-	apimux.POST("/saveCompetitors", saveCompetitorsAPI)
-	apimux.POST("/adminFunction", adminFunctionAPI)
-	apimux.GET("/groups", groupsAPI)
-	apimux.GET("/getDetails", detailsAPI)
+	apimux.GET("/api/gamePlan", gamePlanAPI)
+	apimux.GET("/api/results", resultsAPI)
+	apimux.GET("/api/competitors", competitorsAPI)
+	apimux.POST("/api/saveResults", resultsInputAPI)
+	apimux.POST("/api/saveCompetitors", saveCompetitorsAPI)
+	apimux.POST("/api/saveDetails", saveDetailsAPI)
+	apimux.POST("/api/adminFunction", adminFunctionAPI)
+	apimux.GET("/api/groups", groupsAPI)
+	apimux.GET("/api/getDetails", detailsAPI)
 	handler := cors.AllowAll().Handler(apimux)
+
 	// apimux.GET("/saveResults", resultsInputAPI)
-	go func() {
-		http.ListenAndServe(":5050", handler)
-	}()
+	// go func() {
+	// 	http.ListenAndServe(":5050", handler)
+	// }()
 
-	mux := httprouter.New()
+	// mux := httprouter.New()
+	// http.Handle("/", mux)
+	// mux.GET("/", defaultHandler)
+	// mux.GET("/gameplan", gamePlanHandler)
+	// mux.GET("/groups", groupsHandler)
+	// mux.GET("/results", resultsHandler)
+	// mux.GET("/mainPage.html", mainPage)
+	// mux.GET("/inputCompetitors", inputCompetitorsHandler)
+	// mux.POST("/inputCompetitors", inputCompetitorsHandler)
+	// mux.GET("/adminPage", adminPageHandler)
+	// mux.POST("/adminPage", adminPageHandler)
+	// mux.GET("/inputResults/:id", inputResultHandler)
+	// mux.POST("/inputResults/:id", inputResultHandler)
 
-	http.Handle("/", mux)
-	mux.GET("/", defaultHandler)
-	mux.GET("/gameplan", gamePlanHandler)
-	mux.GET("/groups", groupsHandler)
-	mux.GET("/results", resultsHandler)
-	mux.GET("/mainPage.html", mainPage)
-	mux.GET("/inputCompetitors", inputCompetitorsHandler)
-	mux.POST("/inputCompetitors", inputCompetitorsHandler)
-	mux.GET("/adminPage", adminPageHandler)
-	mux.POST("/adminPage", adminPageHandler)
-	mux.GET("/inputResults/:id", inputResultHandler)
-	mux.POST("/inputResults/:id", inputResultHandler)
+	// mux.GET("/competitor/:name", competitorPageHandler)
 
-	mux.GET("/competitor/:name", competitorPageHandler)
-
-	mux.ServeFiles("/css/*filepath", http.Dir("./css/"))
-	mux.Handler("GET", "/favicon.ico", http.NotFoundHandler())
+	// mux.ServeFiles("/css/*filepath", http.Dir("./css/"))
+	// mux.Handler("GET", "/favicon.ico", http.NotFoundHandler())
 	t.Details = detail.D{
 		MinutesAvailForGroupsPhase: 90,
 		MinutesPerGame:             15,
@@ -73,13 +72,26 @@ func main() {
 	t.PointCalcer = tournamentPoints.NewSimpleTournamentPointCalc(1, 3, 0)
 
 	t.Build()
-	b, err := json.MarshalIndent(t, "  ", "  ")
-	if err == nil {
-		fmt.Println(string(b))
-	} else {
-		fmt.Println(err)
-	}
+	// b, err := json.MarshalIndent(t, "  ", "  ")
+	// if err == nil {
+	// 	 fmt.Println(string(b))
+	// } else {
+	// 	fmt.Println(err)
+	// }
+
+	// mux := http.NewServeMux()
+	// mux.Handle("/", http.FileServer(http.Dir("./dist/")))
+	// http.ListenAndServe(":8080", mux)
+	// fmt.Println("listening ... on :8080")
+	http.Handle("/", http.FileServer(http.Dir("./dist/")))
+	http.Handle("/adminPage/", http.StripPrefix("/adminPage/", http.FileServer(http.Dir("./dist/"))))
+	http.Handle("/api/", handler)
 	http.ListenAndServe(":8080", nil)
+
+}
+
+func fileServerHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	fmt.Println(req)
 
 }
 
@@ -104,7 +116,8 @@ func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params
 }
 
 func gamePlanAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	json := pairings.AllPairsJSON(t.Competitors, t.Plan, t.FinalPairings, t.Details.NumberOfParallelGames)
+	json := pairings.AllPairsJSON(t.Competitors, t.Pairings, t.FinalPairings, t.Details.NumberOfParallelGames)
+	fmt.Println(req)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, json)
 }
@@ -156,10 +169,28 @@ func adminFunctionAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 		t.Build()
 	case "deleteFinalRound":
 		t.FinalPairings = []pairings.P{}
+	case "saveToDB":
+		t.SaveToDataStore(req, w)
+	case "loadFromDB":
+		t.LoadFromDataStore(req, w)
 	}
 
 	result, _ := json.Marshal("OK")
 	io.WriteString(w, string(result))
+	fmt.Println("OK")
+}
+func saveDetailsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	var details detail.D
+	fmt.Println(t.Details)
+	_ = json.NewDecoder(req.Body).Decode(&details)
+	// json.NewEncoder(w).Encode(result)
+	fmt.Println("request", details)
+	t.SetNewDetails(details)
+
+	result, _ := json.Marshal("OK")
+	fmt.Println("details", t.Details)
+	io.WriteString(w, string(result))
+	t.Build()
 	fmt.Println("OK")
 }
 
@@ -216,8 +247,7 @@ func resultsInputAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Para
 }
 
 func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-
-	html := pairings.ToHTML("Spielplan", pairings.CalcedPlanToGamePlan(t.Competitors, t.Plan))
+	html := pairings.ToHTML("Spielplan", pairings.AllPairsToGamePlan(t.Competitors, t.Pairings, t.Details.NumberOfParallelGames))
 	if len(t.FinalPairings) > 0 {
 		html = html + pairings.ToHTML("Finalrunden", pairings.AllPairsToGamePlan(t.Competitors, t.FinalPairings, t.Details.NumberOfParallelGames))
 	}
@@ -256,6 +286,7 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 			}
 		} else if req.PostFormValue("build") != "" {
 			t.Build()
+			t.SaveToDataStore(req, w)
 		} else if req.PostFormValue("calcFinals") != "" {
 			calcFin()
 		} else if req.PostFormValue("deleteFinals") != "" {

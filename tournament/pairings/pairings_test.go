@@ -132,9 +132,9 @@ func TestCalcPairings12Competitors(t *testing.T) {
 
 func getPairingsForTestMaxRound() []P {
 	p := make([]P, 3)
-	p[0] = P{1, 2, 3, 1, 1, time.Time{}}
-	p[1] = P{3, 4, 6, 1, 1, time.Time{}}
-	p[2] = P{1, 2, 5, 1, 1, time.Time{}}
+	p[0] = P{1, 2, 3, 1, 1, time.Time{}, -1}
+	p[1] = P{3, 4, 6, 1, 1, time.Time{}, -1}
+	p[2] = P{1, 2, 5, 1, 1, time.Time{}, -1}
 	return p
 }
 func TestGetMaxRoundOfPairings(t *testing.T) {
@@ -212,9 +212,9 @@ func TestPairing_InPairings(t *testing.T) {
 				GroupID:       tt.fields.GroupID,
 			}
 			ps := make([]P, 3)
-			ps[0] = P{1, 2, 1, 1, 1, time.Time{}}
-			ps[1] = P{3, 4, 1, 2, 1, time.Time{}}
-			ps[2] = P{5, 6, 1, 3, 1, time.Time{}}
+			ps[0] = P{1, 2, 1, 1, 1, time.Time{}, -1}
+			ps[1] = P{3, 4, 1, 2, 1, time.Time{}, -1}
+			ps[2] = P{5, 6, 1, 3, 1, time.Time{}, -1}
 			if got := p.InPairings(ps); got != tt.want {
 				t.Errorf("Pairing.InPairings() = %v, want %v", got, tt.want)
 			}
@@ -233,12 +233,12 @@ func TestOfCompetitorID(t *testing.T) {
 		want []P
 	}{
 		{"simple with 3 pairings",
-			args{ps: []P{{1, 2, 1, 1, 1, time.Time{}},
-				{1, 3, 2, 2, 1, time.Time{}},
-				{2, 3, 3, 3, 1, time.Time{}},
+			args{ps: []P{{1, 2, 1, 1, 1, time.Time{}, -1},
+				{1, 3, 2, 2, 1, time.Time{}, -1},
+				{2, 3, 3, 3, 1, time.Time{}, -1},
 			}, compID: 1},
-			[]P{{1, 2, 1, 1, 1, time.Time{}},
-				{1, 3, 2, 2, 1, time.Time{}}}},
+			[]P{{1, 2, 1, 1, 1, time.Time{}, -1},
+				{1, 3, 2, 2, 1, time.Time{}, -1}}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -250,9 +250,9 @@ func TestOfCompetitorID(t *testing.T) {
 }
 func getPairingsWithTime() []P {
 	p := make([]P, 3)
-	p[0] = P{1, 2, 3, 1, 1, time.Date(2018, 3, 3, 14, 15, 0, 0, time.UTC)}
-	p[1] = P{3, 4, 6, 1, 1, time.Date(2018, 3, 3, 14, 15, 0, 0, time.UTC)}
-	p[2] = P{1, 2, 5, 1, 1, time.Date(2018, 3, 3, 14, 16, 0, 0, time.UTC)}
+	p[0] = P{1, 2, 3, 1, 1, time.Date(2018, 3, 3, 14, 15, 0, 0, time.UTC), -1}
+	p[1] = P{3, 4, 6, 1, 1, time.Date(2018, 3, 3, 14, 15, 0, 0, time.UTC), -1}
+	p[2] = P{1, 2, 5, 1, 1, time.Date(2018, 3, 3, 14, 16, 0, 0, time.UTC), -1}
 	return p
 }
 func TestLatestGameStart(t *testing.T) {

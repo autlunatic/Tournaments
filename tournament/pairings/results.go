@@ -17,3 +17,15 @@ func (r *Result) SetPoints(p1 int, p2 int) {
 
 // Results is a map of Result the key value is the pairing ID
 type Results map[int]*Result
+
+// AddResult adds the result to the map and returns the new map
+func AddResult(r Results, p1 int, p2 int, pairID int) Results {
+	pr, ok := r[pairID]
+	if ok {
+		pr.SetPoints(p1, p2)
+	} else {
+		pr = &Result{GamePoints1: p1, GamePoints2: p2}
+		r[pairID] = pr
+	}
+	return r
+}

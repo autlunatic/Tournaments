@@ -16,22 +16,22 @@ func detailsWithTime() detail.D {
 }
 
 func wantedPairs() []P {
-	return []P{{1, 2, -8, -1, 0, time.Date(2018, 1, 20, 14, 20, 0, 0, time.UTC)},
-		{3, 4, -8, -2, 0, time.Date(2018, 1, 20, 14, 20, 0, 0, time.UTC)},
-		{5, 6, -8, -3, 0, time.Date(2018, 1, 20, 14, 20, 0, 0, time.UTC)},
-		{7, 8, -8, -4, 0, time.Date(2018, 1, 20, 14, 25, 0, 0, time.UTC)},
-		{9, 10, -8, -5, 0, time.Date(2018, 1, 20, 14, 25, 0, 0, time.UTC)},
-		{11, 12, -8, -6, 0, time.Date(2018, 1, 20, 14, 25, 0, 0, time.UTC)},
-		{13, 14, -8, -7, 0, time.Date(2018, 1, 20, 14, 30, 0, 0, time.UTC)},
-		{15, 16, -8, -8, 0, time.Date(2018, 1, 20, 14, 30, 0, 0, time.UTC)},
+	return []P{{1, 2, -8, -1, 0, time.Date(2018, 1, 20, 14, 20, 0, 0, time.UTC), -1},
+		{3, 4, -8, -2, 0, time.Date(2018, 1, 20, 14, 20, 0, 0, time.UTC), -1},
+		{5, 6, -8, -3, 0, time.Date(2018, 1, 20, 14, 20, 0, 0, time.UTC), -1},
+		{7, 8, -8, -4, 0, time.Date(2018, 1, 20, 14, 25, 0, 0, time.UTC), -1},
+		{9, 10, -8, -5, 0, time.Date(2018, 1, 20, 14, 25, 0, 0, time.UTC), -1},
+		{11, 12, -8, -6, 0, time.Date(2018, 1, 20, 14, 25, 0, 0, time.UTC), -1},
+		{13, 14, -8, -7, 0, time.Date(2018, 1, 20, 14, 30, 0, 0, time.UTC), -1},
+		{15, 16, -8, -8, 0, time.Date(2018, 1, 20, 14, 30, 0, 0, time.UTC), -1},
 
-		{1, 4, -4, -9, 0, time.Date(2018, 1, 20, 14, 35, 0, 0, time.UTC)},
-		{6, 7, -4, -10, 0, time.Date(2018, 1, 20, 14, 35, 0, 0, time.UTC)},
-		{10, 11, -4, -11, 0, time.Date(2018, 1, 20, 14, 35, 0, 0, time.UTC)},
-		{13, 16, -4, -12, 0, time.Date(2018, 1, 20, 14, 40, 0, 0, time.UTC)},
+		{1, 4, -4, -9, 0, time.Date(2018, 1, 20, 14, 35, 0, 0, time.UTC), -1},
+		{6, 7, -4, -10, 0, time.Date(2018, 1, 20, 14, 35, 0, 0, time.UTC), -1},
+		{10, 11, -4, -11, 0, time.Date(2018, 1, 20, 14, 35, 0, 0, time.UTC), -1},
+		{13, 16, -4, -12, 0, time.Date(2018, 1, 20, 14, 40, 0, 0, time.UTC), -1},
 
-		{1, 6, -2, -13, 0, time.Date(2018, 1, 20, 14, 45, 0, 0, time.UTC)},
-		{10, 16, -2, -14, 0, time.Date(2018, 1, 20, 14, 45, 0, 0, time.UTC)}}
+		{1, 6, -2, -13, 0, time.Date(2018, 1, 20, 14, 45, 0, 0, time.UTC), -1},
+		{10, 16, -2, -14, 0, time.Date(2018, 1, 20, 14, 45, 0, 0, time.UTC), -1}}
 }
 func Test_calcTimesForFinalPairings(t *testing.T) {
 	type args struct {

@@ -7,12 +7,13 @@ import (
 )
 
 // AllPairsJSON generates the json for the complete Gameplan including all Finals
-func AllPairsJSON(c []competitors.C, plan [][]P, finals []P, numberOfParallelGames int) string {
+func AllPairsJSON(c []competitors.C, ap []P, finals []P, numberOfParallelGames int) string {
 	var pairSections []PairingInfoSection
 	fin := AllPairsToGamePlan(c, finals, numberOfParallelGames)
-	group := CalcedPlanToGamePlan(c, plan)
-	pairSections = append(pairSections, PairingInfoSection{"group", group.PairingInfo})
-	pairSections = append(pairSections, PairingInfoSection{"finals", fin.PairingInfo})
+	// group := CalcedPlanToGamePlan(c, plan)
+	group := AllPairsToGamePlan(c, ap, numberOfParallelGames)
+	pairSections = append(pairSections, PairingInfoSection{"Gruppenphase", group.PairingInfo})
+	pairSections = append(pairSections, PairingInfoSection{"Finalrunden", fin.PairingInfo})
 	out, err := json.Marshal(pairSections)
 	if err != nil {
 		return ""

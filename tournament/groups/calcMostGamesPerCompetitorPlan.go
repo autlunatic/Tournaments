@@ -7,7 +7,7 @@ import (
 )
 
 // CalcMostGamesPerCompetitorPlan combines all of the functions and returns the complete info for the tournament Groupphase
-func CalcMostGamesPerCompetitorPlan(cg []competitors.C, details detail.D) ([][]pairings.P, []G, []pairings.P) {
+func CalcMostGamesPerCompetitorPlan(cg []competitors.C, details detail.D) ([]G, []pairings.P) {
 	var plan [][]pairings.P
 	var allPairs []pairings.P
 	var groups []G
@@ -20,8 +20,8 @@ func CalcMostGamesPerCompetitorPlan(cg []competitors.C, details detail.D) ([][]p
 				break
 			}
 		} else {
-			return nil, nil, nil
+			return nil, nil
 		}
 	}
-	return plan, groups, allPairs
+	return groups, allPairs
 }

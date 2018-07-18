@@ -19,10 +19,10 @@ func getPairingsForQuarterFinals(aIdsFrom16 bool) calcNextFinalRoundArgs {
 		offset = 8
 	}
 	outP := []P{
-		{1, 2, -4, -1 - offset, 0, time.Time{}},
-		{3, 4, -4, -2 - offset, 0, time.Time{}},
-		{5, 6, -4, -3 - offset, 0, time.Time{}},
-		{7, 8, -4, -4 - offset, 0, time.Time{}},
+		{1, 2, -4, -1 - offset, 0, time.Time{}, -1},
+		{3, 4, -4, -2 - offset, 0, time.Time{}, -1},
+		{5, 6, -4, -3 - offset, 0, time.Time{}, -1},
+		{7, 8, -4, -4 - offset, 0, time.Time{}, -1},
 	}
 	outR := Results{
 		-1 - offset: &Result{3, 1},
@@ -35,10 +35,10 @@ func getPairingsForQuarterFinals(aIdsFrom16 bool) calcNextFinalRoundArgs {
 
 func quarterToSemi() calcNextFinalRoundArgs {
 	outP := []P{
-		{1, 2, -4, -1, 0, time.Time{}},
-		{3, 4, -4, -2, 0, time.Time{}},
-		{5, 6, -4, -3, 0, time.Time{}},
-		{7, 8, -4, -4, 0, time.Time{}},
+		{1, 2, -4, -1, 0, time.Time{}, -1},
+		{3, 4, -4, -2, 0, time.Time{}, -1},
+		{5, 6, -4, -3, 0, time.Time{}, -1},
+		{7, 8, -4, -4, 0, time.Time{}, -1},
 	}
 	outR := Results{
 		-1: &Result{3, 1},
@@ -49,8 +49,8 @@ func quarterToSemi() calcNextFinalRoundArgs {
 
 func getPairingsForSemiFinals() calcNextFinalRoundArgs {
 	outP := []P{
-		{1, 2, -2, -5, 0, time.Time{}},
-		{3, 4, -2, -6, 0, time.Time{}},
+		{1, 2, -2, -5, 0, time.Time{}, -1},
+		{3, 4, -2, -6, 0, time.Time{}, -1},
 	}
 	outR := Results{
 		-5: &Result{3, 1},
@@ -61,10 +61,10 @@ func getPairingsForSemiFinals() calcNextFinalRoundArgs {
 }
 func quarterToSemiOnlyOneResult() calcNextFinalRoundArgs {
 	outP := []P{
-		{1, 2, -4, -1, 0, time.Time{}},
-		{3, 4, -4, -2, 0, time.Time{}},
-		{5, 6, -4, -3, 0, time.Time{}},
-		{7, 8, -4, -4, 0, time.Time{}},
+		{1, 2, -4, -1, 0, time.Time{}, -1},
+		{3, 4, -4, -2, 0, time.Time{}, -1},
+		{5, 6, -4, -3, 0, time.Time{}, -1},
+		{7, 8, -4, -4, 0, time.Time{}, -1},
 	}
 	outR := Results{
 		-1: &Result{3, 1},
@@ -73,11 +73,11 @@ func quarterToSemiOnlyOneResult() calcNextFinalRoundArgs {
 }
 func getPairingsWithInvalidResults() calcNextFinalRoundArgs {
 	outP := []P{
-		{1, 2, -4, -1, 0, time.Time{}},
-		{3, 4, -4, -2, 0, time.Time{}},
-		{5, 6, -4, -3, 0, time.Time{}},
-		{7, 8, -4, -4, 0, time.Time{}},
-		{1, 3, -2, -5, 0, time.Time{}},
+		{1, 2, -4, -1, 0, time.Time{}, -1},
+		{3, 4, -4, -2, 0, time.Time{}, -1},
+		{5, 6, -4, -3, 0, time.Time{}, -1},
+		{7, 8, -4, -4, 0, time.Time{}, -1},
+		{1, 3, -2, -5, 0, time.Time{}, -1},
 	}
 	outR := Results{
 		-5: &Result{3, 1},
@@ -86,7 +86,7 @@ func getPairingsWithInvalidResults() calcNextFinalRoundArgs {
 }
 func getFinalWithResult() calcNextFinalRoundArgs {
 	outP := []P{
-		{1, 3, -1, -3, 0, time.Time{}},
+		{1, 3, -1, -3, 0, time.Time{}, -1},
 	}
 	outR := Results{
 		-3: &Result{3, 1},
@@ -100,12 +100,12 @@ func TestCalcNextFinalRound(t *testing.T) {
 		args calcNextFinalRoundArgs
 		want []P
 	}{
-		{"quarter to semi", getPairingsForQuarterFinals(false), []P{{1, 4, -2, -5, 0, time.Time{}}, {5, 8, -2, -6, 0, time.Time{}}}},
-		{"quarter to semi, but the ids of quarter are coming from a round of 16", getPairingsForQuarterFinals(true), []P{{1, 4, -2, -13, 0, time.Time{}}, {5, 8, -2, -14, 0, time.Time{}}}},
-		{"semi to finals", getPairingsForSemiFinals(), []P{{1, 4, -1, -7, 0, time.Time{}}}},
+		{"quarter to semi", getPairingsForQuarterFinals(false), []P{{1, 4, -2, -5, 0, time.Time{}, -1}, {5, 8, -2, -6, 0, time.Time{}, -1}}},
+		{"quarter to semi, but the ids of quarter are coming from a round of 16", getPairingsForQuarterFinals(true), []P{{1, 4, -2, -13, 0, time.Time{}, -1}, {5, 8, -2, -14, 0, time.Time{}, -1}}},
+		{"semi to finals", getPairingsForSemiFinals(), []P{{1, 4, -1, -7, 0, time.Time{}, -1}}},
 		{"final should always return empty", getFinalWithResult(), []P{}},
-		{"quarter to semi 1 result", quarterToSemiOnlyOneResult(), []P{{1, -1, -2, -5, 0, time.Time{}}}},
-		{"quarter to semi 2 results", quarterToSemi(), []P{{1, 4, -2, -5, 0, time.Time{}}}},
+		{"quarter to semi 1 result", quarterToSemiOnlyOneResult(), []P{{1, -1, -2, -5, 0, time.Time{}, -1}}},
+		{"quarter to semi 2 results", quarterToSemi(), []P{{1, 4, -2, -5, 0, time.Time{}, -1}}},
 		{"quarter to semi invalid results", getPairingsWithInvalidResults(), []P{}},
 	}
 	for _, tt := range tests {
@@ -119,36 +119,36 @@ func TestCalcNextFinalRound(t *testing.T) {
 
 func argsForSemi() []P {
 	outP := []P{
-		{1, 2, -4, -1, 0, time.Time{}},
-		{3, 4, -4, -2, 0, time.Time{}},
-		{5, 6, -4, -3, 0, time.Time{}},
-		{7, 8, -4, -4, 0, time.Time{}},
-		{1, 3, -2, -5, 0, time.Time{}},
-		{5, 7, -2, -6, 0, time.Time{}},
+		{1, 2, -4, -1, 0, time.Time{}, -1},
+		{3, 4, -4, -2, 0, time.Time{}, -1},
+		{5, 6, -4, -3, 0, time.Time{}, -1},
+		{7, 8, -4, -4, 0, time.Time{}, -1},
+		{1, 3, -2, -5, 0, time.Time{}, -1},
+		{5, 7, -2, -6, 0, time.Time{}, -1},
 	}
 	return outP
 }
 func wantForSemi() []P {
 	outP := []P{
-		{1, 3, -2, -5, 0, time.Time{}},
-		{5, 7, -2, -6, 0, time.Time{}},
+		{1, 3, -2, -5, 0, time.Time{}, -1},
+		{5, 7, -2, -6, 0, time.Time{}, -1},
 	}
 	return outP
 }
 
 func argsForIncompleteSemi() []P {
 	outP := []P{
-		{1, 2, -4, -1, 0, time.Time{}},
-		{5, 6, -4, -3, 0, time.Time{}},
-		{7, 8, -4, -4, 0, time.Time{}},
-		{5, 7, -2, -6, 0, time.Time{}},
-		{3, 4, -4, -2, 0, time.Time{}},
+		{1, 2, -4, -1, 0, time.Time{}, -1},
+		{5, 6, -4, -3, 0, time.Time{}, -1},
+		{7, 8, -4, -4, 0, time.Time{}, -1},
+		{5, 7, -2, -6, 0, time.Time{}, -1},
+		{3, 4, -4, -2, 0, time.Time{}, -1},
 	}
 	return outP
 }
 func wantForIncompleteSemi() []P {
 	outP := []P{
-		{5, 7, -2, -6, 0, time.Time{}},
+		{5, 7, -2, -6, 0, time.Time{}, -1},
 	}
 	return outP
 }
@@ -173,10 +173,10 @@ func wantForIncompleteSemi() []P {
 
 func wantForSemiFirst() []P {
 	outP := []P{
-		{1, 2, -4, -1, 0, time.Time{}},
-		{3, 4, -4, -2, 0, time.Time{}},
-		{5, 6, -4, -3, 0, time.Time{}},
-		{7, 8, -4, -4, 0, time.Time{}},
+		{1, 2, -4, -1, 0, time.Time{}, -1},
+		{3, 4, -4, -2, 0, time.Time{}, -1},
+		{5, 6, -4, -3, 0, time.Time{}, -1},
+		{7, 8, -4, -4, 0, time.Time{}, -1},
 	}
 	return outP
 
@@ -200,13 +200,13 @@ func Test_filterOutFirstFinalRound(t *testing.T) {
 }
 func getArgsForRecalc(resultForPID0 bool) calcNextFinalRoundArgs {
 	outP := []P{
-		{1, 2, -4, -1, 0, time.Time{}},
-		{3, 4, -4, -2, 0, time.Time{}},
-		{5, 6, -4, -3, 0, time.Time{}},
-		{7, 8, -4, -4, 0, time.Time{}},
+		{1, 2, -4, -1, 0, time.Time{}, -1},
+		{3, 4, -4, -2, 0, time.Time{}, -1},
+		{5, 6, -4, -3, 0, time.Time{}, -1},
+		{7, 8, -4, -4, 0, time.Time{}, -1},
 	}
 	if !resultForPID0 {
-		outP = append(outP, P{1, 3, -2, -5, 0, time.Time{}})
+		outP = append(outP, P{1, 3, -2, -5, 0, time.Time{}, -1})
 	}
 	outR := Results{
 		-1: &Result{3, 1},
@@ -223,36 +223,36 @@ func getArgsForRecalc(resultForPID0 bool) calcNextFinalRoundArgs {
 }
 func wantedRecalc(resultForPID0 bool) []P {
 	out := []P{
-		{1, 2, -4, -1, 0, time.Time{}},
-		{3, 4, -4, -2, 0, time.Time{}},
-		{5, 6, -4, -3, 0, time.Time{}},
-		{7, 8, -4, -4, 0, time.Time{}},
-		{1, 3, -2, -5, 0, time.Time{}},
-		{5, 7, -2, -6, 0, time.Time{}},
+		{1, 2, -4, -1, 0, time.Time{}, -1},
+		{3, 4, -4, -2, 0, time.Time{}, -1},
+		{5, 6, -4, -3, 0, time.Time{}, -1},
+		{7, 8, -4, -4, 0, time.Time{}, -1},
+		{1, 3, -2, -5, 0, time.Time{}, -1},
+		{5, 7, -2, -6, 0, time.Time{}, -1},
 	}
 	if !resultForPID0 {
-		out = append(out, P{1, -1, -1, -7, 0, time.Time{}})
+		out = append(out, P{1, -1, -1, -7, 0, time.Time{}, -1})
 	}
 	return out
 }
 func argsFor8ToFin() calcNextFinalRoundArgs {
 	outP := []P{
-		{1, 2, -8, -1, 0, time.Time{}},
-		{3, 4, -8, -2, 0, time.Time{}},
-		{5, 6, -8, -3, 0, time.Time{}},
-		{7, 8, -8, -4, 0, time.Time{}},
-		{9, 10, -8, -5, 0, time.Time{}},
-		{11, 12, -8, -6, 0, time.Time{}},
-		{13, 14, -8, -7, 0, time.Time{}},
-		{15, 16, -8, -8, 0, time.Time{}},
+		{1, 2, -8, -1, 0, time.Time{}, -1},
+		{3, 4, -8, -2, 0, time.Time{}, -1},
+		{5, 6, -8, -3, 0, time.Time{}, -1},
+		{7, 8, -8, -4, 0, time.Time{}, -1},
+		{9, 10, -8, -5, 0, time.Time{}, -1},
+		{11, 12, -8, -6, 0, time.Time{}, -1},
+		{13, 14, -8, -7, 0, time.Time{}, -1},
+		{15, 16, -8, -8, 0, time.Time{}, -1},
 
-		{1, 4, -4, -9, 0, time.Time{}},
-		{6, 7, -4, -10, 0, time.Time{}},
-		{10, 11, -4, -11, 0, time.Time{}},
-		{13, 16, -4, -12, 0, time.Time{}},
+		{1, 4, -4, -9, 0, time.Time{}, -1},
+		{6, 7, -4, -10, 0, time.Time{}, -1},
+		{10, 11, -4, -11, 0, time.Time{}, -1},
+		{13, 16, -4, -12, 0, time.Time{}, -1},
 
-		{1, 6, -2, -13, 0, time.Time{}},
-		{10, 16, -2, -14, 0, time.Time{}},
+		{1, 6, -2, -13, 0, time.Time{}, -1},
+		{10, 16, -2, -14, 0, time.Time{}, -1},
 	}
 	outR := Results{
 		-1:  &Result{3, 1},
@@ -275,7 +275,7 @@ func argsFor8ToFin() calcNextFinalRoundArgs {
 
 func wantFor8ToFin() []P {
 	out := argsFor8ToFin().pairs
-	out = append(out, P{1, 10, -1, -15, 0, time.Time{}})
+	out = append(out, P{1, 10, -1, -15, 0, time.Time{}, -1})
 	return out
 }
 

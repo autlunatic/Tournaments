@@ -46,6 +46,7 @@ func CalcPlan(allCompetitors []competitors.C, Groups []G, details detail.D) ([][
 			round = []pairings.P{}
 		}
 		allPairs[pi].StartTime = details.TournamentStartTime.Add(time.Minute * time.Duration(details.MinutesPerGame*len(result)))
+		allPairs[pi].Court = len(round) + 1
 		round = append(round, allPairs[pi])
 	}
 	if len(round) >= 1 {
