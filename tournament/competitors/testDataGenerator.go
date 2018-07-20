@@ -28,6 +28,7 @@ func NewTestCompetitors(count int) []C {
 		c := New(compName, i-1)
 		competitors[i-1] = c
 		c.AddPoints(i)
+		c.SetDrawNumber(int64(i))
 	}
 	return competitors
 }

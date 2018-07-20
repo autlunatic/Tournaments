@@ -23,9 +23,10 @@ type GroupInfo struct {
 // GToGroupInfo calculates the GroupInfo for the HTML
 func GToGroupInfo(g G) GroupInfo {
 	var out GroupInfo
-	out.ID = g.id
+	out.ID = g.ID
 	out.CInfo = make([]CompetitorInfos, len(g.Competitors))
-	for i, ci := range g.Competitors {
+	sortedC := competitors.SortedByPlacementAndPoints(g.Competitors)
+	for i, ci := range sortedC {
 		out.CInfo[i].Name = ci.Name()
 		out.CInfo[i].GamePoints = ci.GetGamePoints()
 		out.CInfo[i].TeamPoints = ci.GetPoints()

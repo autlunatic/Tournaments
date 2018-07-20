@@ -13,7 +13,7 @@ import (
 
 func TestCalcTournamentPlan(t *testing.T) {
 	c := competitors.NewTestCompetitors(4)
-	gs := []G{{id: 1, Competitors: c}}
+	gs := []G{{ID: 1, Competitors: c}}
 	plan, _ := CalcPlan(c, gs, detail.D{NumberOfParallelGames: 1})
 	if competitors.GetCompetitor(c, plan[0][0].Competitor1ID).Name() != "Benni" {
 		t.Error("competitor 0 0 should be named Benni but was " + competitors.GetCompetitor(c, plan[0][0].Competitor1ID).Name())
@@ -24,8 +24,8 @@ func TestCalcTournamentPlan(t *testing.T) {
 func TestCalcTournamentPlan2Groups(t *testing.T) {
 	c := competitors.NewTestCompetitors(8)
 	groups := []G{
-		{id: 1, Competitors: c[0:4]},
-		{id: 2, Competitors: c[4:8]}}
+		{ID: 1, Competitors: c[0:4]},
+		{ID: 2, Competitors: c[4:8]}}
 	plan, _ := CalcPlan(c, groups, detail.D{NumberOfParallelGames: 2})
 	if competitors.GetCompetitor(c, plan[0][0].Competitor1ID).Name() != "Benni" {
 		t.Error("competitor 0 0 should be named Benni but was " + competitors.GetCompetitor(c, plan[0][0].Competitor1ID).Name())
@@ -42,10 +42,10 @@ func TestCalcTournamentPlan2Groups(t *testing.T) {
 func TestCalcTournamentPlan4Groups11(t *testing.T) {
 	c := competitors.NewTestCompetitors(11)
 	groups := []G{
-		{id: 1, Competitors: c[0:3]},
-		{id: 2, Competitors: c[3:6]},
-		{id: 3, Competitors: c[6:9]},
-		{id: 4, Competitors: c[9:11]},
+		{ID: 1, Competitors: c[0:3]},
+		{ID: 2, Competitors: c[3:6]},
+		{ID: 3, Competitors: c[6:9]},
+		{ID: 4, Competitors: c[9:11]},
 	}
 	plan, _ := CalcPlan(c, groups, detail.D{NumberOfParallelGames: 2})
 	if competitors.GetCompetitor(c, plan[0][0].Competitor1ID).Name() != "Benni" {
@@ -60,8 +60,8 @@ func TestCalcTournamentPlan4Groups11(t *testing.T) {
 func TestCalcTournamentPlan2Groups6_oneCouldNotPlayToTimesInOneRow(t *testing.T) {
 	c := competitors.NewTestCompetitors(6)
 	groups := []G{
-		{id: 1, Competitors: c[0:3]},
-		{id: 2, Competitors: c[3:6]},
+		{ID: 1, Competitors: c[0:3]},
+		{ID: 2, Competitors: c[3:6]},
 	}
 	plan, _ := CalcPlan(c, groups, detail.D{NumberOfParallelGames: 10})
 	if competitors.GetCompetitor(c, plan[0][0].Competitor1ID).Name() != "Benni" {
@@ -76,8 +76,8 @@ func TestCalcTournamentPlan2Groups6_oneCouldNotPlayToTimesInOneRow(t *testing.T)
 func TestCalcTournamentLastRoundOfGroupShouldNotBeSplittedOverFieldRounds(t *testing.T) {
 	c := competitors.NewTestCompetitors(7)
 	groups := []G{
-		{id: 1, Competitors: c[0:3]},
-		{id: 2, Competitors: c[3:7]},
+		{ID: 1, Competitors: c[0:3]},
+		{ID: 2, Competitors: c[3:7]},
 	}
 	plan, _ := CalcPlan(c, groups, detail.D{NumberOfParallelGames: 2})
 	if ok, msg := checkNoCompetitorPlaysTwiceInARound(plan); !ok {

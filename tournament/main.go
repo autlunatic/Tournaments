@@ -247,9 +247,9 @@ func resultsInputAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Para
 }
 
 func gamePlanHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	html := pairings.ToHTML("Spielplan", pairings.AllPairsToGamePlan(t.Competitors, t.Pairings, t.Details.NumberOfParallelGames))
+	html := pairings.ToHTML("Spielplan", pairings.AllPairsToGamePlan(t.Competitors, t.Pairings))
 	if len(t.FinalPairings) > 0 {
-		html = html + pairings.ToHTML("Finalrunden", pairings.AllPairsToGamePlan(t.Competitors, t.FinalPairings, t.Details.NumberOfParallelGames))
+		html = html + pairings.ToHTML("Finalrunden", pairings.AllPairsToGamePlan(t.Competitors, t.FinalPairings))
 	}
 	writeHeaderAndHTML(w, html)
 }
@@ -300,7 +300,7 @@ func adminPageHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 func calcFin() {
 	var err error
 	if len(t.FinalPairings) == 0 {
-		t.FinalPairings, err = groups.CalcPairingsForFinals(t.Groups, t.Details.FinalistCount)
+		t.FinalPairings, err = groups.CalcPairingsForFinals(t.Groups, t.Details.FinalistCount, t.Details.NumberOfParallelGames)
 		t.SetFinalTimes()
 		if err != nil {
 			t.FinalPairings = []pairings.P{}

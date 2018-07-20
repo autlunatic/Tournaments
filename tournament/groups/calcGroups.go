@@ -21,15 +21,16 @@ func CalcGroups(c []competitors.C, groupsCount int) (groups []G, err error) {
 
 	groups = make([]G, groupsCount)
 	for i := range groups {
-		groups[i].id = i + 1
+		groups[i].ID = i + 1
 	}
 
 	groupID := 0
 
 	competitorsCountThisGroup := 0
-	for i := 0; i < len(c); i++ {
+	mc := competitors.SortedByDraw(c)
+	for i := 0; i < len(mc); i++ {
 		competitorsCountThisGroup++
-		groups[groupID].Competitors = append(groups[groupID].Competitors, c[i])
+		groups[groupID].Competitors = append(groups[groupID].Competitors, mc[i])
 
 		if (additionalCompetitors > 0 && competitorsCountThisGroup >= competitorsPerGroup+1) ||
 			(additionalCompetitors <= 0 && competitorsCountThisGroup >= competitorsPerGroup) {

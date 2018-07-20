@@ -25,6 +25,7 @@ type ResultInfo struct {
 	Done        bool
 }
 
+// ResultInfoJSON represents the results displayed by angular
 type ResultInfoJSON struct {
 	Description string
 	ResultInfos []ResultInfo

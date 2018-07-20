@@ -25,7 +25,7 @@ type CompetitorPageInfoHTML struct {
 
 func compPageInfoToHTML(cs []competitors.C, cpi CompetitorPageInfo, parallelGames int) CompetitorPageInfoHTML {
 	var out CompetitorPageInfoHTML
-	gp := pairings.AllPairsToGamePlan(cs, cpi.pairs, parallelGames)
+	gp := pairings.AllPairsToGamePlan(cs, cpi.pairs)
 	out.Pairs = template.HTML(pairings.ToHTML("Spielplan", gp))
 	out.Group = template.HTML(groups.RenderOneGroup(cpi.g))
 	out.Result = template.HTML(pairings.RenderResultInfos(cpi.ri))

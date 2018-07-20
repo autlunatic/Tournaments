@@ -5,11 +5,11 @@ import (
 )
 
 // RecalcFinals calculates all the final rounds it stops when no results are available
-func RecalcFinals(pairs []P, res Results, calcer tournamentPoints.TournamentPointCalcer) []P {
+func RecalcFinals(pairs []P, res Results, calcer tournamentPoints.TournamentPointCalcer, numberOfParallelGames int) []P {
 	calcedPairs := filterOutFirstFinalRound(pairs)
 	out := calcedPairs
 	for {
-		calcedPairs = CalcNextFinalRound(calcedPairs, res, calcer)
+		calcedPairs = CalcNextFinalRound(calcedPairs, res, calcer, numberOfParallelGames)
 		if len(calcedPairs) == 0 {
 			return doSortByIDDesc(out)
 		}
@@ -17,10 +17,17 @@ func RecalcFinals(pairs []P, res Results, calcer tournamentPoints.TournamentPoin
 	}
 }
 
+func myAbs(value int) int {
+	if value < 0 {
+		return -value
+	}
+	return value
+}
+
 // CalcNextFinalRound creates a slice of pairings for the next final round
 // e.g. from quarterfinals to semifinals
 // it also can be used if no all Results are given to calculate the plan before the finals are over
-func CalcNextFinalRound(pairs []P, res Results, calcer tournamentPoints.TournamentPointCalcer) []P {
+func CalcNextFinalRound(pairs []P, res Results, calcer tournamentPoints.TournamentPointCalcer, numberOfParallelGames int) []P {
 	if moreThanOneFinalRoundOrFinal(pairs) {
 		return []P{}
 	}
@@ -39,6 +46,7 @@ func CalcNextFinalRound(pairs []P, res Results, calcer tournamentPoints.Tourname
 			oid := (-p.ID + maxPairID) / 2
 			mOut[oid].ID = minPairID - (oid) - 1
 			mOut[oid].Round = -len(pairs) / 2
+			mOut[oid].Court = myAbs((mOut[oid].ID+1)%numberOfParallelGames) + 1
 			r1, r2 := calcer.Calc(r.GamePoints1, r.GamePoints2)
 			calcAndSetCompetitorIds(&mOut[oid], r1, r2, p)
 		}

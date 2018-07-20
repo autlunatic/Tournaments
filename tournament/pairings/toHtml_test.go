@@ -12,19 +12,24 @@ func getTestCompetitors() []competitors.C {
 	return competitors.NewTestCompetitors(4)
 }
 
+func getLoc() *time.Location {
+	loc, _ := time.LoadLocation("Europe/Vienna")
+	return loc
+}
+
 func getCalcedPlanFor4Competitors() [][]P {
 	var out [][]P
 	out = append(out, []P{
-		{0, 1, 1, 1, 1, time.Date(2018, 1, 20, 14, 0, 0, 0, time.UTC), -1},
-		{2, 3, 1, 2, 1, time.Date(2018, 1, 20, 14, 0, 0, 0, time.UTC), -1},
+		{0, 1, 1, 1, 1, time.Date(2018, 1, 20, 14, 0, 0, 0, getLoc()), -1},
+		{2, 3, 1, 2, 1, time.Date(2018, 1, 20, 14, 0, 0, 0, getLoc()), -1},
 	})
 	out = append(out, []P{
-		{0, 2, 2, 3, 2, time.Date(2018, 1, 20, 14, 15, 0, 0, time.UTC), -1},
-		{1, 3, 2, 4, 2, time.Date(2018, 1, 20, 14, 15, 0, 0, time.UTC), -1},
+		{0, 2, 2, 3, 2, time.Date(2018, 1, 20, 14, 15, 0, 0, getLoc()), -1},
+		{1, 3, 2, 4, 2, time.Date(2018, 1, 20, 14, 15, 0, 0, getLoc()), -1},
 	})
 	out = append(out, []P{
-		{0, 3, 3, 5, 3, time.Date(2018, 1, 20, 14, 30, 0, 0, time.UTC), -1},
-		{1, 2, 3, 6, 3, time.Date(2018, 1, 20, 14, 30, 0, 0, time.UTC), -1},
+		{0, 3, 3, 5, 3, time.Date(2018, 1, 20, 14, 30, 0, 0, getLoc()), -1},
+		{1, 2, 3, 6, 3, time.Date(2018, 1, 20, 14, 30, 0, 0, getLoc()), -1},
 	})
 	return out
 }
@@ -63,10 +68,10 @@ func Test_calcedPlanToGamePlan(t *testing.T) {
 
 func pairingsForAllPair() []P {
 	outP := []P{
-		{1, 2, -8, -1, 0, time.Date(2018, 1, 20, 14, 0, 0, 0, time.UTC), -1},
-		{3, 4, -8, -2, 0, time.Date(2018, 1, 20, 14, 0, 0, 0, time.UTC), -1},
-		{5, 6, -8, -3, 0, time.Date(2018, 1, 20, 14, 15, 0, 0, time.UTC), -1},
-		{7, 8, -8, -4, 0, time.Date(2018, 1, 20, 14, 15, 0, 0, time.UTC), -1},
+		{1, 2, -8, -1, 0, time.Date(2018, 1, 20, 14, 0, 0, 0, getLoc()), 1},
+		{3, 4, -8, -2, 0, time.Date(2018, 1, 20, 14, 0, 0, 0, getLoc()), 2},
+		{5, 6, -8, -3, 0, time.Date(2018, 1, 20, 14, 15, 0, 0, getLoc()), 1},
+		{7, 8, -8, -4, 0, time.Date(2018, 1, 20, 14, 15, 0, 0, getLoc()), 2},
 	}
 	return outP
 }
@@ -82,20 +87,19 @@ func getGamePlanForAllPair() GamePlan {
 }
 func TestAllPairsToGamePlan(t *testing.T) {
 	type args struct {
-		c             []competitors.C
-		ap            []P
-		parallelGames int
+		c  []competitors.C
+		ap []P
 	}
 	tests := []struct {
 		name string
 		args args
 		want GamePlan
 	}{
-		{"4 competitors", args{competitors.NewTestCompetitors(9), pairingsForAllPair(), 2}, getGamePlanForAllPair()},
+		{"4 competitors", args{competitors.NewTestCompetitors(9), pairingsForAllPair()}, getGamePlanForAllPair()},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := AllPairsToGamePlan(tt.args.c, tt.args.ap, tt.args.parallelGames); !reflect.DeepEqual(got, tt.want) {
+			if got := AllPairsToGamePlan(tt.args.c, tt.args.ap); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("AllPairsToGamePlan() = %v, want %v", got, tt.want)
 			}
 		})

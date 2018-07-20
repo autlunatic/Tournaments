@@ -21,8 +21,8 @@ func getGroupsFor1() []groups.G {
 
 func getWantedFor1() []pairings.P {
 	out := []pairings.P{
-		pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -2, ID: -1, GroupID: 0},
-		pairings.P{Competitor1ID: 6, Competitor2ID: 3, Round: -2, ID: -2, GroupID: 0}}
+		pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -2, ID: -1, GroupID: 0, Court: 1},
+		pairings.P{Competitor1ID: 6, Competitor2ID: 3, Round: -2, ID: -2, GroupID: 0, Court: 2}}
 	/*	out := make([]pairings.P, 2)
 		out[0] = pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -4, ID: -1, GroupID: 0}
 		out[1] = pairings.P{Competitor1ID: 6, Competitor2ID: 3, Round: -4, ID: -2, GroupID: 0}*/
@@ -46,10 +46,10 @@ func getWantedFor2() []pairings.P {
 	// 11, 7, 3,10, 6, 2, 9, 5
 	//  1, 8, 5, 4, 3, 6, 7, 2
 	out := []pairings.P{
-		pairings.P{Competitor1ID: 11, Competitor2ID: 5, Round: -4, ID: -1, GroupID: 0},
-		pairings.P{Competitor1ID: 2, Competitor2ID: 10, Round: -4, ID: -2, GroupID: 0},
-		pairings.P{Competitor1ID: 3, Competitor2ID: 6, Round: -4, ID: -3, GroupID: 0},
-		pairings.P{Competitor1ID: 9, Competitor2ID: 7, Round: -4, ID: -4, GroupID: 0}}
+		pairings.P{Competitor1ID: 11, Competitor2ID: 5, Round: -4, ID: -1, GroupID: 0, Court: 1},
+		pairings.P{Competitor1ID: 2, Competitor2ID: 10, Round: -4, ID: -2, GroupID: 0, Court: 2},
+		pairings.P{Competitor1ID: 3, Competitor2ID: 6, Round: -4, ID: -3, GroupID: 0, Court: 3},
+		pairings.P{Competitor1ID: 9, Competitor2ID: 7, Round: -4, ID: -4, GroupID: 0, Court: 4}}
 	return out
 }
 
@@ -57,10 +57,10 @@ func getWantedFor3() []pairings.P {
 	//4,11, 3, 10, 7, 2, 9, 6
 	//1, 8, 5,  4, 3, 6, 7, 2
 	out := []pairings.P{
-		pairings.P{Competitor1ID: 4, Competitor2ID: 9, Round: -4, ID: -1, GroupID: 0},
-		pairings.P{Competitor1ID: 2, Competitor2ID: 10, Round: -4, ID: -2, GroupID: 0},
-		pairings.P{Competitor1ID: 3, Competitor2ID: 7, Round: -4, ID: -3, GroupID: 0},
-		pairings.P{Competitor1ID: 6, Competitor2ID: 11, Round: -4, ID: -4, GroupID: 0}}
+		pairings.P{Competitor1ID: 4, Competitor2ID: 9, Round: -4, ID: -1, GroupID: 0, Court: 1},
+		pairings.P{Competitor1ID: 2, Competitor2ID: 10, Round: -4, ID: -2, GroupID: 0, Court: 2},
+		pairings.P{Competitor1ID: 3, Competitor2ID: 7, Round: -4, ID: -3, GroupID: 0, Court: 1},
+		pairings.P{Competitor1ID: 6, Competitor2ID: 11, Round: -4, ID: -4, GroupID: 0, Court: 2}}
 	return out
 }
 
@@ -78,10 +78,10 @@ func getWantedFor4() []pairings.P {
 	//4,11, 10, 9, 8, 7, 6, 5
 	//1, 8, 5,  4, 3, 6, 7, 2
 	out := []pairings.P{
-		pairings.P{Competitor1ID: 4, Competitor2ID: 5, Round: -4, ID: -1, GroupID: 0},
-		pairings.P{Competitor1ID: 8, Competitor2ID: 9, Round: -4, ID: -2, GroupID: 0},
-		pairings.P{Competitor1ID: 10, Competitor2ID: 7, Round: -4, ID: -3, GroupID: 0},
-		pairings.P{Competitor1ID: 6, Competitor2ID: 11, Round: -4, ID: -4, GroupID: 0}}
+		pairings.P{Competitor1ID: 4, Competitor2ID: 5, Round: -4, ID: -1, GroupID: 0, Court: 1},
+		pairings.P{Competitor1ID: 8, Competitor2ID: 9, Round: -4, ID: -2, GroupID: 0, Court: 2},
+		pairings.P{Competitor1ID: 10, Competitor2ID: 7, Round: -4, ID: -3, GroupID: 0, Court: 1},
+		pairings.P{Competitor1ID: 6, Competitor2ID: 11, Round: -4, ID: -4, GroupID: 0, Court: 2}}
 	return out
 }
 func getGroupsFor5() []groups.G {
@@ -104,16 +104,17 @@ func getWantedFor5() []pairings.P {
 	//7, 5, 3, 1, 0, 4, 6, 2
 	//1, 8, 5, 4, 3, 6, 7, 2
 	out := []pairings.P{
-		pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -4, ID: -1, GroupID: 0},
-		pairings.P{Competitor1ID: 4, Competitor2ID: 1, Round: -4, ID: -2, GroupID: 0},
-		pairings.P{Competitor1ID: 3, Competitor2ID: 0, Round: -4, ID: -3, GroupID: 0},
-		pairings.P{Competitor1ID: 6, Competitor2ID: 5, Round: -4, ID: -4, GroupID: 0}}
+		pairings.P{Competitor1ID: 7, Competitor2ID: 2, Round: -4, ID: -1, GroupID: 0, Court: 1},
+		pairings.P{Competitor1ID: 4, Competitor2ID: 1, Round: -4, ID: -2, GroupID: 0, Court: 2},
+		pairings.P{Competitor1ID: 3, Competitor2ID: 0, Round: -4, ID: -3, GroupID: 0, Court: 3},
+		pairings.P{Competitor1ID: 6, Competitor2ID: 5, Round: -4, ID: -4, GroupID: 0, Court: 4}}
 	return out
 }
 
 func TestCalcPairingsForFinals(t *testing.T) {
 	type args struct {
 		groups        []groups.G
+		parallelGames int
 		finalistCount int
 	}
 	tests := []struct {
@@ -122,17 +123,17 @@ func TestCalcPairingsForFinals(t *testing.T) {
 		want    []pairings.P
 		wantErr bool
 	}{
-		{name: "2 Groups 4 Competitors semifinals", args: args{getGroupsFor1(), 4}, want: getWantedFor1(), wantErr: false},
-		{name: "3 Groups 8 Competitors quarterfinals", args: args{getGroupsFor2(false), 8}, want: getWantedFor2(), wantErr: false},
-		{name: "3 Groups 8 Competitors quarterfinals not first round not from group", args: args{getGroupsFor2(true), 8}, want: getWantedFor3(), wantErr: false},
-		{name: "1 Group 8 Competitors, when one group no changes should be made to the calced ranking", args: args{getGroupsFor4(true), 8}, want: getWantedFor4(), wantErr: false},
-		{name: "2 Groups 8 Competitors, half finals should play against other groups in first game", args: args{getGroupsFor5(), 8}, want: getWantedFor5(), wantErr: false},
-		{name: "2 Groups 8 Competitors, more Finalists than competitors", args: args{getGroupsFor5(), 16}, want: nil, wantErr: true},
+		{name: "2 Groups 4 Competitors semifinals", args: args{getGroupsFor1(), 2, 4}, want: getWantedFor1(), wantErr: false},
+		{name: "3 Groups 8 Competitors quarterfinals", args: args{getGroupsFor2(false), 4, 8}, want: getWantedFor2(), wantErr: false},
+		{name: "3 Groups 8 Competitors quarterfinals not first round not from group", args: args{getGroupsFor2(true), 2, 8}, want: getWantedFor3(), wantErr: false},
+		{name: "1 Group 8 Competitors, when one group no changes should be made to the calced ranking", args: args{getGroupsFor4(true), 2, 8}, want: getWantedFor4(), wantErr: false},
+		{name: "2 Groups 8 Competitors, half finals should play against other groups in first game", args: args{getGroupsFor5(), 4, 8}, want: getWantedFor5(), wantErr: false},
+		{name: "2 Groups 8 Competitors, more Finalists than competitors", args: args{getGroupsFor5(), 4, 16}, want: nil, wantErr: true},
 		//TODO Need an additional test when only last one fails because of same grp
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := groups.CalcPairingsForFinals(tt.args.groups, tt.args.finalistCount)
+			got, err := groups.CalcPairingsForFinals(tt.args.groups, tt.args.finalistCount, tt.args.parallelGames)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("CalcPairingsForFinals() error = %v, wantErr %v", err, tt.wantErr)
 				return

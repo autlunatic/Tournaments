@@ -50,7 +50,7 @@ func TestCalcGroups_23Competitor_7Groups(t *testing.T) {
 	if result[6].Competitors[2].Name() != "23" {
 		t.Error("second Group last competitor should be 7")
 	}
-	TestingUtils.CheckEquals(7, result[6].id, "Group id of last Group should be 7", t)
+	TestingUtils.CheckEquals(7, result[6].ID, "Group id of last Group should be 7", t)
 }
 
 func TestCalcGroups_10Competitor_6Groups(t *testing.T) {

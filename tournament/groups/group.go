@@ -2,6 +2,7 @@ package groups
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/pairings"
@@ -10,7 +11,7 @@ import (
 // G represents a Group of a Tournament in group phase
 // it holds a id which should be unique and the competitors in this group
 type G struct {
-	id          int
+	ID          int
 	Competitors []competitors.C
 }
 
@@ -18,7 +19,7 @@ type G struct {
 func NewTestGroups(count int) []G {
 	out := make([]G, count)
 	for i := 1; i <= count; i++ {
-		out[i-1].id = i
+		out[i-1].ID = i
 	}
 	return out
 }
@@ -35,13 +36,23 @@ func GOfCompentitorID(gs []G, competitorID int) (G, error) {
 	return G{}, errors.New("competitorID not found in Groups")
 }
 
+// GByID returns the group of the given groupID
+func GByID(gs []G, groupID int) (*G, error) {
+	for i := range gs {
+		if gs[i].ID == groupID {
+			return &gs[i], nil
+		}
+	}
+	return nil, fmt.Errorf("groupID  %v not found in Groups %v", groupID, gs)
+}
+
 // GetGroupIDOfCompetitor returns the id of the group in which the competitorID was found
 // returns an error if competitor id was not found in the given slice
 func GetGroupIDOfCompetitor(gs []G, competitorID int) (int, error) {
 	for _, g := range gs {
 		for _, c := range g.Competitors {
 			if c.ID() == competitorID {
-				return g.id, nil
+				return g.ID, nil
 			}
 		}
 	}
@@ -51,12 +62,17 @@ func GetGroupIDOfCompetitor(gs []G, competitorID int) (int, error) {
 // AddCompetitors adds the given competitors to the Group
 func (g *G) AddCompetitors(comps []competitors.C) {
 	for i := range comps {
-		g.Competitors = append(g.Competitors, comps[i])
+		g.AddCompetitor(comps[i])
 	}
 }
 
+// AddCompetitor adds the given competitor to the Group
+func (g *G) AddCompetitor(comp competitors.C) {
+	g.Competitors = append(g.Competitors, comp)
+}
+
 func (g G) getPairings() ([]pairings.P, error) {
-	return pairings.CalcPairings(g.Competitors, g.id)
+	return pairings.CalcPairings(g.Competitors, g.ID)
 }
 
 func (g G) isLastRound(ap pairings.P) bool {

@@ -14,9 +14,10 @@ func calcGroupsForTest() G {
 }
 
 func getGroupInfoWanted() GroupInfo {
-	out := GroupInfo{1, []CompetitorInfos{CompetitorInfos{"Benni", 0, 1},
-		CompetitorInfos{"Dani", 0, 2},
+	out := GroupInfo{1, []CompetitorInfos{
 		CompetitorInfos{"Mona", 0, 3},
+		CompetitorInfos{"Dani", 0, 2},
+		CompetitorInfos{"Benni", 0, 1},
 	}}
 
 	return out

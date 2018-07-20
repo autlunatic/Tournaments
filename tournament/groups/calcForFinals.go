@@ -12,15 +12,16 @@ import (
 
 // CalcPairingsForFinals generates the pairings for the finalists, it takes in account that no one should play
 // against an competitor wich he already faced in groupphase
-func CalcPairingsForFinals(g []G, finalistCount int) ([]pairings.P, error) {
+func CalcPairingsForFinals(g []G, finalistCount int, numberOfParallelGames int) ([]pairings.P, error) {
 	if getCompetitorCount(g) < finalistCount {
 		return nil, fmt.Errorf("error! more finalists than competitors")
 	}
 	calc := newCalcForFinals(g)
 	calc.finalistCount = finalistCount
+	calc.numberOfParallelGames = numberOfParallelGames
 	calc.doCalc()
 
-	return calc.out, nil
+	return calc.outPairings, nil
 }
 
 // CalcFinalistRankings returns an slice of int where the Position on the Finaltournament plan should be
@@ -47,9 +48,10 @@ func CalcFinalistRankings(finalRounds int) []int {
 }
 
 type calcPairingsForFinals struct {
-	groups        []G
-	finalistCount int
-	out           []pairings.P
+	groups                []G
+	finalistCount         int
+	numberOfParallelGames int
+	outPairings           []pairings.P
 }
 
 func newCalcForFinals(groups []G) *calcPairingsForFinals {
@@ -69,7 +71,7 @@ func isInSlice(slice []int, val int) bool {
 func (c *calcPairingsForFinals) doCalc() {
 	fin := DetermineFinalists(c.groups, c.finalistCount)
 	cs := competitors.SortedByPlacementAndPoints(fin)
-	c.out = make([]pairings.P, c.finalistCount/2)
+	c.outPairings = make([]pairings.P, c.finalistCount/2)
 	finRankPos := CalcFinalistRankings(int(math.Log2(float64(c.finalistCount))))
 	// first fill the better half, the better half should be fixed,
 	// the lower half should be mixed if there would be a pairing of two competitors of the same group
@@ -127,12 +129,13 @@ func (c *calcPairingsForFinals) setNextRankingIndexForCompetitor(finRankPos []in
 func (c *calcPairingsForFinals) setPairingForSortedID(sID int, compID int, checkForDuplicates bool) error {
 	pID := (sID - 1) / 2
 	competID := sID % 2
-	c.out[pID].Round = -c.finalistCount / 2
-	c.out[pID].ID = -pID - 1
+	c.outPairings[pID].Round = -c.finalistCount / 2
+	c.outPairings[pID].ID = -pID - 1
+	c.outPairings[pID].Court = (pID % c.numberOfParallelGames) + 1
 	if competID == 1 {
-		c.out[pID].Competitor1ID = compID
+		c.outPairings[pID].Competitor1ID = compID
 	} else {
-		c.out[pID].Competitor2ID = compID
+		c.outPairings[pID].Competitor2ID = compID
 	}
 	if checkForDuplicates {
 		err := c.doCheckForDuplicates(pID)
@@ -144,16 +147,16 @@ func (c *calcPairingsForFinals) setPairingForSortedID(sID int, compID int, check
 }
 
 func (c *calcPairingsForFinals) doCheckForDuplicates(pID int) error {
-	g1, err1 := GetGroupIDOfCompetitor(c.groups, c.out[pID].Competitor1ID)
+	g1, err1 := GetGroupIDOfCompetitor(c.groups, c.outPairings[pID].Competitor1ID)
 	if err1 != nil {
 		return err1
 	}
-	g2, err2 := GetGroupIDOfCompetitor(c.groups, c.out[pID].Competitor2ID)
+	g2, err2 := GetGroupIDOfCompetitor(c.groups, c.outPairings[pID].Competitor2ID)
 	if err2 != nil {
 		return err2
 	}
 	if len(c.groups) > 1 && g1 == g2 {
-		return fmt.Errorf("Same Group not possible C1: %v C2: %v both in group: %v", c.out[pID].Competitor1ID, c.out[pID].Competitor2ID, g1)
+		return fmt.Errorf("Same Group not possible C1: %v C2: %v both in group: %v", c.outPairings[pID].Competitor1ID, c.outPairings[pID].Competitor2ID, g1)
 	}
 	return nil
 }

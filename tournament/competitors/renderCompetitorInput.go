@@ -3,12 +3,14 @@ package competitors
 import (
 	"bytes"
 	"html/template"
+	"strconv"
 )
 
 // CompetitorInfo is used for displaying the competitor Name in API oder HTML
 type CompetitorInfo struct {
-	ID   int
-	Name string
+	ID         int
+	Name       string
+	DrawNumber string
 }
 
 type inputCompetitors struct {
@@ -30,7 +32,8 @@ func ToCompetitorInfo(c []C) []CompetitorInfo {
 	var out []CompetitorInfo
 	for _, ci := range c {
 		out = append(out, CompetitorInfo{ID: ci.ID(),
-			Name: ci.Name()})
+			Name:       ci.Name(),
+			DrawNumber: strconv.FormatInt(ci.DrawNumber(), 10)})
 	}
 	return out
 }

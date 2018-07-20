@@ -2,8 +2,10 @@ package pairings
 
 import (
 	"bytes"
+	"fmt"
 	"strconv"
 	"text/template"
+	"time"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
@@ -36,7 +38,7 @@ func CalcedPlanToGamePlan(c []competitors.C, cp [][]P) GamePlan {
 		for pi := range cp[kp] {
 			out.PairingInfo = append(out.PairingInfo,
 				PairingInfo{
-					cp[kp][pi].StartTime.Format("15:04"),
+					cp[kp][pi].StartTime.Local().Format("15:04"),
 					strconv.Itoa(pi + 1),
 					roundToInfo(cp[kp][pi].Round),
 					// cp[kp][pi],
@@ -49,12 +51,16 @@ func CalcedPlanToGamePlan(c []competitors.C, cp [][]P) GamePlan {
 }
 
 // AllPairsToGamePlan returns Gameplan from allpairs for HTML
-func AllPairsToGamePlan(c []competitors.C, ap []P, parallelGames int) GamePlan {
+func AllPairsToGamePlan(c []competitors.C, ap []P) GamePlan {
 	var out GamePlan
+	loc, err := time.LoadLocation("Europe/Vienna")
+	if err != nil {
+		fmt.Println(err)
+	}
 	for pi := range ap {
 		out.PairingInfo = append(out.PairingInfo,
 			PairingInfo{
-				ap[pi].StartTime.Format("15:04"),
+				ap[pi].StartTime.In(loc).Format("15:04"),
 				strconv.Itoa(ap[pi].Court),
 				roundToInfo(ap[pi].Round),
 				// ap[pi],
