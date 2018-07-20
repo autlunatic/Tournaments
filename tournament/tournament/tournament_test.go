@@ -60,7 +60,7 @@ func TestT_GetPairingByID(t *testing.T) {
 		wantErr bool
 	}{
 		{"empty Tournament returns error", T{}, 27, pairings.P{}, true},
-		{"TestTournament with correct ID returns P", trmntForTestGetPairingByID, 2, trmntForTestGetPairingByID.Pairings[2], false},
+		{"TestTournament with correct ID returns P", trmntForTestGetPairingByID, 2, trmntForTestGetPairingByID.Pairings[1], false},
 		{"TestTournament with Finalpairings should return Final", trmntForTestGetPairingByID, -1, trmntForTestGetPairingByID.FinalPairings[0], false},
 	}
 	for _, tt := range tests {

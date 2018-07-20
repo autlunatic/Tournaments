@@ -30,8 +30,8 @@ func TestCalcTournamentPlan2Groups(t *testing.T) {
 	if competitors.GetCompetitor(c, plan[0][0].Competitor1ID).Name() != "Benni" {
 		t.Error("competitor 0 0 should be named Benni but was " + competitors.GetCompetitor(c, plan[0][0].Competitor1ID).Name())
 	}
-	if plan[1][0].ID != 2 {
-		t.Error("id of the first game in second round should be 2" + strconv.Itoa(plan[1][0].ID))
+	if plan[1][0].ID != 3 {
+		t.Error("id of the first game in second round should be 3 but was " + strconv.Itoa(plan[1][0].ID))
 	}
 	TestingUtils.CheckEquals(6, len(plan), "roundcount", t)
 	if ok, msg := checkNoCompetitorPlaysTwiceInARound(plan); !ok {

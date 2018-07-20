@@ -25,7 +25,7 @@ func GToGroupInfo(g G) GroupInfo {
 	var out GroupInfo
 	out.ID = g.ID
 	out.CInfo = make([]CompetitorInfos, len(g.Competitors))
-	sortedC := competitors.SortedByPlacementAndPoints(g.Competitors)
+	sortedC := competitors.SortedByPoints(g.Competitors)
 	for i, ci := range sortedC {
 		out.CInfo[i].Name = ci.Name()
 		out.CInfo[i].GamePoints = ci.GetGamePoints()

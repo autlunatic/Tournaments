@@ -32,7 +32,7 @@ func CalcPlan(allCompetitors []competitors.C, Groups []G, details detail.D) ([][
 	}
 
 	for i := range allPairs {
-		allPairs[i].ID = i
+		allPairs[i].ID = i + 1
 	}
 
 	var round []pairings.P

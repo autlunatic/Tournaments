@@ -9,10 +9,29 @@ import (
 
 func calcGroupsForTest() G {
 	c := competitors.NewTestCompetitors(9)
+
 	g, _ := CalcGroups(c, 3)
 	return g[0]
 }
+func calcGroupsForTest2() G {
+	c := competitors.NewTestCompetitors(9)
+	c[0].AddPoints(2)
+	c[1].AddPoints(1)
+	c[0].AddGamePoints(5)
+	c[1].AddGamePoints(2)
+	c[2].AddGamePoints(4)
+	g, _ := CalcGroups(c, 3)
+	return g[0]
+}
+func getGroupInfoWanted2() GroupInfo {
+	out := GroupInfo{1, []CompetitorInfos{
+		CompetitorInfos{"Benni", 5, 3},
+		CompetitorInfos{"Mona", 4, 3},
+		CompetitorInfos{"Dani", 2, 3},
+	}}
 
+	return out
+}
 func getGroupInfoWanted() GroupInfo {
 	out := GroupInfo{1, []CompetitorInfos{
 		CompetitorInfos{"Mona", 0, 3},
@@ -32,9 +51,8 @@ func TestGToGroupInfo(t *testing.T) {
 		args args
 		want GroupInfo
 	}{
-		{"3 groups 9 competitors",
-			args{competitors.NewTestCompetitors(9), calcGroupsForTest()},
-			getGroupInfoWanted()},
+		{"3 groups 9 competitors", args{competitors.NewTestCompetitors(9), calcGroupsForTest()}, getGroupInfoWanted()},
+		{"3 groups 9 competitors all same GroupPoints", args{competitors.NewTestCompetitors(9), calcGroupsForTest2()}, getGroupInfoWanted2()},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

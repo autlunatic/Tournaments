@@ -195,6 +195,11 @@ func (t *T) LoadResults(c context.Context) {
 
 		t.PairingResults = pairings.AddResult(t.PairingResults, comp.GamePoints1, comp.GamePoints2, id)
 	}
+	err = t.RecalcPoints()
+	if err != nil {
+		log.Errorf(c, "RecalcPoints : %v", err)
+		return
+	}
 	log.Infof(c, "results loaded %v", t.PairingResults)
 }
 
@@ -211,6 +216,12 @@ func (t *T) LoadFromDataStore(r *http.Request, w http.ResponseWriter) {
 func (t *T) SaveDetails(c context.Context) error {
 	_, err := datastore.Put(c, getDetailsKey(c), &t.Details)
 	return err
+}
+
+// RecalcPoints calculates the Points for the Groupphase
+func (t *T) RecalcPoints() error {
+	competitors.ClearPoints(t.Competitors)
+	return pairings.AddPointsForResults(t.Competitors, t.Pairings, t.PairingResults, t.PointCalcer)
 }
 
 // SavePairings saves the calced pairings to the Database
