@@ -30,6 +30,7 @@ type competitorStore struct {
 	CompName   string
 	DrawNumber int64
 	GroupID    int
+	ID         int
 }
 type resultStore struct {
 	MapIndex int
@@ -153,8 +154,8 @@ func (t *T) LoadCompetitors(c context.Context) {
 		return
 	}
 	for i, comp := range cs {
-		ac := competitors.New(comp.CompName, i)
-		ac.DrawNr = ac.DrawNumber()
+		ac := competitors.New(comp.CompName, comp.ID)
+		ac.SetDrawNumber(comp.DrawNumber)
 
 		g, errg := groups.GByID(t.Groups, comp.GroupID)
 		if errg != nil {
@@ -262,7 +263,7 @@ func (t *T) SaveCompetitors(c context.Context) error {
 		if err != nil {
 			groupID = -1
 		}
-		name := competitorStore{ci.Name(), ci.DrawNumber(), groupID}
+		name := competitorStore{ci.Name(), ci.DrawNumber(), groupID, ci.ID()}
 		_, err = datastore.Put(c, getCompetitorsKey(c, i), &name)
 		if err != nil {
 			return err
