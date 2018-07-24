@@ -33,7 +33,7 @@ func ToCompetitorInfo(c []C) []CompetitorInfo {
 	for _, ci := range c {
 		out = append(out, CompetitorInfo{ID: ci.ID(),
 			Name:       ci.Name(),
-			DrawNumber: strconv.FormatInt(ci.DrawNumber(), 10)})
+			DrawNumber: strconv.Itoa(ci.DrawNumber())})
 	}
 	return out
 }

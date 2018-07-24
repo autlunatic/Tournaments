@@ -10,11 +10,15 @@ type D struct {
 	FinalistCount              int
 	TournamentStartTime        time.Time
 	FinalsStartTime            time.Time
+	AdminPassword              string
+	RefereePassword            string
 }
 
 // New creates and initializes Details
 func New(numberOfFields int, minutesPerGame int, minAvail int, finalistCount int) *D {
 	return &D{MinutesAvailForGroupsPhase: minAvail,
 		MinutesPerGame:        minutesPerGame,
-		NumberOfParallelGames: numberOfFields}
+		NumberOfParallelGames: numberOfFields,
+		AdminPassword:         "benni159",
+		RefereePassword:       "schiri@4kids"}
 }

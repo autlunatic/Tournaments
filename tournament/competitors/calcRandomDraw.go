@@ -1,28 +1,22 @@
 package competitors
 
 import (
-	"bytes"
-	"crypto/rand"
-	"encoding/binary"
+	"fmt"
+	"math/rand"
+	"time"
 )
 
 // CalcRandomDraw adds random generated numbers to the DrawNumber of all competitors.
 func CalcRandomDraw(c []C) {
 
-	addedDrawNumbers := make([]int64, len(c))
+	addedDrawNumbers := make([]int, len(c))
+	rand.Seed(time.Now().UnixNano())
 	for i := range c {
-		var d int64
+		var d int
 		for {
-			b := make([]byte, 3)
-			_, err := rand.Read(b)
-			if err != nil {
-				break
-			}
-			buf := bytes.NewBuffer(b) // b is []byte
-			d, err = binary.ReadVarint(buf)
-			if err != nil {
-				break
-			}
+			d = rand.Intn(100000)
+			fmt.Println(d)
+
 			if d < 0 {
 				d = -d
 			}
@@ -32,10 +26,11 @@ func CalcRandomDraw(c []C) {
 		}
 		addedDrawNumbers = append(addedDrawNumbers, d)
 		c[i].SetDrawNumber(d)
+		fmt.Println(c[i])
 	}
 
 }
-func isUniqueInSlice(addedDrawNumbers []int64, d int64) bool {
+func isUniqueInSlice(addedDrawNumbers []int, d int) bool {
 	for _, a := range addedDrawNumbers {
 		if a == d {
 			return false

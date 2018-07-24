@@ -39,8 +39,8 @@ type C interface {
 	GetGamePoints() int
 	ID() int
 	Name() string
-	DrawNumber() int64
-	SetDrawNumber(int64)
+	DrawNumber() int
+	SetDrawNumber(int)
 	SetGroupPlacement(int)
 	GroupPlacement() int
 }
@@ -51,7 +51,7 @@ type SimpleCompetitor struct {
 	TeamName    string
 	GroupPoints int
 	GamePoints  int
-	DrawNr      int64
+	DrawNr      int
 	GroupPlace  int
 }
 
@@ -121,7 +121,7 @@ func Delete(cs []C, competitorID int) int {
 }
 
 // DrawNumber is for implementing the Competitor interface
-func (c *SimpleCompetitor) DrawNumber() int64 {
+func (c *SimpleCompetitor) DrawNumber() int {
 	return c.DrawNr
 }
 
@@ -156,7 +156,7 @@ func (c *SimpleCompetitor) ID() int {
 }
 
 // SetDrawNumber is for the Competitor Interface
-func (c *SimpleCompetitor) SetDrawNumber(number int64) {
+func (c *SimpleCompetitor) SetDrawNumber(number int) {
 	c.DrawNr = number
 }
 
@@ -174,7 +174,7 @@ func (c *SimpleCompetitor) GroupPlacement() int {
 type EmptyCompetitor struct{}
 
 // DrawNumber is for implementing the Competitor interface
-func (c *EmptyCompetitor) DrawNumber() int64 {
+func (c *EmptyCompetitor) DrawNumber() int {
 	return 0
 }
 
@@ -207,7 +207,7 @@ func (c *EmptyCompetitor) ID() int {
 }
 
 // SetDrawNumber is for the Competitor Interface
-func (c *EmptyCompetitor) SetDrawNumber(number int64) {
+func (c *EmptyCompetitor) SetDrawNumber(number int) {
 }
 
 // SetGroupPlacement is for the Competitor Interface

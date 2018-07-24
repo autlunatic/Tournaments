@@ -28,7 +28,7 @@ const resultsEntity = "results"
 
 type competitorStore struct {
 	CompName   string
-	DrawNumber int64
+	DrawNumber int
 	GroupID    int
 	ID         int
 }
@@ -153,7 +153,7 @@ func (t *T) LoadCompetitors(c context.Context) {
 		log.Errorf(c, "Getting Competitors: %v", err)
 		return
 	}
-	for i, comp := range cs {
+	for _, comp := range cs {
 		ac := competitors.New(comp.CompName, comp.ID)
 		ac.SetDrawNumber(comp.DrawNumber)
 

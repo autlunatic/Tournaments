@@ -56,7 +56,7 @@ func TestSimpleCompetitor_AddPoints(t *testing.T) {
 		id         int
 		name       string
 		Points     int
-		drawNumber int64
+		drawNumber int
 	}
 	tests := []struct {
 		name   string
