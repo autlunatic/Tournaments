@@ -327,5 +327,9 @@ func (t *T) SetNewDetails(details detail.D) {
 	t.Details = details
 	t.Details.TournamentStartTime = t.Details.TournamentStartTime.In(time.Now().Location())
 	t.Details.FinalsStartTime = t.Details.FinalsStartTime.In(time.Now().Location())
+}
 
+// AddMinutesToGroupParingsTime adds the given minutes to all Pairings of the group phase
+func (t *T) AddMinutesToGroupParingsTime(minutes int) {
+	pairings.AddMinutes(t.Pairings, minutes)
 }
