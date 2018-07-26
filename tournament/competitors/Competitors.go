@@ -26,23 +26,45 @@ func New(name string, id int) *SimpleCompetitor {
 // ClearPoints sets the Points of all Items to zero
 func ClearPoints(c []C) {
 	for _, c := range c {
-		c.AddPoints(-c.GetPoints())
-		c.AddGamePoints(-c.GetGamePoints())
+		c.ClearResults()
 	}
+}
+
+// ResultPoints represents one Result for the competitor
+type ResultPoints struct {
+	GamePoints          int
+	GamePointsNegative  int
+	GroupPoints         int
+	GroupPointsNegative int
+	AgainstCompetitorID int
 }
 
 // C is the interface used by the Tournament package for Operations with the Competitor
 type C interface {
-	AddPoints(p int)
-	GetPoints() int
-	AddGamePoints(p int)
-	GetGamePoints() int
+	AddResult(result ResultPoints)
+	GetResults() []ResultPoints
+	ClearResults()
 	ID() int
 	Name() string
 	DrawNumber() int
 	SetDrawNumber(int)
 	SetGroupPlacement(int)
 	GroupPlacement() int
+}
+
+// SumResultPoints calcs the sum of all points and adds the component ids of the competitor which are defeated
+func SumResultPoints(rps []ResultPoints) (outPoints ResultPoints, wonAgainst []int) {
+
+	for _, rp := range rps {
+		outPoints.GamePoints += rp.GamePoints
+		outPoints.GamePointsNegative += rp.GamePointsNegative
+		outPoints.GroupPoints += rp.GroupPoints
+		outPoints.GroupPointsNegative += rp.GroupPointsNegative
+		if outPoints.GroupPoints > outPoints.GroupPointsNegative {
+			wonAgainst = append(wonAgainst, rp.AgainstCompetitorID)
+		}
+	}
+	return outPoints, wonAgainst
 }
 
 // SimpleCompetitor holds information for an minimalistic Competitor
@@ -53,6 +75,7 @@ type SimpleCompetitor struct {
 	GamePoints  int
 	DrawNr      int
 	GroupPlace  int
+	Results     []ResultPoints
 }
 
 // ContainsName Checks if the competitor Name is already taken
@@ -125,6 +148,21 @@ func (c *SimpleCompetitor) DrawNumber() int {
 	return c.DrawNr
 }
 
+// AddResult is for implementing the Competitor Interface
+func (c *SimpleCompetitor) AddResult(result ResultPoints) {
+	c.Results = append(c.Results, result)
+}
+
+// GetResults is for implementing the competitor interface
+func (c *SimpleCompetitor) GetResults() []ResultPoints {
+	return c.Results
+}
+
+// ClearResults is for the Competitor Interface
+func (c *SimpleCompetitor) ClearResults() {
+	c.Results = []ResultPoints{}
+}
+
 // Name is for implementing the Competitor Interface
 func (c *SimpleCompetitor) Name() string {
 	return c.TeamName
@@ -183,22 +221,18 @@ func (c *EmptyCompetitor) Name() string {
 	return ""
 }
 
-// AddPoints is for implementing the Competitor Interface
-func (c *EmptyCompetitor) AddPoints(p int) {
+// AddResult is for implementing the Competitor Interface
+func (c *EmptyCompetitor) AddResult(result ResultPoints) {
 }
 
-// GetPoints is for implementing the Competitor Interface
-func (c *EmptyCompetitor) GetPoints() int {
-	return 0
+// GetResults is for implementing the competitor interface
+func (c *EmptyCompetitor) GetResults() []ResultPoints {
+	return []ResultPoints{}
 }
 
-// AddGamePoints is for implementing the Competitor Interface
-func (c *EmptyCompetitor) AddGamePoints(p int) {
-}
+// ClearResults is for the Competitor Interface
+func (c *EmptyCompetitor) ClearResults() {
 
-// GetGamePoints is for implementing the Competitor Interface
-func (c *EmptyCompetitor) GetGamePoints() int {
-	return 0
 }
 
 // ID is for implementing the Competitor Interface

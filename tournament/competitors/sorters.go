@@ -52,11 +52,31 @@ func (s sortByGroupPoints) Len() int {
 	return len(s.items)
 }
 
-func (s sortByGroupPoints) Less(i, j int) bool {
-	if s.items[i].GetPoints() != s.items[j].GetPoints() {
-		return s.items[i].GetPoints() > s.items[j].GetPoints()
+func wonAgainst(is []int, i int) bool {
+	for _, w := range is {
+		if w == i {
+			return true
+		}
 	}
-	return s.items[i].GetGamePoints() > s.items[j].GetGamePoints()
+	return false
+}
+func lessByGroupPoints(items []C, i, j int) bool {
+	resi, woni := SumResultPoints(items[i].GetResults())
+	resj, _ := SumResultPoints(items[j].GetResults())
+	if resi.GroupPoints != resj.GroupPoints {
+		return resi.GroupPoints > resj.GroupPoints
+	}
+	if resi.GamePoints-resi.GamePointsNegative != resj.GamePoints-resj.GamePointsNegative {
+		return resi.GamePoints-resi.GamePointsNegative > resj.GamePoints-resj.GamePointsNegative
+	}
+	if resi.GamePoints != resj.GamePoints {
+		return resi.GamePoints > resj.GamePoints
+	}
+	return wonAgainst(woni, items[j].ID())
+}
+
+func (s sortByGroupPoints) Less(i, j int) bool {
+	return lessByGroupPoints(s.items, i, j)
 }
 
 func (s sortByGroupPoints) Swap(i, j int) {
@@ -76,7 +96,7 @@ func (s sortByPlacementAndGroupPoints) Less(i, j int) bool {
 		return s.items[i].GroupPlacement() < s.items[j].GroupPlacement()
 
 	}
-	return s.items[i].GetPoints() > s.items[j].GetPoints()
+	return lessByGroupPoints(s.items, i, j)
 }
 
 func (s sortByPlacementAndGroupPoints) Swap(i, j int) {

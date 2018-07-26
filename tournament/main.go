@@ -116,7 +116,7 @@ func groupsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params
 }
 
 func gamePlanAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	json := pairings.AllPairsJSON(t.Competitors, t.Pairings, t.FinalPairings, t.Details.NumberOfParallelGames)
+	json := pairings.AllPairsJSON(t.Competitors, t.Pairings, t.FinalPairings, t.Details.NumberOfParallelGames, "Gruppenphase")
 	fmt.Println(req)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, json)

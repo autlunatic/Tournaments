@@ -12,6 +12,7 @@ import (
 
 // ResultInfo ist the struct for representing Data in the Template
 type ResultInfo struct {
+	Court       int
 	PairingID   int
 	PairingInfo string
 	Comp1ID     int
@@ -38,6 +39,7 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 		if res, ok := r[pi.ID]; ok {
 			tp1, tp2 := tpc.Calc(res.GamePoints1, res.GamePoints2)
 			out = append(out, ResultInfo{
+				pi.Court,
 				pi.ID,
 				pairingIDToInfo(pi.ID, pi.Round),
 				pi.Competitor1ID,
@@ -52,6 +54,7 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 			})
 		} else {
 			out = append(out, ResultInfo{
+				pi.Court,
 				pi.ID,
 				pairingIDToInfo(pi.ID, pi.Round),
 				pi.Competitor1ID,

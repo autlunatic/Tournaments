@@ -109,6 +109,7 @@ func TestCalcNextFinalRound(t *testing.T) {
 		{"quarter to semi 2 results", quarterToSemi(), []P{{1, 4, -2, -5, 0, time.Time{}, 1}}},
 		{"quarter to semi invalid results", getPairingsWithInvalidResults(), []P{}},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := CalcNextFinalRound(tt.args.pairs, tt.args.results, tournamentPoints.NewSimpleTournamentPointCalc(1, 3, 0), tt.args.numberOfParallelGames); !reflect.DeepEqual(got, tt.want) {

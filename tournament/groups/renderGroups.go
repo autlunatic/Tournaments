@@ -9,9 +9,11 @@ import (
 
 // CompetitorInfos represents one row in the display of the group
 type CompetitorInfos struct {
-	Name       string
-	GamePoints int
-	TeamPoints int
+	Name                string
+	GamePoints          int
+	GamePointsNegative  int
+	GroupPoints         int
+	GroupPointsNegative int
 }
 
 // GroupInfo ist for representing a group in HTMl
@@ -26,10 +28,14 @@ func GToGroupInfo(g G) GroupInfo {
 	out.ID = g.ID
 	out.CInfo = make([]CompetitorInfos, len(g.Competitors))
 	sortedC := competitors.SortedByPoints(g.Competitors)
+
 	for i, ci := range sortedC {
+		res, _ := competitors.SumResultPoints(ci.GetResults())
 		out.CInfo[i].Name = ci.Name()
-		out.CInfo[i].GamePoints = ci.GetGamePoints()
-		out.CInfo[i].TeamPoints = ci.GetPoints()
+		out.CInfo[i].GamePoints = res.GamePoints
+		out.CInfo[i].GroupPoints = res.GroupPoints
+		out.CInfo[i].GamePointsNegative = res.GamePointsNegative
+		out.CInfo[i].GroupPointsNegative = res.GroupPointsNegative
 	}
 	return out
 }

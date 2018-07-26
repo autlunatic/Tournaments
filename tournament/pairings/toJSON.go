@@ -35,9 +35,9 @@ func filterActual(ps []P, det detail.D) []P {
 	return out
 }
 
-// ActualPairsJSON returns the pairings that are played now
-func ActualPairsJSON(c []competitors.C, ap []P, finals []P, det detail.D) string {
+// FilterActualPairings returns the pairings that are played now
+func FilterActualPairings(c []competitors.C, ap []P, finals []P, det detail.D) []P {
 	ap = append(ap, finals...)
-	group := filterActual(ap, det)
-	return AllPairsJSON(c, group, []P{}, det.NumberOfParallelGames, "")
+	actualPairs := filterActual(ap, det)
+	return actualPairs
 }

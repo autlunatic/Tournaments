@@ -15,15 +15,21 @@ func AddPointsForResults(c []competitors.C, pairings []P, results Results, calce
 			p1, p2 := calcer.Calc(r2.GamePoints1, r2.GamePoints2)
 			c1 := competitors.GetCompetitor(c, p.Competitor1ID)
 			if c1.ID() > -1 {
-				c1.AddPoints(p1)
-				c1.AddGamePoints(r2.GamePoints1)
+				c1.AddResult(competitors.ResultPoints{GroupPoints: p1,
+					GroupPointsNegative: p2,
+					GamePoints:          r2.GamePoints1,
+					GamePointsNegative:  r2.GamePoints2,
+					AgainstCompetitorID: p.Competitor2ID})
 			} else {
 				return fmt.Errorf("competitor with ID %v not found", p.Competitor1ID)
 			}
 			c2 := competitors.GetCompetitor(c, p.Competitor2ID)
 			if c2.ID() > -1 {
-				c2.AddPoints(p2)
-				c2.AddGamePoints(r2.GamePoints2)
+				c2.AddResult(competitors.ResultPoints{GroupPoints: p2,
+					GroupPointsNegative: p1,
+					GamePoints:          r2.GamePoints2,
+					GamePointsNegative:  r2.GamePoints1,
+					AgainstCompetitorID: p.Competitor1ID})
 			} else {
 				return fmt.Errorf("competitor with ID %v not found", p.Competitor2ID)
 			}
