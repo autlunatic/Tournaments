@@ -111,8 +111,7 @@ func getDetailsKey(c context.Context) *datastore.Key {
 func (t *T) LoadDetails(c context.Context) error {
 	var d detail.D
 	err := datastore.Get(c, getDetailsKey(c), &d)
-	if err != nil {
-		t.Details = detail.D{}
+	if err != nil || d.FinalistCount == 0 {
 		return err
 	}
 	t.Details = d
@@ -207,7 +206,10 @@ func (t *T) LoadResults(c context.Context) {
 // LoadFromDataStore loads the complete tournament from Datastore
 func (t *T) LoadFromDataStore(r *http.Request, w http.ResponseWriter) {
 	c := appengine.NewContext(r)
-	t.LoadDetails(c)
+	err := t.LoadDetails(c)
+	if err != nil {
+		return
+	}
 	t.LoadPairings(c)
 	t.LoadCompetitors(c)
 	t.LoadResults(c)

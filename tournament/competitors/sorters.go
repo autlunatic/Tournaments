@@ -62,17 +62,17 @@ func wonAgainst(is []int, i int) bool {
 }
 func lessByGroupPoints(items []C, i, j int) bool {
 	resi, woni := SumResultPoints(items[i].GetResults())
-	resj, _ := SumResultPoints(items[j].GetResults())
+	resj, wonj := SumResultPoints(items[j].GetResults())
 	if resi.GroupPoints != resj.GroupPoints {
 		return resi.GroupPoints > resj.GroupPoints
 	}
-	if resi.GamePoints-resi.GamePointsNegative != resj.GamePoints-resj.GamePointsNegative {
-		return resi.GamePoints-resi.GamePointsNegative > resj.GamePoints-resj.GamePointsNegative
+	if wonAgainst(woni, items[j].ID()) || wonAgainst(wonj, items[i].ID()) {
+		return wonAgainst(woni, items[j].ID())
 	}
 	if resi.GamePoints != resj.GamePoints {
 		return resi.GamePoints > resj.GamePoints
 	}
-	return wonAgainst(woni, items[j].ID())
+	return resi.GamePoints-resi.GamePointsNegative > resj.GamePoints-resj.GamePointsNegative
 }
 
 func (s sortByGroupPoints) Less(i, j int) bool {

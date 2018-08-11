@@ -51,41 +51,6 @@ func TestAdd(t *testing.T) {
 	}
 }
 
-func TestSimpleCompetitor_AddPoints(t *testing.T) {
-	type fields struct {
-		id         int
-		name       string
-		Points     int
-		drawNumber int
-	}
-	tests := []struct {
-		name   string
-		fields fields
-		p      int
-	}{
-		{"adding points", fields{1, "Neo", 5, 0}, 3},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			c := &SimpleCompetitor{
-				Id:          tt.fields.id,
-				TeamName:    tt.fields.name,
-				GroupPoints: tt.fields.Points,
-				DrawNr:      tt.fields.drawNumber,
-				GamePoints:  tt.fields.Points,
-			}
-			c.AddPoints(tt.p)
-			if c.GetPoints() != 8 {
-				t.Errorf("points were not added or not read after adding: have %v, want %v", c.GetPoints(), 8)
-			}
-			c.AddGamePoints(tt.p)
-			if c.GetGamePoints() != 8 {
-				t.Errorf("gamepoints were not added or not read after adding: have %v, want %v", c.GetGamePoints(), 8)
-			}
-		})
-	}
-}
-
 func TestGetCompetitor(t *testing.T) {
 	cs := NewTestCompetitors(5)
 	tests := []struct {
@@ -103,30 +68,6 @@ func TestGetCompetitor(t *testing.T) {
 			}
 		})
 	}
-}
-
-func TestClearPoints(t *testing.T) {
-	cs := NewTestCompetitors(9)
-	for i := range cs {
-		cs[i].AddPoints(i + 1)
-	}
-	for i := range cs {
-		if cs[i].GetPoints() == 0 {
-			t.Error("no points should be Zero")
-		}
-		cs[i].AddGamePoints(i + 1)
-	}
-	ClearPoints(cs)
-	for i := range cs {
-		if cs[i].GetPoints() != 0 {
-			t.Error("all points should be Zero after clear")
-		}
-		if cs[i].GetGamePoints() != 0 {
-			t.Error("all points should be Zero after clear")
-		}
-
-	}
-
 }
 
 func getWantedTestAddByName1() []C {

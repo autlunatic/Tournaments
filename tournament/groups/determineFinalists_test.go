@@ -19,9 +19,6 @@ var tc4 []competitors.C
 
 func generate9CompetitorsIn3Groups() detFinFields {
 	tc1 = competitors.NewTestCompetitors(9)
-	for i := 0; i < 9; i++ {
-		tc1[i].AddPoints(i)
-	}
 	g := make([]G, 3)
 	g[0].AddCompetitors(tc1[0:3])
 	g[1].AddCompetitors(tc1[3:6])
@@ -31,9 +28,7 @@ func generate9CompetitorsIn3Groups() detFinFields {
 
 func generate15CompetitorsIn3Groups() detFinFields {
 	tc2 = competitors.NewTestCompetitors(15)
-	for i := 0; i < 15; i++ {
-		tc2[i].AddPoints(i)
-	}
+
 	g := make([]G, 3)
 	g[0].AddCompetitors(tc2[0:5])
 	g[1].AddCompetitors(tc2[5:10])
@@ -43,9 +38,6 @@ func generate15CompetitorsIn3Groups() detFinFields {
 
 func generate15CompetitorsIn1Group() detFinFields {
 	tc3 = competitors.NewTestCompetitors(15)
-	for i := 0; i < 15; i++ {
-		tc3[i].AddPoints(i)
-	}
 	g := make([]G, 1)
 	g[0].AddCompetitors(tc3[0:])
 	return detFinFields{g, 8}

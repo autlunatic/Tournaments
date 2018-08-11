@@ -27,7 +27,6 @@ func NewTestCompetitors(count int) []C {
 		}
 		c := New(compName, i-1)
 		competitors[i-1] = c
-		c.AddPoints(i)
 		c.SetDrawNumber(i)
 	}
 	return competitors

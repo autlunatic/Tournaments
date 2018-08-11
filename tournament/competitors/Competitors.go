@@ -60,7 +60,8 @@ func SumResultPoints(rps []ResultPoints) (outPoints ResultPoints, wonAgainst []i
 		outPoints.GamePointsNegative += rp.GamePointsNegative
 		outPoints.GroupPoints += rp.GroupPoints
 		outPoints.GroupPointsNegative += rp.GroupPointsNegative
-		if outPoints.GroupPoints > outPoints.GroupPointsNegative {
+
+		if rp.GroupPoints > rp.GroupPointsNegative {
 			wonAgainst = append(wonAgainst, rp.AgainstCompetitorID)
 		}
 	}
@@ -166,26 +167,6 @@ func (c *SimpleCompetitor) ClearResults() {
 // Name is for implementing the Competitor Interface
 func (c *SimpleCompetitor) Name() string {
 	return c.TeamName
-}
-
-// AddPoints is for implementing the Competitor Interface
-func (c *SimpleCompetitor) AddPoints(p int) {
-	c.GroupPoints += p
-}
-
-// GetPoints is for implementing the Competitor Interface
-func (c *SimpleCompetitor) GetPoints() int {
-	return c.GroupPoints
-}
-
-// AddGamePoints is for implementing the Competitor Interface
-func (c *SimpleCompetitor) AddGamePoints(p int) {
-	c.GamePoints += p
-}
-
-// GetGamePoints is for implementing the Competitor Interface
-func (c *SimpleCompetitor) GetGamePoints() int {
-	return c.GamePoints
 }
 
 // ID is for implementing the Competitor Interface

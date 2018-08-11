@@ -33,7 +33,7 @@ func getGroupsFor2(addPointsTo4 bool) []groups.G {
 	g := groups.NewTestGroups(3)
 	testCompetitors = competitors.NewTestCompetitors(12)
 	if addPointsTo4 {
-		testCompetitors[4].AddPoints(15)
+		testCompetitors[4].AddResult(competitors.ResultPoints{15, 0, 3, 0, 1})
 	}
 	g[0].AddCompetitors(testCompetitors[0:4])
 	g[1].AddCompetitors(testCompetitors[4:8])
@@ -68,7 +68,7 @@ func getGroupsFor4(addPointsTo4 bool) []groups.G {
 	g := groups.NewTestGroups(1)
 	testCompetitors = competitors.NewTestCompetitors(12)
 	if addPointsTo4 {
-		testCompetitors[4].AddPoints(15)
+		testCompetitors[4].AddResult(competitors.ResultPoints{15, 0, 3, 0, 1})
 	}
 	g[0].AddCompetitors(testCompetitors[0:])
 	return g
@@ -87,12 +87,12 @@ func getWantedFor4() []pairings.P {
 func getGroupsFor5() []groups.G {
 	g := groups.NewTestGroups(4)
 	testCompetitors = competitors.NewTestCompetitors(8)
-	testCompetitors[0].AddPoints(12)
-	testCompetitors[1].AddPoints(12)
-	testCompetitors[3].AddPoints(12)
-	testCompetitors[4].AddPoints(3)
-	testCompetitors[5].AddPoints(12)
-	testCompetitors[7].AddPoints(12)
+	testCompetitors[0].AddResult(competitors.ResultPoints{12, 0, 3, 0, 1})
+	testCompetitors[1].AddResult(competitors.ResultPoints{12, 0, 3, 0, 1})
+	testCompetitors[3].AddResult(competitors.ResultPoints{12, 0, 3, 0, 1})
+	testCompetitors[4].AddResult(competitors.ResultPoints{12, 0, 3, 0, 1})
+	testCompetitors[5].AddResult(competitors.ResultPoints{12, 0, 3, 0, 1})
+	testCompetitors[7].AddResult(competitors.ResultPoints{12, 0, 3, 0, 1})
 	g[0].AddCompetitors(testCompetitors[0:2])
 	g[1].AddCompetitors(testCompetitors[2:4])
 	g[2].AddCompetitors(testCompetitors[4:6])
