@@ -15,24 +15,27 @@ func calcGroupsForTest() G {
 }
 func calcGroupsForTest2() G {
 	c := competitors.NewTestCompetitors(9)
+	c[0].AddResult(competitors.ResultPoints{5, 0, 2, 0, -1})
+	c[1].AddResult(competitors.ResultPoints{2, 0, 1, 0, -1})
+	c[2].AddResult(competitors.ResultPoints{4, 0, 0, 0, -1})
 	g, _ := CalcGroups(c, 3)
 	return g[0]
 }
 func getGroupInfoWanted2() GroupInfo {
 	out := GroupInfo{1, []CompetitorInfos{
 
-		CompetitorInfos{"Benni", 5, 3, 5, 0},
-		CompetitorInfos{"Mona", 4, 3, 4, 3},
-		CompetitorInfos{"Dani", 2, 3, 2, 3},
+		CompetitorInfos{"Mona", 7, 0, 3, 0},
+		CompetitorInfos{"Benni", 6, 0, 3, 0},
+		CompetitorInfos{"Dani", 4, 0, 3, 0},
 	}}
 
 	return out
 }
 func getGroupInfoWanted() GroupInfo {
 	out := GroupInfo{1, []CompetitorInfos{
-		CompetitorInfos{"Mona", 0, 3, 0, 3},
-		CompetitorInfos{"Dani", 0, 2, 0, 2},
-		CompetitorInfos{"Benni", 0, 1, 0, 1},
+		CompetitorInfos{"Mona", 3, 0, 3, 0},
+		CompetitorInfos{"Dani", 2, 0, 2, 0},
+		CompetitorInfos{"Benni", 1, 0, 1, 0},
 	}}
 
 	return out

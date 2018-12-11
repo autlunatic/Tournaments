@@ -311,22 +311,22 @@ func calcFin() {
 
 }
 
-func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	var errHTML string
-	if req.Method == http.MethodPost {
-		inputTeamName := req.FormValue("competitorName")
-		if len(inputTeamName) > 0 {
-			err := tryToAddCompetitor(inputTeamName)
-			if err != nil {
-				errHTML = err.Error()
-			} else {
-				t.Build()
-			}
-		}
-	}
-	html := competitors.InputCompetitorsHTML(t.Competitors, errHTML)
-	writeHeaderAndHTML(w, html)
-}
+// func inputCompetitorsHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+// 	var errHTML string
+// 	if req.Method == http.MethodPost {
+// 		inputTeamName := req.FormValue("competitorName")
+// 		if len(inputTeamName) > 0 {
+// 			err := tryToAddCompetitor(inputTeamName)
+// 			if err != nil {
+// 				errHTML = err.Error()
+// 			} else {
+// 				t.Build()
+// 			}
+// 		}
+// 	}
+// 	html := competitors.InputCompetitorsHTML(t.Competitors, errHTML)
+// 	writeHeaderAndHTML(w, html)
+// }
 func tryToAddCompetitor(compName string) error {
 	var err error
 	t.Competitors, err = competitors.AddByName(t.Competitors, compName)

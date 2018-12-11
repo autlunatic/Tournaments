@@ -73,7 +73,6 @@ type SimpleCompetitor struct {
 	Id          int
 	TeamName    string
 	GroupPoints int
-	GamePoints  int
 	DrawNr      int
 	GroupPlace  int
 	Results     []ResultPoints

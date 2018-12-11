@@ -15,10 +15,10 @@ type args struct {
 
 func getArgsFor5() args {
 	var out args
-	out.pairings = append(out.pairings, P{0, 1, 1, 1, 1, time.Time{}, -1})
-	out.pairings = append(out.pairings, P{2, 3, 2, 2, 1, time.Time{}, -1})
-	out.pairings = append(out.pairings, P{0, 4, 3, 3, 1, time.Time{}, -1})
-	out.pairings = append(out.pairings, P{1, 3, 4, 4, 1, time.Time{}, -1})
+	out.pairings = append(out.pairings, P{0, 1, 1, 1, 1, time.Time{}, 1})
+	out.pairings = append(out.pairings, P{2, 3, 2, 2, 1, time.Time{}, 2})
+	out.pairings = append(out.pairings, P{0, 4, 3, 3, 1, time.Time{}, 3})
+	out.pairings = append(out.pairings, P{1, 3, 4, 4, 1, time.Time{}, 4})
 	out.results = make(map[int]*Result)
 	out.results[1] = &Result{5, 5}
 	out.results[2] = &Result{3, 1}
@@ -28,10 +28,10 @@ func getArgsFor5() args {
 }
 func getArgsFor2() args {
 	var out args
-	out.pairings = append(out.pairings, P{0, 1, 1, 1, 1, time.Time{}, -1})
-	out.pairings = append(out.pairings, P{0, 1, 2, 2, 1, time.Time{}, -1})
-	out.pairings = append(out.pairings, P{0, 1, 3, 3, 1, time.Time{}, -1})
-	out.pairings = append(out.pairings, P{0, 1, 4, 4, 1, time.Time{}, -1})
+	out.pairings = append(out.pairings, P{0, 1, 1, 1, 1, time.Time{}, 1})
+	out.pairings = append(out.pairings, P{0, 1, 2, 2, 1, time.Time{}, 2})
+	out.pairings = append(out.pairings, P{0, 1, 3, 3, 1, time.Time{}, 3})
+	out.pairings = append(out.pairings, P{0, 1, 4, 4, 1, time.Time{}, 4})
 	out.results = make(map[int]*Result)
 	out.results[1] = &Result{1, 5}
 	out.results[2] = &Result{3, 1}
@@ -81,13 +81,15 @@ func TestAddGroupPointsForResults(t *testing.T) {
 
 			}
 			for i, r := range tt.resultPoints {
-				if competitors.GetCompetitor(cs, i).GetPoints() != r {
-					t.Errorf("competitorPoints %v, wanted %v", competitors.GetCompetitor(cs, i).GetPoints(), r)
+				res, _ := competitors.SumResultPoints(competitors.GetCompetitor(cs, i).GetResults())
+				if res.GroupPoints != r {
+					t.Errorf("competitorPoints %v, wanted %v", res, r)
 				}
 			}
 			for i, r := range tt.gamePoints {
-				if competitors.GetCompetitor(cs, i).GetGamePoints() != r {
-					t.Errorf("gamePoints %v, wanted %v", competitors.GetCompetitor(cs, i).GetGamePoints(), r)
+				res, _ := competitors.SumResultPoints(competitors.GetCompetitor(cs, i).GetResults())
+				if res.GamePoints != r {
+					t.Errorf("gamePoints %v, wanted %v", res.GamePoints, r)
 				}
 			}
 
