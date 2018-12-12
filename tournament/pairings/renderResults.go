@@ -1,10 +1,8 @@
 package pairings
 
 import (
-	"bytes"
 	"encoding/json"
 	"strconv"
-	"text/template"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
@@ -73,12 +71,6 @@ func ResultsToResultInfo(c []competitors.C, p []P, r Results, tpc tournamentPoin
 	return out
 }
 
-// ResultsToHTML renders the results of a given pairings to HTML
-func ResultsToHTML(c []competitors.C, p []P, r Results, tpc tournamentPoints.TournamentPointCalcer) string {
-	ri := ResultsToResultInfo(c, p, r, tpc)
-	return RenderResultInfos(ri)
-}
-
 // ResultsToJSON returns the JSON string for API calls
 func ResultsToJSON(c []competitors.C, pg []P, pf []P, r Results, tpc tournamentPoints.TournamentPointCalcer) string {
 
@@ -95,14 +87,6 @@ func ResultsToJSON(c []competitors.C, pg []P, pf []P, r Results, tpc tournamentP
 		return ""
 	}
 	return string(json)
-}
-
-// RenderResultInfos renders the slice of ResultInfo to HTML
-func RenderResultInfos(ri []ResultInfo) string {
-	tpl := template.Must(template.ParseFiles("pairings/ResultList.html"))
-	var b bytes.Buffer
-	tpl.Execute(&b, ri)
-	return b.String()
 }
 
 // FilterResultInfoByCompID returns resultinfos for one Competitor

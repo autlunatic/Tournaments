@@ -16,15 +16,6 @@ type inputCompetitors struct {
 	ErrHTML string
 }
 
-// InputCompetitorsHTML creates the HTML code for the input of the Competitors
-// func InputCompetitorsHTML(c []C, errHTML string) string {
-// 	tpl := template.Must(template.ParseFiles("competitors/renderCompetitorsInput.html"))
-// 	var b bytes.Buffer
-// 	ic := inputCompetitors{c, errHTML}
-// 	tpl.Execute(&b, ic)
-// 	return b.String()
-// }
-
 // ToCompetitorInfo converts the competitors for output or API
 func ToCompetitorInfo(c []C) []CompetitorInfo {
 	var out []CompetitorInfo

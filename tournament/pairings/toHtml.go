@@ -1,10 +1,8 @@
 package pairings
 
 import (
-	"bytes"
 	"fmt"
 	"strconv"
-	"text/template"
 	"time"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
@@ -69,18 +67,6 @@ func AllPairsToGamePlan(c []competitors.C, ap []P) GamePlan {
 			})
 	}
 	return out
-}
-
-// ToHTML renders the Pairing List to a HTML Page
-func ToHTML(description string, gp GamePlan) string {
-	htmlData := struct {
-		Description string
-		Gp          GamePlan
-	}{description, gp}
-	tpl := template.Must(template.ParseFiles("pairings/PairingsList.html"))
-	var b bytes.Buffer
-	tpl.Execute(&b, htmlData)
-	return b.String()
 }
 
 func roundToInfo(r int) string {

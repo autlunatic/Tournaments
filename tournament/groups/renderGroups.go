@@ -1,9 +1,6 @@
 package groups
 
 import (
-	"bytes"
-	"html/template"
-
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
 
@@ -38,28 +35,6 @@ func GToGroupInfo(g G) GroupInfo {
 		out.CInfo[i].GroupPointsNegative = res.GroupPointsNegative
 	}
 	return out
-}
-
-// ToHTML calculates HTML string for representing the groups
-func ToHTML(g []G) string {
-	tpl := template.Must(template.ParseFiles("groups/renderGroups.html"))
-	var groupsStrings []template.HTML
-	for _, gi := range g {
-		groupsStrings = append(groupsStrings, template.HTML(RenderOneGroup(gi)))
-	}
-	var b bytes.Buffer
-	tpl.Execute(&b, (groupsStrings))
-	return b.String()
-}
-
-// RenderOneGroup returns HTMl string for one group
-func RenderOneGroup(g G) string {
-	tpl := template.Must(template.ParseFiles("groups/oneGroup.html"))
-	var b bytes.Buffer
-	g.Competitors = competitors.SortedByPoints(g.Competitors)
-	gi := GToGroupInfo(g)
-	tpl.Execute(&b, gi)
-	return b.String()
 }
 
 // GetGroupInfos returns all Groupinfos for the G-Slice
