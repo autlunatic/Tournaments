@@ -35,9 +35,30 @@ func filterActual(ps []P, det detail.D) []P {
 	return out
 }
 
+func filterOld(ps []P, det detail.D) []P {
+	var out []P
+	for _, p := range ps {
+		gameDuration := time.Minute * time.Duration(det.MinutesPerGame)
+		now := time.Now().Add(-gameDuration)
+		start := p.StartTime.Add(-(time.Second * time.Duration(p.StartTime.Second())))
+		if start.Before(now) &&
+			(start.Add(gameDuration).After(now)) {
+			out = append(out, p)
+		}
+	}
+	return out
+}
+
 // FilterActualPairings returns the pairings that are played now
 func FilterActualPairings(c []competitors.C, ap []P, finals []P, det detail.D) []P {
 	ap = append(ap, finals...)
 	actualPairs := filterActual(ap, det)
+	return actualPairs
+}
+
+// FilterOldPairings returns the pairings that where played just before the actual round
+func FilterOldPairings(c []competitors.C, ap []P, finals []P, det detail.D) []P {
+	ap = append(ap, finals...)
+	actualPairs := filterOld(ap, det)
 	return actualPairs
 }

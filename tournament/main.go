@@ -25,6 +25,7 @@ var t tournament.T
 var loadedFromDB = false
 
 func main() {
+	fmt.Println("starting tournament server directly (not from cloud engine) ... ")
 	apimux := httprouter.New()
 	apimux.GET("/api/gamePlan", gamePlanAPI)
 	apimux.GET("/api/actualResults", actualResultsAPI)
@@ -83,8 +84,9 @@ func fileServerHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Pa
 func actualResultsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	checkLoadFromDB(w, req)
 	actual := pairings.FilterActualPairings(t.Competitors, t.Pairings, t.FinalPairings, t.Details)
+	old := pairings.FilterOldPairings(t.Competitors, t.Pairings, t.FinalPairings, t.Details)
 
-	j := pairings.ResultsToJSON(t.Competitors, actual, nil, t.PairingResults, t.PointCalcer)
+	j := pairings.ActualResultsToJSON(t.Competitors, actual, old, t.PairingResults, t.PointCalcer)
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, string(j))

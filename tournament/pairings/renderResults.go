@@ -89,6 +89,23 @@ func ResultsToJSON(c []competitors.C, pg []P, pf []P, r Results, tpc tournamentP
 	return string(json)
 }
 
+// ActualResultsToJSON returns the JSON string for actual Results for API Calls
+func ActualResultsToJSON(c []competitors.C, pairingsActual []P, pairingsOld []P, r Results, tpc tournamentPoints.TournamentPointCalcer) string {
+	var data []ResultInfoJSON
+	ri := ResultsToResultInfo(c, pairingsActual, r, tpc)
+	data = append(data, ResultInfoJSON{"Aktuelle Spiele", ri})
+	if pairingsOld != nil && len(pairingsOld) > 0 {
+		ri := ResultsToResultInfo(c, pairingsOld, r, tpc)
+		data = append(data, ResultInfoJSON{"Vergangene Spiele", ri})
+	}
+
+	json, err := json.Marshal(data)
+	if err != nil {
+		return ""
+	}
+	return string(json)
+}
+
 // FilterResultInfoByCompID returns resultinfos for one Competitor
 func FilterResultInfoByCompID(ris []ResultInfo, compID int) []ResultInfo {
 	var out []ResultInfo
