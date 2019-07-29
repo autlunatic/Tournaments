@@ -90,10 +90,14 @@ func ResultsToJSON(c []competitors.C, pg []P, pf []P, r Results, tpc tournamentP
 }
 
 // ActualResultsToJSON returns the JSON string for actual Results for API Calls
-func ActualResultsToJSON(c []competitors.C, pairingsActual []P, pairingsOld []P, r Results, tpc tournamentPoints.TournamentPointCalcer) string {
+func ActualResultsToJSON(c []competitors.C, pairingsActual []P, pairingsOld []P, pairingsComing []P, r Results, tpc tournamentPoints.TournamentPointCalcer) string {
 	var data []ResultInfoJSON
 	ri := ResultsToResultInfo(c, pairingsActual, r, tpc)
 	data = append(data, ResultInfoJSON{"Aktuelle Spiele", ri})
+	if pairingsComing != nil && len(pairingsComing) > 0 {
+		ri := ResultsToResultInfo(c, pairingsComing, r, tpc)
+		data = append(data, ResultInfoJSON{"Vorbereitung", ri})
+	}
 	if pairingsOld != nil && len(pairingsOld) > 0 {
 		ri := ResultsToResultInfo(c, pairingsOld, r, tpc)
 		data = append(data, ResultInfoJSON{"Vergangene Spiele", ri})

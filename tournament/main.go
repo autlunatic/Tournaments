@@ -85,8 +85,9 @@ func actualResultsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 	checkLoadFromDB(w, req)
 	actual := pairings.FilterActualPairings(t.Competitors, t.Pairings, t.FinalPairings, t.Details)
 	old := pairings.FilterOldPairings(t.Competitors, t.Pairings, t.FinalPairings, t.Details)
+	coming := pairings.FilterComingPairings(t.Competitors, t.Pairings, t.FinalPairings, t.Details)
 
-	j := pairings.ActualResultsToJSON(t.Competitors, actual, old, t.PairingResults, t.PointCalcer)
+	j := pairings.ActualResultsToJSON(t.Competitors, actual, old, coming, t.PairingResults, t.PointCalcer)
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, string(j))
