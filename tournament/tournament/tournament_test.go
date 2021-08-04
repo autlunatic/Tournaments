@@ -23,13 +23,13 @@ func NewTestTournament() T {
 	t.Competitors = competitors.NewTestCompetitors(9)
 
 	t.FinalPairings = []pairings.P{
-		pairings.P{Competitor1ID: 1, Competitor2ID: 2, Round: -4, ID: -1, GroupID: 0, StartTime: time.Time{}, Court: 2},
-		pairings.P{Competitor1ID: 3, Competitor2ID: 4, Round: -4, ID: -2, GroupID: 0, StartTime: time.Time{}, Court: 2},
-		pairings.P{Competitor1ID: 5, Competitor2ID: 6, Round: -4, ID: -3, GroupID: 0, StartTime: time.Time{}, Court: 1},
-		pairings.P{Competitor1ID: 7, Competitor2ID: 8, Round: -4, ID: -4, GroupID: 0, StartTime: time.Time{}, Court: 2},
-		pairings.P{Competitor1ID: 1, Competitor2ID: 3, Round: -2, ID: -5, GroupID: 0, StartTime: time.Time{}, Court: 1},
-		pairings.P{Competitor1ID: 5, Competitor2ID: 7, Round: -2, ID: -6, GroupID: 0, StartTime: time.Time{}, Court: 2},
-		pairings.P{Competitor1ID: 1, Competitor2ID: 0, Round: -1, ID: -7, GroupID: 0, StartTime: time.Time{}, Court: 1},
+		{Competitor1ID: 1, Competitor2ID: 2, Round: -4, ID: -1, GroupID: 0, StartTime: time.Time{}, Court: 2},
+		{Competitor1ID: 3, Competitor2ID: 4, Round: -4, ID: -2, GroupID: 0, StartTime: time.Time{}, Court: 2},
+		{Competitor1ID: 5, Competitor2ID: 6, Round: -4, ID: -3, GroupID: 0, StartTime: time.Time{}, Court: 1},
+		{Competitor1ID: 7, Competitor2ID: 8, Round: -4, ID: -4, GroupID: 0, StartTime: time.Time{}, Court: 2},
+		{Competitor1ID: 1, Competitor2ID: 3, Round: -2, ID: -5, GroupID: 0, StartTime: time.Time{}, Court: 1},
+		{Competitor1ID: 5, Competitor2ID: 7, Round: -2, ID: -6, GroupID: 0, StartTime: time.Time{}, Court: 2},
+		{Competitor1ID: 1, Competitor2ID: 0, Round: -1, ID: -7, GroupID: 0, StartTime: time.Time{}, Court: 1},
 	}
 
 	t.Build()

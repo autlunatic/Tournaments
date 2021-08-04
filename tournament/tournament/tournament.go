@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"time"
 
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/datastore"
-	"google.golang.org/appengine/log"
-
+	"cloud.google.com/go/datastore"
+	"github.com/autlunatic/Tournaments/tournament/mylogging"
 	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
+
+	// "google.golang.org/appengine/log"
 
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/detail"
@@ -86,34 +86,47 @@ func (t *T) GetPairingByID(ID int) (pairings.P, error) {
 }
 
 func getCompetitorsKey(c context.Context, id int) *datastore.Key {
-	return datastore.NewKey(c, competitorsEntity, strconv.Itoa(id), 0, nil)
+	return datastore.NameKey(competitorsEntity, strconv.Itoa(id), nil)
 }
 
 func getPairingsKey(c context.Context, id int) *datastore.Key {
-	return datastore.NewKey(c, pairingsEntity, strconv.Itoa(id), 0, nil)
+	return datastore.NameKey(pairingsEntity, strconv.Itoa(id), nil)
 }
 
 func getFinalPairingsKey(c context.Context, id int) *datastore.Key {
-	return datastore.NewKey(c, pairingsEntity+"_F", strconv.Itoa(id), 0, nil)
+	return datastore.NameKey(pairingsEntity+"_F", strconv.Itoa(id), nil)
 }
 
 func getResultKey(c context.Context, id int) *datastore.Key {
-	return datastore.NewKey(c, resultsEntity, strconv.Itoa(id), 0, nil)
+	return datastore.NameKey(resultsEntity, strconv.Itoa(id), nil)
 }
 
 func getDetailsKey(c context.Context) *datastore.Key {
 	// The string "default_guestbook" here could be varied to have multiple guestbooks.
-	key := datastore.NewKey(c, detialsEntity, "latest", 0, nil)
+	// key := datastore.NameKey(c, detialsEntity, "latest", 0, nil)
+	key := datastore.NameKey(detialsEntity, "latest", nil)
 	return key
+}
+
+func getClient(c context.Context) (*datastore.Client, error) {
+	return datastore.NewClient(c, "kids-192720")
 }
 
 // LoadDetails loads the details from datastore to t.Details, if error Details will be se to default
 func (t *T) LoadDetails(c context.Context) error {
 	var d detail.D
-	err := datastore.Get(c, getDetailsKey(c), &d)
+
+	client, err := datastore.NewClient(c, "kids-192720")
+	if err != nil {
+		return err
+		// log.Fatal(err)
+	}
+
+	err = client.Get(c, getDetailsKey(c), &d)
 	if err != nil || d.FinalistCount == 0 {
 		return err
 	}
+	mylogging.AddLog("got details!: ", d)
 	t.Details = d
 	return nil
 }
@@ -122,23 +135,29 @@ func (t *T) LoadDetails(c context.Context) error {
 func (t *T) LoadPairings(c context.Context) {
 	q := datastore.NewQuery(pairingsEntity).Order("ID")
 	ps := []pairings.P{}
-	if _, err := q.GetAll(c, &ps); err != nil {
-		log.Errorf(c, "Getting Pairings: %v", err)
+
+	client, err := getClient(c)
+	if err != nil {
+		return
+	}
+
+	if _, err := client.GetAll(c, q, &ps); err != nil {
+		// log.Errorf(c, "Getting Pairings: %v", err)
 		t.Pairings = []pairings.P{}
-		log.Errorf(c, "%v", err)
+		// log.Errorf(c, "%v", err)
 		return
 	}
 	t.Pairings = ps
 	q = datastore.NewQuery(pairingsEntity + "_F").Order("StartTime")
 	ps = []pairings.P{}
-	if _, err := q.GetAll(c, &ps); err != nil {
-		log.Errorf(c, "Getting FinalPairings: %v", err)
+	if _, err := client.GetAll(c, q, &ps); err != nil {
+		// log.Errorf(c, "Getting FinalPairings: %v", err)
 		t.FinalPairings = []pairings.P{}
-		log.Errorf(c, "%v", err)
+		// log.Errorf(c, "%v", err)
 		return
 	}
 	t.FinalPairings = ps
-	log.Infof(c, "FinalPairings loaded %v", t.Pairings)
+	// log.Infof(c, "FinalPairings loaded %v", t.Pairings)
 }
 
 // LoadCompetitors loads the name and drawnumber of a saved competitor from the datastore
@@ -148,8 +167,14 @@ func (t *T) LoadCompetitors(c context.Context) {
 	t.Groups = []groups.G{}
 	q := datastore.NewQuery(competitorsEntity).Order("DrawNumber")
 	cs := []competitorStore{}
-	if _, err := q.GetAll(c, &cs); err != nil {
-		log.Errorf(c, "Getting Competitors: %v", err)
+	client, err := getClient(c)
+	if err != nil {
+		return
+	}
+
+	if _, err := client.GetAll(c, q, &cs); err != nil {
+		mylogging.AddLog("getall competitors", err)
+		// log.Errorf(c, "Getting Competitors: %v", err)
 		return
 	}
 	for _, comp := range cs {
@@ -167,11 +192,11 @@ func (t *T) LoadCompetitors(c context.Context) {
 		var err error
 		t.Competitors, err = competitors.Add(t.Competitors, ac)
 		if err != nil {
-			log.Errorf(c, "error loading competitors: %v", err)
+			// log.Errorf(c, "error loading competitors: %v", err)
 			return
 		}
 	}
-	log.Infof(c, "Competitors loaded %v", t.Competitors)
+	// log.Infof(c, "Competitors loaded %v", t.Competitors)
 }
 
 // LoadResults loads the results from the datastore
@@ -180,16 +205,23 @@ func (t *T) LoadResults(c context.Context) {
 	q := datastore.NewQuery(resultsEntity)
 	cs := []pairings.Result{}
 	var keys []*datastore.Key
-	var err error
-	keys, err = q.GetAll(c, &cs)
+
+	client, err := getClient(c)
 	if err != nil {
-		log.Errorf(c, "Getting Results: %v", err)
+		return
+	}
+
+	keys, err = client.GetAll(c, q, &cs)
+	if err != nil {
+		// log.Errorf(c, "Getting Results: %v", err)
 		return
 	}
 	for i, comp := range cs {
-		id, err := strconv.Atoi(keys[i].StringID())
+		// TODO WHAT ??? STRINGID
+		// id, err := strconv.Atoi(keys[i].StringID())
+		id, err := strconv.Atoi(keys[i].String())
 		if err != nil {
-			log.Errorf(c, "Getting Results: %v", err)
+			// log.Errorf(c, "Getting Results: %v", err)
 			return
 		}
 
@@ -197,27 +229,37 @@ func (t *T) LoadResults(c context.Context) {
 	}
 	err = t.RecalcPoints()
 	if err != nil {
-		log.Errorf(c, "RecalcPoints : %v", err)
+		// log.Errorf(c, "RecalcPoints : %v", err)
 		return
 	}
-	log.Infof(c, "results loaded %v", t.PairingResults)
+	// log.Infof(c, "results loaded %v", t.PairingResults)
 }
 
 // LoadFromDataStore loads the complete tournament from Datastore
-func (t *T) LoadFromDataStore(r *http.Request, w http.ResponseWriter) {
-	c := appengine.NewContext(r)
+func (t *T) LoadFromDataStore(r *http.Request, w http.ResponseWriter) error {
+	c := context.Background()
+	// c := appengine.NewContext(r)
+
 	err := t.LoadDetails(c)
 	if err != nil {
-		return
+		return err
 	}
 	t.LoadPairings(c)
 	t.LoadCompetitors(c)
 	t.LoadResults(c)
+
+	mylogging.AddLog("loading done! ", t)
+	return nil
 }
 
 // SaveDetails saves tournament Details to the datastore
 func (t *T) SaveDetails(c context.Context) error {
-	_, err := datastore.Put(c, getDetailsKey(c), &t.Details)
+	client, err := getClient(c)
+	if err != nil {
+
+		_, err = client.Put(c, getDetailsKey(c), &t.Details)
+		return err
+	}
 	return err
 }
 
@@ -229,15 +271,20 @@ func (t *T) RecalcPoints() error {
 
 // SavePairings saves the calced pairings to the Database
 func (t *T) SavePairings(c context.Context) error {
+	client, err := getClient(c)
+	if err != nil {
+		return err
+	}
+
 	for i, pi := range t.Pairings {
-		log.Infof(c, "%v", pi)
-		_, err := datastore.Put(c, getPairingsKey(c, i), &pi)
+		// log.Infof(c, "%v", pi)
+		_, err := client.Put(c, getPairingsKey(c, i), &pi)
 		if err != nil {
 			return err
 		}
 	}
 	for i, pi := range t.FinalPairings {
-		_, err := datastore.Put(c, getFinalPairingsKey(c, i), &pi)
+		_, err := client.Put(c, getFinalPairingsKey(c, i), &pi)
 		if err != nil {
 			return err
 		}
@@ -247,26 +294,37 @@ func (t *T) SavePairings(c context.Context) error {
 
 // SaveResults saves the inputted results to the datastore
 func (t *T) SaveResults(c context.Context) error {
+	client, err := getClient(c)
+	if err != nil {
+		return err
+	}
+
 	for i, pr := range t.PairingResults {
 		key := getResultKey(c, i)
-		_, err := datastore.Put(c, key, pr)
+		_, err := client.Put(c, key, pr)
 		if err != nil {
 			return err
 		}
 	}
-	log.Infof(c, "results Saved")
+	// log.Infof(c, "results Saved")
 	return nil
 }
 
 // SaveCompetitors saves the interface to datastore
 func (t *T) SaveCompetitors(c context.Context) error {
+	mylogging.AddLog("saving competitors", competitors.ToCompetitorInfo(t.Competitors))
+	client, err := getClient(c)
+	if err != nil {
+		return err
+	}
+
 	for i, ci := range t.Competitors {
 		groupID, err := groups.GetGroupIDOfCompetitor(t.Groups, ci.ID())
 		if err != nil {
 			groupID = -1
 		}
 		name := competitorStore{ci.Name(), ci.DrawNumber(), groupID, ci.ID()}
-		_, err = datastore.Put(c, getCompetitorsKey(c, i), &name)
+		_, err = client.Put(c, getCompetitorsKey(c, i), &name)
 		if err != nil {
 			return err
 		}
@@ -276,23 +334,25 @@ func (t *T) SaveCompetitors(c context.Context) error {
 
 // SaveToDataStore saves the complete tournament to datastore
 func (t *T) SaveToDataStore(r *http.Request, w http.ResponseWriter) {
-	c := appengine.NewContext(r)
+	c := context.Background()
+	// c := appengine.NewContext(r)
 	if err := t.SaveDetails(c); err != nil {
-		log.Errorf(c, "DetailsSave: %v", err)
+		// log.Errorf(c, "DetailsSave: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	if err := t.SavePairings(c); err != nil {
-		log.Errorf(c, "PairingsSave: %v", err)
+		// log.Errorf(c, "PairingsSave: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	if err := t.SaveCompetitors(c); err != nil {
-		log.Errorf(c, "Competitors: %v", err)
+		// log.Errorf(c, "Competitors: %v", err)
+		mylogging.AddLog("saveCompetitiors ERROR", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	if err := t.SaveResults(c); err != nil {
-		log.Errorf(c, "Results: %v", err)
+		// log.Errorf(c, "Results: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 

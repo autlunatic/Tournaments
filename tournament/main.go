@@ -1,31 +1,32 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
-	"github.com/julienschmidt/httprouter"
-	"github.com/rs/cors"
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/log"
-
+	"cloud.google.com/go/logging"
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 	"github.com/autlunatic/Tournaments/tournament/detail"
 	"github.com/autlunatic/Tournaments/tournament/groups"
+	"github.com/autlunatic/Tournaments/tournament/mylogging"
 	"github.com/autlunatic/Tournaments/tournament/pairings"
 	"github.com/autlunatic/Tournaments/tournament/tournament"
 	"github.com/autlunatic/Tournaments/tournament/tournamentPoints"
+	"github.com/julienschmidt/httprouter"
+	"github.com/rs/cors"
 )
 
 var t tournament.T
 var loadedFromDB = false
 
 func main() {
-	fmt.Println("starting tournament server directly (not from cloud engine) ... ")
 	apimux := httprouter.New()
 	apimux.GET("/api/gamePlan", gamePlanAPI)
 	apimux.GET("/api/actualResults", actualResultsAPI)
@@ -69,11 +70,34 @@ func main() {
 		http.ServeFile(w, r, "./dist/index.html")
 	})
 	http.Handle("/api/", handler)
-
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		fmt.Println(err)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
 	}
+	///////////////////////////// LOGGING
+	ctx := context.Background()
+
+	// Sets your Google Cloud Platform project ID.
+	projectID := "kids-192720"
+
+	// Creates a client.
+	client, err := logging.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer client.Close()
+
+	// Sets the name of the log to write to.
+	logName := "my-log"
+
+	logger := client.Logger(logName).StandardLogger(logging.Info)
+
+	// Logs "hello world", log entry is visible at
+	// Cloud Logs.
+	logger.Println("hello world")
+	mylogging.AddLog("before listen and serve:", port)
+
+	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 
 }
 
@@ -82,6 +106,7 @@ func fileServerHandler(w http.ResponseWriter, req *http.Request, _ httprouter.Pa
 }
 
 func actualResultsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	mylogging.AddLog("actualResultsAPI")
 	checkLoadFromDB(w, req)
 	actual := pairings.FilterActualPairings(t.Competitors, t.Pairings, t.FinalPairings, t.Details)
 	old := pairings.FilterOldPairings(t.Competitors, t.Pairings, t.FinalPairings, t.Details)
@@ -94,9 +119,15 @@ func actualResultsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 }
 
 func checkLoadFromDB(w http.ResponseWriter, req *http.Request) {
+	mylogging.AddLog("loadedfromDB: ", loadedFromDB)
 	if !loadedFromDB {
-		t.LoadFromDataStore(req, w)
-		loadedFromDB = true
+		err := t.LoadFromDataStore(req, w)
+		if err == nil {
+
+			loadedFromDB = true
+		} else {
+			mylogging.AddLog(err)
+		}
 	}
 }
 func gamePlanAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
@@ -119,10 +150,12 @@ func resultsAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 }
 
 func isRefereeAPI(w http.ResponseWriter, req *http.Request, p httprouter.Params) {
-	c := appengine.NewContext(req)
+	// AIzaSyDpGF3gopbm - j - YmNsMZaR3p9OxNu5JDqM
+	// c := appengine.NewContext(req)
 	pw := p.ByName("pw")
-	// t.LoadDetails(c)
-	log.Infof(c, "referee? %v == %v", pw, t.Details.RefereePassword)
+	c := context.Background()
+	t.LoadDetails(c)
+	// log.Infof(c, "referee? %v == %v", pw, t.Details.RefereePassword)
 
 	if pw == t.Details.RefereePassword || t.Details.RefereePassword == "" {
 		result, _ := json.Marshal("OK")
@@ -134,10 +167,20 @@ func isRefereeAPI(w http.ResponseWriter, req *http.Request, p httprouter.Params)
 }
 
 func isAdminAPI(w http.ResponseWriter, req *http.Request, p httprouter.Params) {
-	c := appengine.NewContext(req)
+	// ctx := context.Background()
+
+	// Set your Google Cloud Platform project ID.
+	// projectID := "kids-192720"
+
+	// Creates a client.
+	// client, err := datastore.NewClient(ctx, projectID)
+	// if err != nil {
+	// }
+
+	// c := appengine.NewContext(req)
 	// t.LoadDetails(c)
 	pw := p.ByName("pw")
-	log.Infof(c, "admin? %v", pw)
+	// log.Infof(c, "admin? %v", pw)
 
 	if pw == t.Details.AdminPassword || t.Details.AdminPassword == "" {
 		result, _ := json.Marshal("OK")
@@ -190,19 +233,21 @@ func adminFunctionAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Par
 	case "loadFromDB":
 		t.LoadFromDataStore(req, w)
 	case "calcRandomDraw":
-		c := appengine.NewContext(req)
-		log.Infof(c, "%v", t.Competitors)
+		// c := appengine.NewContext(req)
+		// log.Infof(c, "%v", t.Competitors)
+
+		mylogging.AddLog("before calcRandomDraw", competitors.ToCompetitorInfo(t.Competitors))
 		competitors.CalcRandomDraw(t.Competitors)
-		log.Infof(c, "%v", t.Competitors)
+		mylogging.AddLog("after calcRandomDraw", competitors.ToCompetitorInfo(t.Competitors))
+		// log.Infof(c, "%v", t.Competitors)
 	case "addMinutes":
-		c := appengine.NewContext(req)
-		log.Infof(c, "addmins %v", t.Pairings)
-		competitors.CalcRandomDraw(t.Competitors)
+		// c := appengine.NewContext(req)
+		// log.Infof(c, "addmins %v", t.Pairings)
 		mins, err := strconv.Atoi(function.Params[0])
 		if err == nil {
 			t.AddMinutesToGroupParingsTime(mins)
 		}
-		log.Infof(c, "addmins %v mins %v", t.Pairings, mins)
+		// log.Infof(c, "addmins %v mins %v", t.Pairings, mins)
 	}
 
 	result, _ := json.Marshal("OK")
@@ -268,7 +313,7 @@ func resultsInputAPI(w http.ResponseWriter, req *http.Request, _ httprouter.Para
 	fmt.Println(len(t.PairingResults))
 	t.PairingResults = pairings.AddResult(t.PairingResults, ri.Pairing1Pts, ri.Pairing2Pts, p.ID)
 
-	c := appengine.NewContext(req)
+	c := context.Background()
 	t.SaveResults(c)
 	if p.ID < 0 {
 		t.RecalcFinals()
