@@ -219,7 +219,7 @@ func (t *T) LoadResults(c context.Context) {
 	for i, comp := range cs {
 		// TODO WHAT ??? STRINGID
 		// id, err := strconv.Atoi(keys[i].StringID())
-		id, err := strconv.Atoi(keys[i].String())
+		id, err := strconv.Atoi(keys[i].Name)
 		if err != nil {
 			// log.Errorf(c, "Getting Results: %v", err)
 			return

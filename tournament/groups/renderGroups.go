@@ -1,6 +1,8 @@
 package groups
 
 import (
+	"sort"
+
 	"github.com/autlunatic/Tournaments/tournament/competitors"
 )
 
@@ -43,5 +45,8 @@ func GetGroupInfos(g []G) []GroupInfo {
 	for _, gi := range g {
 		out = append(out, GToGroupInfo(gi))
 	}
+	sort.Slice(out, func(i, j int) bool {
+		return out[i].ID < out[j].ID
+	})
 	return out
 }
