@@ -10,7 +10,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/rs/cors v1.8.0
-	golang.org/x/net v0.0.0-20210726213435-c6fcb2dbf985 // indirect
+	golang.org/x/net v0.7.0 // indirect
 	google.golang.org/api v0.52.0 // indirect
 	google.golang.org/genproto v0.0.0-20210803142424-70bd63adacf2 // indirect
 )
